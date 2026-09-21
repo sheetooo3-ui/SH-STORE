@@ -1,1 +1,221 @@
-# SH-STORE
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متجرى | اطلب الآن</title>
+<style>
+  body{font-family:Tahoma,Arial,sans-serif;margin:0;background:#f4f6f9;color:#222}
+  header{background:#0a7cff;color:#fff;padding:20px;text-align:center}
+  header h1{margin:0 0 5px;font-size:1.5em}
+  header p{margin:0;font-size:0.9em;opacity:0.9}
+  .container{max-width:900px;margin:auto;padding:15px}
+  h2{font-size:1.2em;border-right:4px solid #0a7cff;padding-right:10px;margin-top:30px}
+  .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+  .card{background:#fff;border-radius:10px;padding:15px;box-shadow:0 2px 6px rgba(0,0,0,0.05);display:flex;flex-direction:column;justify-content:space-between}
+  .card h3{margin:0 0 6px;font-size:1em}
+  .card p{margin:0 0 10px;font-size:0.85em;color:#666}
+  .price{color:#0a7cff;font-weight:bold;font-size:1.1em;margin-bottom:10px}
+  button{background:#0a7cff;color:#fff;border:0;padding:10px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:0.9em}
+  button:hover{background:#0066d6}
+  .cart,.form,.track{background:#fff;border-radius:10px;padding:15px;margin-top:15px;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+  input,select,textarea{width:100%;padding:10px;margin:6px 0 12px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box;font-family:inherit;font-size:0.95em}
+  label{font-weight:bold;font-size:0.9em}
+  .cart-item{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:8px 0;font-size:0.9em}
+  .total{font-weight:bold;font-size:1.1em;color:#0a7cff;margin-top:10px;text-align:left}
+  .btn-track{background:#28a745;margin-top:5px}
+  .btn-track:hover{background:#218838}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>متجرى</h1>
+  <p>اطلب الآن واستلم على باب البيت</p>
+</header>
+
+<div class="container">
+
+  <h2>🛍️ المنتجات</h2>
+  <div id="products" class="products"></div>
+
+  <div class="cart">
+    <h2>🛒 سلة المشتريات</h2>
+    <div id="cartItems">السلة فارغة</div>
+    <div class="total">الإجمالي: <span id="total">0</span> جنيه</div>
+  </div>
+
+  <div class="form">
+    <h2>📝 بيانات العميل</h2>
+    <form id="orderForm">
+      <label>الاسم الثنائي</label>
+      <input id="fullName" required placeholder="مثال: أحمد محمد">
+      
+      <label>رقم التليفون</label>
+      <input id="phone1" required placeholder="01xxxxxxxxx" type="tel">
+      
+      <label>رقم تليفون ثاني (اختياري)</label>
+      <input id="phone2" placeholder="01xxxxxxxxx" type="tel">
+      
+      <label>المحافظة</label>
+      <select id="governorate" required></select>
+      
+      <label>العنوان بالتفصيل</label>
+      <textarea id="address" required rows="3" placeholder="المدينة / الشارع / رقم العمارة / الشقة"></textarea>
+      
+      <label>الرمز البريدي (اختياري)</label>
+      <input id="postalCode" placeholder="مثال: 11511">
+      
+      <label>طريقة الدفع</label>
+      <select id="payment">
+        <option>الدفع عند الاستلام</option>
+        <option>تحويل بنكي</option>
+        <option>فودافون كاش</option>
+      </select>
+      
+      <button type="submit" style="width:100%;font-size:1em;">إرسال الطلب على واتساب</button>
+    </form>
+  </div>
+
+  <div class="track">
+    <h2>🔍 تتبع الطلب</h2>
+    <input id="trackOrder" placeholder="اكتب رقم الطلب مثل ORD-...">
+    <button class="btn-track" onclick="trackOrderStatus()">تتبع الطلب</button>
+    <div id="trackResult" style="margin-top:10px;font-size:0.9em;"></div>
+  </div>
+
+</div>
+
+<script>
+  // ⚠️ ضع رقم الواتساب هنا بصيغة دولية بدون أصفار أو رموز
+  const WHATSAPP_NUMBER = "201014259959"; 
+
+  const products = [
+    {id:1, name:"منتج تجريبي 1", price:100, desc:"وصف مختصر للمنتج الأول"},
+    {id:2, name:"منتج تجريبي 2", price:150, desc:"وصف مختصر للمنتج الثاني"},
+    {id:3, name:"منتج تجريبي 3", price:200, desc:"وصف مختصر للمنتج الثالث"},
+    {id:4, name:"منتج تجريبي 4", price:250, desc:"وصف مختصر للمنتج الرابع"}
+  ];
+
+  const governorates = ["القاهرة","الجيزة","الإسكندرية","الدقهلية","الشرقية","المنوفية","القليوبية","البحيرة","الغربية","بورسعيد","دمياط","الإسماعيلية","السويس","كفر الشيخ","الفيوم","بني سويف","المنيا","أسيوط","سوهاج","قنا","الأقصر","أسوان","البحر الأحمر","الوادي الجديد","مطروح","شمال سيناء","جنوب سيناء"];
+
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+  function renderProducts(){
+    document.getElementById('products').innerHTML = products.map(p => `
+      <div class="card">
+        <div>
+          <h3>${p.name}</h3>
+          <p>${p.desc}</p>
+          <div class="price">${p.price} جنيه</div>
+        </div>
+        <button onclick="addToCart(${p.id})">أضف إلى السلة</button>
+      </div>
+    `).join('');
+  }
+
+  function addToCart(id){
+    const item = cart.find(i => i.id === id);
+    if(item) item.qty++;
+    else cart.push({id, qty:1});
+    saveCart();
+  }
+
+  function saveCart(){
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  function renderCart(){
+    const div = document.getElementById('cartItems');
+    if(cart.length === 0){ 
+      div.innerHTML = 'السلة فارغة'; 
+      document.getElementById('total').textContent = 0; 
+      return; 
+    }
+    let total = 0;
+    div.innerHTML = cart.map(i => {
+      const p = products.find(x => x.id === i.id);
+      total += p.price * i.qty;
+      return `<div class="cart-item"><span>${p.name} × ${i.qty}</span><span>${p.price * i.qty} جنيه</span></div>`;
+    }).join('');
+    document.getElementById('total').textContent = total;
+  }
+
+  function fillGovernorates(){
+    const sel = document.getElementById('governorate');
+    sel.innerHTML = '<option value="">اختر المحافظة</option>' + governorates.map(g => `<option>${g}</option>`).join('');
+  }
+
+  function generateOrderNumber(){
+    const d = new Date();
+    const date = d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
+    const rand = Math.floor(1000 + Math.random()*9000);
+    return `ORD-${date}-${rand}`;
+  }
+
+  document.getElementById('orderForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(cart.length === 0){ alert('السلة فارغة، أضف منتجات أولاً'); return; }
+
+    const name = document.getElementById('fullName').value;
+    const phone1 = document.getElementById('phone1').value;
+    const phone2 = document.getElementById('phone2').value || 'لا يوجد';
+    const gov = document.getElementById('governorate').value;
+    const address = document.getElementById('address').value;
+    const postal = document.getElementById('postalCode').value || 'لا يوجد';
+    const payment = document.getElementById('payment').value;
+    const orderNo = generateOrderNumber();
+
+    let itemsText = '';
+    let total = 0;
+    cart.forEach(i => {
+      const p = products.find(x => x.id === i.id);
+      const line = p.price * i.qty;
+      total += line;
+      itemsText += `- ${p.name} × ${i.qty} = ${line} جنيه\n`;
+    });
+
+    const msg = `طلب جديد رقم: ${orderNo}\n\n` +
+      `الاسم: ${name}\n` +
+      `رقم التليفون: ${phone1}\n` +
+      `رقم ثاني: ${phone2}\n` +
+      `المحافظة: ${gov}\n` +
+      `العنوان: ${address}\n` +
+      `الرمز: ${postal}\n` +
+      `طريقة الدفع: ${payment}\n\n` +
+      `المنتجات:\n${itemsText}\n` +
+      `الإجمالي: ${total} جنيه\n\n` +
+      `برجاء تأكيد الطلب.`;
+
+    const orders = JSON.parse(localStorage.getItem('orders') || '{}');
+    orders[orderNo] = {status:'قيد المراجعة', date:new Date().toLocaleString('ar-EG'), total};
+    localStorage.setItem('orders', JSON.stringify(orders));
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+
+    cart = [];
+    saveCart();
+    this.reset();
+    alert('تم تجهيز الطلب. رقم طلبك: ' + orderNo + '\nسيتم تحويلك إلى واتساب.');
+  });
+
+  function trackOrderStatus(){
+    const no = document.getElementById('trackOrder').value.trim();
+    const orders = JSON.parse(localStorage.getItem('orders') || '{}');
+    const res = document.getElementById('trackResult');
+    if(orders[no]) {
+      res.innerHTML = `<b>رقم الطلب:</b> ${no}<br><b>الحالة:</b> ${orders[no].status}<br><b>التاريخ:</b> ${orders[no].date}<br><b>الإجمالي:</b> ${orders[no].total} جنيه`;
+    } else {
+      res.textContent = 'رقم الطلب غير موجود على هذا الجهاز. للتتبع الحقيقي تواصل واتساب.';
+    }
+  }
+
+  // تشغيل الدوال عند فتح الصفحة
+  renderProducts();
+  fillGovernorates();
+  renderCart();
+</script>
+</body>
+</html>
