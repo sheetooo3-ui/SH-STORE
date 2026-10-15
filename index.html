@@ -76,8 +76,9 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .status.ship{background:rgba(10,124,255,.15);color:var(--primary)}
 .status.returns{background:rgba(231,76,60,.15);color:var(--danger)}
 footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:1000;padding:15px}
-.modal-overlay.show{display:flex}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:3000;padding:15px}
+.modal-overlay.show{display:flex;z-index:3000!important}
+#productModal.show,#invoiceModal.show,#labelModal.show,#profileModal.show,#myOrdersModal.show,#authModal.show{z-index:3100!important}
 .modal{background:var(--card);border-radius:var(--radius);max-width:800px;width:100%;max-height:90vh;overflow-y:auto;padding:20px;position:relative}
 .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .modal-header h3{margin:0;font-size:1.15em}
@@ -89,10 +90,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
 .stat .num{font-size:1.5em;font-weight:bold;color:var(--primary);display:block}
 .stat .lbl{font-size:.8em;color:var(--muted)}
-.order-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px}
-.order-row .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
-.order-row .meta{font-size:.85em;color:var(--muted);line-height:1.7}
-.order-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
 .img-up{position:relative;width:100%;height:150px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;background:var(--bg);margin-bottom:12px}
 .img-up:hover{border-color:var(--primary)}
 .img-up img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
@@ -222,7 +219,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
     <button class="icon-btn" onclick="openAdmin()">⚙️</button>
   </div>
-  <h1 id="headerTitle">🛒 SH STORE</h1>
+  <h1>🛒 SH STORE</h1>
   <p>اطلب الآن واستلم على باب البيت</p>
 </header>
 
@@ -339,7 +336,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 <div class="modal-overlay" id="productModal"><div class="modal" style="max-width:520px">
   <div class="modal-header"><h3 id="productModalTitle">➕ إضافة منتج</h3><button class="close-btn" onclick="closeModal('productModal')">✕</button></div>
   <input type="hidden" id="pf_id">
-  <label>صورة</label>
+  <label>صورة (اختياري)</label>
   <div class="img-up" onclick="document.getElementById('pf_imageFile').click()">
     <div class="ph" id="imgPlaceholder"><span class="big">📷</span>اضغط لاختيار صورة</div>
     <img id="imgPreview" style="display:none">
@@ -360,7 +357,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <nav class="adm-nav" id="admNav"></nav>
     <div class="adm-sidebar-foot">
       <button class="btn-ghost btn-sm" onclick="closeAdmin()" style="flex:1">🚪 خروج</button>
-      <button class="btn-ghost btn-sm" onclick="toggleTheme()" id="admThemeBtn">🌙</button>
+      <button class="btn-ghost btn-sm" onclick="toggleTheme()">🌙</button>
     </div>
   </aside>
   <main class="adm-main">
@@ -380,7 +377,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 <script>
 /* ================================================================
    📦 قاعدة بيانات المنتجات — 162 منتج
-   التنسيق: [الاسم عربي، إنجليزي، الفئة عربي، إنجليزي، السعر، السعر القديم، الأيقونة، الشارة، المخزون]
    ================================================================ */
 const P_RAW = [
   ["هاتف سامسونج A15","Samsung Galaxy A15","هواتف","Phones",8500,9500,"📱","sale",25],
@@ -677,7 +673,7 @@ function renderCategories(){
   sel.innerHTML = `<option value="">الكل (${products.length})</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join('');
   if(cats.includes(cur)) sel.value = cur;
 }
-function filterProducts(){
+function filterProductsList(){
   const q = ($('searchInput').value || '').trim().toLowerCase();
   const cat = $('categoryFilter').value;
   const sort = $('sortFilter').value;
@@ -692,13 +688,12 @@ function filterProducts(){
   return list;
 }
 function renderProducts(){
-  filteredProducts = filterProducts();
+  filteredProducts = filterProductsList();
   visibleCount = Math.min(visibleCount, filteredProducts.length);
   const list = filteredProducts.slice(0, visibleCount);
   const el = $('products');
   $('productCount').textContent = `عرض ${list.length} من ${filteredProducts.length} منتج`;
   if(list.length === 0){ el.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">🔍</span>لا نتائج</div>`; $('loadMoreBtn').style.display = 'none'; return; }
-  const cur = 'ج';
   el.innerHTML = list.map(p => {
     let badge = p.badge === 'new' ? `<span class="badge new">جديد</span>` : p.badge === 'sale' ? `<span class="badge">خصم</span>` : '';
     const out = p.stock !== undefined && p.stock <= 0;
@@ -708,7 +703,7 @@ function renderProducts(){
         <span class="cat">${esc(p.cat[lang])}</span>
         <h3>${esc(p.name[lang])}</h3>
         <p class="desc">${esc(p.desc[lang])}</p>
-        <div class="price">${p.oldPrice ? `<span class="old">${p.oldPrice}</span>` : ''}${p.price} ${cur}</div>
+        <div class="price">${p.oldPrice ? `<span class="old">${p.oldPrice}</span>` : ''}${p.price} ج</div>
         <button onclick="addToCart(${p.id})" ${out?'disabled':''}>${out ? 'نفذت' : '➕ أضف'}</button>
       </div>
     </div>`;
@@ -1614,7 +1609,7 @@ function openProductForm(id){
   currentImage = '';
   if(id){
     const p = products.find(x => x.id === id); if(!p) return;
-    $('productModalTitle').textContent = '✏️ تعديل';
+    $('productModalTitle').textContent = '✏️ تعديل منتج';
     $('pf_id').value = p.id;
     $('pf_nameAr').value = p.name.ar; $('pf_nameEn').value = p.name.en;
     $('pf_descAr').value = p.desc.ar; $('pf_descEn').value = p.desc.en;
@@ -2110,7 +2105,6 @@ function globalSearchHandler(q){
    🚀 INIT
    ================================================================ */
 function init(){
-  // مسح المنتجات القديمة مرة واحدة فقط عند أول تحميل بالإصدار الجديد
   const version = localStorage.getItem('storeVersion');
   if(version !== '2.0'){
     localStorage.removeItem('products');
