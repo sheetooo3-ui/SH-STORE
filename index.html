@@ -31,6 +31,7 @@ label{font-weight:bold;font-size:.9em;display:block;margin-bottom:2px}
 [data-theme="dark"] .card-img{background:linear-gradient(135deg,#233042,#2c3a4f)}
 .badge{position:absolute;top:8px;right:8px;background:var(--danger);color:#fff;font-size:.7em;padding:3px 8px;border-radius:20px;font-weight:bold;z-index:2}
 .badge.new{background:var(--success)}
+.badge.free{position:absolute;top:8px;left:8px;background:var(--success);color:#fff;font-size:.65em;padding:3px 8px;border-radius:20px;font-weight:bold;z-index:3}
 .card-body{padding:12px;flex:1;display:flex;flex-direction:column}
 .card h3{margin:0 0 6px;font-size:.9em;line-height:1.3}
 .card .desc{margin:0 0 8px;font-size:.75em;color:var(--muted);flex:1;line-height:1.4}
@@ -57,12 +58,17 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .cart-item .info{flex:1}
 .cart-item .name{font-weight:bold;display:block;margin-bottom:3px}
 .cart-item .unit{color:var(--muted);font-size:.82em}
+.free-tag{font-size:.65em;color:var(--success);background:rgba(40,167,69,.12);padding:1px 6px;border-radius:10px;margin-right:4px;font-weight:bold}
 .qty-ctrl{display:flex;align-items:center;gap:6px}
 .qty-btn{width:28px;height:28px;border-radius:6px;padding:0;font-size:1em;display:flex;align-items:center;justify-content:center}
 .qty-num{min-width:26px;text-align:center;font-weight:bold}
 .remove-btn{background:transparent;color:var(--danger);padding:4px 8px;font-size:1.1em}
 .empty{text-align:center;color:var(--muted);padding:25px 10px;font-size:.95em}
 .empty .big{font-size:2.5em;display:block;margin-bottom:8px;opacity:.4}
+.total-box{text-align:center;padding:16px;border-top:2px solid var(--primary);margin:14px 0 12px;background:linear-gradient(180deg,transparent,rgba(10,124,255,.06));border-radius:0 0 10px 10px}
+.total-box .lbl{font-size:.85em;color:var(--muted);display:block;margin-bottom:4px}
+.total-box .val{font-size:1.7em;font-weight:bold;color:var(--primary)}
+.total-box .hint{font-size:.75em;color:var(--warning);margin-top:6px;display:block}
 .toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%) translateY(100px);background:#333;color:#fff;padding:12px 22px;border-radius:30px;font-size:.9em;box-shadow:0 6px 20px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:all .35s;z-index:9999;max-width:90%}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.success{background:var(--success)}.toast.error{background:var(--danger)}.toast.warning{background:var(--warning)}
@@ -98,8 +104,8 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .invoice td{padding:10px;border-bottom:1px solid #eee;font-size:.9em}
 .invoice .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f8f9fb;padding:15px;border-radius:8px;margin:15px 0;font-size:.9em}
 .invoice .info-grid b{color:#0a7cff}
-.invoice .totals{margin-top:15px;text-align:left}
-.invoice .grand{font-size:1.2em;font-weight:bold;color:#0a7cff;border-top:2px solid #0a7cff;padding-top:10px;margin-top:8px}
+.invoice .totals{margin-top:15px;text-align:center}
+.invoice .grand{font-size:1.4em;font-weight:bold;color:#0a7cff;border-top:2px solid #0a7cff;padding-top:12px;margin-top:8px}
 .user-menu{position:relative}
 .user-btn{background:rgba(255,255,255,.2);color:#fff;border:0;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:.82em;font-weight:bold;display:flex;align-items:center;gap:6px}
 .user-btn:hover{background:rgba(255,255,255,.35)}
@@ -245,7 +251,12 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <h2>🛒 السلة</h2>
     <div id="cartItems"></div>
     <div id="cartSummary" style="display:none">
-      <button class="btn-outline btn-full" style="margin-top:12px" onclick="clearCart()">🗑️ تفريغ السلة</button>
+      <div class="total-box">
+        <span class="lbl" id="totalLabel">الإجمالي:</span>
+        <span class="val" id="cartTotal">0 ج</span>
+        <span class="hint" id="totalHint" style="display:none">⚠️ اختر المحافظة لحساب الشحن النهائي</span>
+      </div>
+      <button class="btn-outline btn-full" onclick="clearCart()">🗑️ تفريغ السلة</button>
     </div>
   </section>
 
@@ -261,6 +272,10 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
       <label>العنوان *</label><textarea id="address" rows="3"></textarea>
       <div class="err" id="err-address" style="color:var(--danger);font-size:.78em;margin-top:-8px;margin-bottom:10px;display:none">اكتب العنوان</div>
       <label>ملاحظات</label><textarea id="notes" rows="2"></textarea>
+      <div class="total-box" style="margin:14px 0">
+        <span class="lbl">الإجمالي المطلوب:</span>
+        <span class="val" id="formTotal">0 ج</span>
+      </div>
       <button type="submit" class="btn-full" style="margin-top:14px">📤 إرسال الطلب على واتساب</button>
     </form>
   </section>
@@ -332,6 +347,26 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   <div class="row"><div><label>السعر</label><input id="pf_price" type="number"></div><div><label>السعر القديم</label><input id="pf_oldPrice" type="number"></div></div>
   <div class="row"><div><label>الفئة (عربي)</label><input id="pf_catAr"></div><div><label>الفئة (إنجليزي)</label><input id="pf_catEn"></div></div>
   <div class="row"><div><label>الشارة</label><select id="pf_badge"><option value="">بدون</option><option value="new">جديد</option><option value="sale">خصم</option></select></div><div><label>المخزون</label><input id="pf_stock" type="number" value="100"></div></div>
+  
+  <div style="background:rgba(10,124,255,.06);border:1px solid rgba(10,124,255,.2);border-radius:10px;padding:12px;margin:8px 0">
+    <label style="color:var(--primary);font-size:.92em;margin-bottom:8px">🚚 إعدادات الشحن</label>
+    <div class="row">
+      <div>
+        <label style="font-size:.82em">نوع الشحن</label>
+        <select id="pf_shipType" onchange="onShipTypeChange()">
+          <option value="default">حسب المحافظة</option>
+          <option value="custom">مبلغ مخصص</option>
+          <option value="free">شحن مجاني</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:.82em">مبلغ الشحن المخصص (ج)</label>
+        <input id="pf_customShipping" type="number" min="0" placeholder="مثال: 50" disabled>
+      </div>
+    </div>
+    <p style="font-size:.75em;color:var(--muted);margin:0">💡 اختر "حسب المحافظة" لاستخدام تسعيرة كل محافظة تلقائيًا، أو "شحن مجاني" لإلغاء الشحن على هذا المنتج.</p>
+  </div>
+  
   <button class="btn-success btn-full" onclick="saveProduct()">💾 حفظ</button>
 </div></div>
 
@@ -361,7 +396,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 
 <script>
 /* ================================================================
-   📦 قاعدة بيانات المنتجات — 162 منتج (بدون صور افتراضية)
+   📦 قاعدة بيانات المنتجات
    ================================================================ */
 const P_RAW = [
   ["هاتف سامسونج A15","Samsung Galaxy A15","هواتف","Phones",8500,9500,"📱","sale",25],
@@ -552,17 +587,24 @@ const DEFAULT_PRODUCTS = P_RAW.map((p, i) => ({
   badge: p[7] || "",
   stock: p[8],
   desc: {ar: p[0] + " — جودة عالية وضمان", en: p[1] + " — High quality"},
-  image: ""
+  image: "",
+  freeShipping: false,
+  customShipping: null
 }));
 
+// 🚚 تسعيرة الشحن الجديدة
 const DEFAULT_DELIVERY = {
-  "القاهرة":45,"الجيزة":45,"القليوبية":45,"الإسكندرية":40,
-  "الدقهلية":40,"الشرقية":40,"المنوفية":40,"الغربية":40,
-  "البحيرة":45,"كفر الشيخ":45,"دمياط":45,"بورسعيد":45,
-  "الإسماعيلية":50,"السويس":50,"مطروح":60,
-  "الفيوم":45,"بني سويف":50,"المنيا":55,"أسيوط":60,
-  "سوهاج":65,"قنا":70,"الأقصر":70,"أسوان":75,
-  "البحر الأحمر":70,"الوادي الجديد":70,"شمال سيناء":60,"جنوب سيناء":70
+  // 95 - القاهرة والجيزة والإسكندرية
+  "القاهرة":95,"الجيزة":95,"الإسكندرية":95,
+  // 100 - وجه بحري
+  "القليوبية":100,"الدقهلية":100,"الشرقية":100,"المنوفية":100,"الغربية":100,
+  "البحيرة":100,"كفر الشيخ":100,"دمياط":100,"بورسعيد":100,
+  "الإسماعيلية":100,"السويس":100,"مطروح":100,
+  "شمال سيناء":100,"جنوب سيناء":100,
+  // 105 - وجه قبلي
+  "الفيوم":105,"بني سويف":105,"المنيا":105,"أسيوط":105,
+  "سوهاج":105,"قنا":105,"الأقصر":105,"أسوان":105,
+  "البحر الأحمر":105,"الوادي الجديد":105
 };
 
 const DEFAULT_SETTINGS = {whatsapp:"201014259959",password:"1234",phone:"",storeName:"SH STORE"};
@@ -671,11 +713,12 @@ function renderProducts(){
   if(list.length === 0){ el.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">🔍</span>لا نتائج</div>`; $('loadMoreBtn').style.display = 'none'; return; }
   el.innerHTML = list.map(p => {
     const badge = p.badge === 'new' ? `<span class="badge new">جديد</span>` : p.badge === 'sale' ? `<span class="badge">خصم</span>` : '';
+    const freeBadge = p.freeShipping ? `<span class="badge free">🚚 شحن مجاني</span>` : '';
     const out = p.stock !== undefined && p.stock <= 0;
     const icon = p.icon || '📦';
     const imgTag = p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name[lang])}" loading="lazy" onerror="this.remove()">` : '';
     return `<div class="card">
-      <div class="card-img">${icon}${imgTag}${badge}</div>
+      <div class="card-img">${icon}${imgTag}${badge}${freeBadge}</div>
       <div class="card-body">
         <span class="cat">${esc(p.cat[lang])}</span>
         <h3>${esc(p.name[lang])}</h3>
@@ -721,33 +764,76 @@ function clearCart(){
   toast('تم تفريغ السلة', 'success');
 }
 function saveCart(){ localStorage.setItem('cart', JSON.stringify(cart)); renderCart(); }
+
+/* ================================================================
+   💰 حساب الإجمالي (المنتج + الشحن)
+   ================================================================ */
 function calcTotals(){
   let subtotal = 0;
-  cart.forEach(i => { const p = products.find(x => x.id === i.id); if(p) subtotal += p.price * i.qty; });
+  let customShip = 0;
+  let needsGovShip = false;
+  
   const gov = $('governorate').value;
-  const delivery = gov && DELIVERY[gov] ? DELIVERY[gov] : 0;
-  return {subtotal, discount:0, delivery, total: subtotal + delivery};
+  const govRate = (gov && DELIVERY[gov]) ? DELIVERY[gov] : 0;
+  
+  cart.forEach(i => {
+    const p = products.find(x => x.id === i.id);
+    if(!p) return;
+    subtotal += p.price * i.qty;
+    
+    // حساب الشحن لكل منتج
+    if(p.freeShipping) return; // شحن مجاني = 0
+    if(p.customShipping && p.customShipping > 0){
+      customShip += p.customShipping; // شحن مخصص يُضاف مرة واحدة
+    } else {
+      needsGovShip = true; // يحتاج تسعيرة المحافظة
+    }
+  });
+  
+  // تسعيرة المحافظة تُضاف مرة واحدة للطلب كله
+  const shipping = customShip + (needsGovShip ? govRate : 0);
+  
+  return {subtotal, shipping, total: subtotal + shipping};
 }
+
 function renderCart(){
   const div = $('cartItems'), summary = $('cartSummary');
   if(cart.length === 0){
     div.innerHTML = `<div class="empty"><span class="big">🛒</span>السلة فارغة<br><small>ابدأ بإضافة منتجات</small></div>`;
     summary.style.display = 'none';
+    const formTotalEl = $('formTotal');
+    if(formTotalEl) formTotalEl.textContent = '0 ج';
     return;
   }
   div.innerHTML = cart.map(i => {
     const p = products.find(x => x.id === i.id); if(!p) return '';
+    const freeTag = p.freeShipping ? `<span class="free-tag">🚚 مجاني</span>` : '';
     return `<div class="cart-item">
-      <div class="info"><span class="name">${esc(p.name[lang])}</span><span class="unit">${p.price} ج × ${i.qty} = <b>${p.price*i.qty}</b></span></div>
+      <div class="info"><span class="name">${esc(p.name[lang])} ${freeTag}</span><span class="unit">${p.price} ج × ${i.qty} = <b>${p.price*i.qty}</b></span></div>
       <div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(${p.id},-1)">−</button><span class="qty-num">${i.qty}</span><button class="qty-btn" onclick="changeQty(${p.id},1)">+</button></div>
       <button class="remove-btn" onclick="removeItem(${p.id})">✕</button>
     </div>`;
   }).join('');
   summary.style.display = 'block';
+  
+  const tt = calcTotals();
+  const gov = $('governorate').value;
+  
+  // عرض الإجمالي فقط (سعر المنتجات + الشحن)
+  const cartTotalEl = $('cartTotal');
+  if(cartTotalEl) cartTotalEl.textContent = tt.total + ' ج';
+  
+  const formTotalEl = $('formTotal');
+  if(formTotalEl) formTotalEl.textContent = tt.total + ' ج';
+  
+  // إظهار تحذير اختيار المحافظة
+  const hintEl = $('totalHint');
+  if(hintEl) hintEl.style.display = gov ? 'none' : 'block';
 }
+
 function fillGovs(){
   const sel = $('governorate'), cur = sel.value;
-  sel.innerHTML = `<option value="">—</option>` + govList().map(g => `<option value="${g}">${g} (${DELIVERY[g]} ج)</option>`).join('');
+  sel.innerHTML = `<option value="">— اختر المحافظة —</option>` + govList().map(g => `<option value="${g}">${g} (${DELIVERY[g]} ج)</option>`).join('');
   if(cur) sel.value = cur;
 }
 
@@ -888,7 +974,9 @@ $('orderForm').addEventListener('submit', e => {
   const items = cart.map(i => { const p = products.find(x => x.id === i.id); return {name:p.name[lang], price:p.price, qty:i.qty, total:p.price*i.qty}; });
   const order = {
     orderNo, name, phone1, phone2, gov, address, notes, items,
-    subtotal:tt.subtotal, discount:0, delivery:tt.delivery, total:tt.total,
+    subtotal: tt.subtotal,
+    shipping: tt.shipping,   // ← محفوظ للأدمن فقط
+    total: tt.total,
     status:"قيد المراجعة", payment:"الدفع عند الاستلام",
     date:new Date().toLocaleString('ar-EG'), timestamp:Date.now(),
     userPhone: currentUser ? currentUser.phone : null
@@ -907,15 +995,17 @@ $('orderForm').addEventListener('submit', e => {
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
     updateUserUI();
   }
+  
+  // 📱 رسالة واتساب - الإجمالي فقط (بدون تفاصيل شحن)
   let msg = `🛒 *طلب جديد*\n📋 ${orderNo}\n\n👤 ${name}\n📱 ${phone1}\n`;
   if(phone2) msg += `📱 ${phone2}\n`;
   msg += `🏙️ ${gov}\n📍 ${address}\n`;
   if(notes) msg += `📝 ${notes}\n`;
   msg += `\n🛍️:\n`;
   order.items.forEach(it => msg += `• ${it.name} × ${it.qty} = ${it.total} ج\n`);
-  msg += `\n💵 ${order.subtotal} ج\n`;
-  msg += `🚚 ${order.delivery} ج\n💰 *${order.total} ج*`;
+  msg += `\n💰 *الإجمالي: ${order.total} ج*`;
   window.open(`https://wa.me/${SETTINGS.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+  
   log('طلب جديد', 'success', `${orderNo} - ${name} - ${order.total} ج`);
   showInvoice(orderNo);
   cart = [];
@@ -930,6 +1020,7 @@ $('orderForm').addEventListener('submit', e => {
 function showInvoice(no){
   const o = orders()[no]; if(!o) return;
   const rows = o.items.map(it => `<tr><td>${esc(it.name)}</td><td>${it.price}</td><td>${it.qty}</td><td><b>${it.total}</b></td></tr>`).join('');
+  // 🎯 عرض الإجمالي فقط للعميل (بدون تفاصيل الشحن)
   $('invoiceContent').innerHTML = `<div class="invoice">
     <h1>🛒 ${esc(SETTINGS.storeName)}</h1>
     <div class="sub">فاتورة طلب</div>
@@ -945,9 +1036,7 @@ function showInvoice(no){
     </div>
     <table><thead><tr><th>المنتج</th><th>السعر</th><th>الكمية</th><th>الإجمالي</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="totals">
-      <div>الإجمالي الفرعي: <b>${o.subtotal} ج</b></div>
-      <div>التوصيل: <b>${o.delivery} ج</b></div>
-      <div class="grand">المطلوب: ${o.total} ج</div>
+      <div class="grand">الإجمالي المطلوب: ${o.total} ج</div>
     </div>
   </div>`;
   openModal('invoiceModal');
@@ -1074,12 +1163,13 @@ function renderDashboard(){
   const pending = keys.filter(k => all[k].status.includes('قيد المراجعة')).length;
   const delivered = keys.filter(k => all[k].status.includes('تم التسليم')).length;
   const users = Object.keys(getUsers()).length;
+  const totalShipping = keys.reduce((s,k) => s + (all[k].shipping||0), 0);
 
   $('admContent').innerHTML = `
     <div class="kpi-grid">
       <div class="kpi"><span class="k-ic">📋</span><span class="k-val">${keys.length}</span><span class="k-lbl">إجمالي الطلبات</span><div class="k-trend">اليوم: ${today.length}</div></div>
       <div class="kpi success"><span class="k-ic">💰</span><span class="k-val">${totalSales.toLocaleString('ar-EG')}</span><span class="k-lbl">إجمالي المبيعات (ج)</span><div class="k-trend">اليوم: ${todaySales.toLocaleString('ar-EG')} ج</div></div>
-      <div class="kpi info"><span class="k-ic">📊</span><span class="k-val">${weekSales.toLocaleString('ar-EG')}</span><span class="k-lbl">مبيعات الأسبوع</span><div class="k-trend">الشهر: ${monthSales.toLocaleString('ar-EG')} ج</div></div>
+      <div class="kpi info"><span class="k-ic">🚚</span><span class="k-val">${totalShipping.toLocaleString('ar-EG')}</span><span class="k-lbl">إجمالي الشحن (ج)</span></div>
       <div class="kpi warning"><span class="k-ic">⏳</span><span class="k-val">${pending}</span><span class="k-lbl">قيد المراجعة</span><div class="k-trend">✅ تم التسليم: ${delivered}</div></div>
       <div class="kpi danger"><span class="k-ic">📈</span><span class="k-val">${avgOrder.toLocaleString('ar-EG')}</span><span class="k-lbl">متوسط قيمة الطلب</span></div>
       <div class="kpi info"><span class="k-ic">👥</span><span class="k-val">${users}</span><span class="k-lbl">عدد العملاء</span></div>
@@ -1339,7 +1429,7 @@ function renderOrdersAdmin(){
               <td><div class="cell-flex"><div class="avatar">${esc(o.name.charAt(0))}</div><div>${esc(o.name)}</div></div></td>
               <td>${esc(o.phone1)}</td>
               <td>${esc(o.gov)}</td>
-              <td class="money">${o.total} ج</td>
+              <td class="money">${o.total} ج${o.shipping ? `<br><small style="font-size:.7em;color:var(--muted);font-weight:normal">(شحن: ${o.shipping})</small>` : ''}</td>
               <td><span class="status ${st}">${o.status}</span></td>
               <td style="font-size:.78em;color:var(--muted)">${o.date}</td>
               <td><div class="cell-actions">
@@ -1443,10 +1533,10 @@ function exportOrdersCSV(){
   const all = orders();
   const keys = Object.keys(all);
   if(keys.length === 0){ toast('لا طلبات', 'error'); return; }
-  const headers = ['رقم','التاريخ','الاسم','التليفون','المحافظة','العنوان','المبلغ','الحالة'];
+  const headers = ['رقم','التاريخ','الاسم','التليفون','المحافظة','العنوان','إجمالي المنتجات','الشحن','الإجمالي','الحالة'];
   const rows = keys.map(k => {
     const o = all[k];
-    return [o.orderNo, o.date, o.name, o.phone1, o.gov, o.address.replace(/,/g,' '), o.total, o.status];
+    return [o.orderNo, o.date, o.name, o.phone1, o.gov, o.address.replace(/,/g,' '), o.subtotal||'', o.shipping||0, o.total, o.status];
   });
   const csv = '\uFEFF' + headers.join(',') + '\n' + rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
@@ -1460,6 +1550,12 @@ function exportOrdersCSV(){
 /* ================================================================
    🛍️ PRODUCTS ADMIN
    ================================================================ */
+function onShipTypeChange(){
+  const type = $('pf_shipType').value;
+  const inp = $('pf_customShipping');
+  if(type === 'custom'){ inp.disabled = false; inp.focus(); }
+  else { inp.disabled = true; inp.value = ''; }
+}
 function renderProductsAdmin(){
   const cats = [...new Set(products.map(p => p.cat.ar))].sort();
   $('admContent').innerHTML = `
@@ -1488,7 +1584,7 @@ function renderProductsAdmin(){
     </div>
     <div class="adm-table-wrap">
       <table class="adm-table">
-        <thead><tr><th></th><th>المنتج</th><th>الفئة</th><th>السعر</th><th>المخزون</th><th>الشارة</th><th>إجراءات</th></tr></thead>
+        <thead><tr><th></th><th>المنتج</th><th>الفئة</th><th>السعر</th><th>الشحن</th><th>المخزون</th><th>الشارة</th><th>إجراءات</th></tr></thead>
         <tbody id="prodTableBody"></tbody>
       </table>
     </div>`;
@@ -1511,17 +1607,22 @@ function filterProductsAdmin(){
   else if(sort === 'stock-asc') list.sort((a,b) => (a.stock||0) - (b.stock||0));
   else list.sort((a,b) => b.id - a.id);
   const tb = $('prodTableBody');
-  if(list.length === 0){ tb.innerHTML = `<tr><td colspan="7" class="empty">لا منتجات</td></tr>`; return; }
+  if(list.length === 0){ tb.innerHTML = `<tr><td colspan="8" class="empty">لا منتجات</td></tr>`; return; }
   tb.innerHTML = list.map(p => {
     const stockColor = p.stock === 0 ? 'var(--danger)' : p.stock < 10 ? 'var(--warning)' : 'var(--success)';
     const thumb = p.image
       ? `<img src="${esc(p.image)}" style="width:44px;height:44px;object-fit:cover;border-radius:8px;background:var(--bg)" onerror="this.style.display='none'">`
       : `<div style="width:44px;height:44px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.3em">${esc(p.icon||'📦')}</div>`;
+    let shipInfo;
+    if(p.freeShipping) shipInfo = '<span class="status done">🚚 مجاني</span>';
+    else if(p.customShipping) shipInfo = `<span style="color:var(--info);font-weight:bold">${p.customShipping} ج</span>`;
+    else shipInfo = '<span style="color:var(--muted);font-size:.8em">حسب المحافظة</span>';
     return `<tr>
       <td>${thumb}</td>
       <td><div class="cell-flex"><div><b>${esc(p.name.ar)}</b><br><small style="color:var(--muted);font-size:.75em">${esc(p.name.en)}</small></div></div></td>
       <td>${esc(p.cat.ar)}</td>
       <td class="money">${p.price} ج${p.oldPrice?`<br><small style="color:var(--muted);text-decoration:line-through">${p.oldPrice}</small>`:''}</td>
+      <td>${shipInfo}</td>
       <td><span style="color:${stockColor};font-weight:bold">${p.stock !== undefined ? p.stock : '∞'}</span></td>
       <td>${p.badge ? `<span class="status ${p.badge==='new'?'done':'returns'}">${p.badge==='new'?'جديد':'خصم'}</span>` : '—'}</td>
       <td><div class="cell-actions">
@@ -1555,12 +1656,29 @@ function openProductForm(id){
     $('pf_catAr').value = p.cat.ar; $('pf_catEn').value = p.cat.en;
     $('pf_badge').value = p.badge || '';
     $('pf_stock').value = p.stock !== undefined ? p.stock : 100;
+    
+    // إعدادات الشحن
+    if(p.freeShipping){
+      $('pf_shipType').value = 'free';
+      $('pf_customShipping').value = '';
+      $('pf_customShipping').disabled = true;
+    } else if(p.customShipping && p.customShipping > 0){
+      $('pf_shipType').value = 'custom';
+      $('pf_customShipping').value = p.customShipping;
+      $('pf_customShipping').disabled = false;
+    } else {
+      $('pf_shipType').value = 'default';
+      $('pf_customShipping').value = '';
+      $('pf_customShipping').disabled = true;
+    }
+    
     if(p.image){ $('imgPreview').src = p.image; $('imgPreview').style.display = 'block'; $('imgPlaceholder').style.display = 'none'; currentImage = p.image; }
     else { $('imgPreview').style.display = 'none'; $('imgPlaceholder').style.display = 'block'; }
   } else {
     $('productModalTitle').textContent = '➕ إضافة منتج';
     ['pf_id','pf_nameAr','pf_nameEn','pf_descAr','pf_descEn','pf_price','pf_oldPrice','pf_catAr','pf_catEn'].forEach(x => $(x).value = '');
     $('pf_badge').value = ''; $('pf_stock').value = '100';
+    $('pf_shipType').value = 'default'; $('pf_customShipping').value = ''; $('pf_customShipping').disabled = true;
     $('imgPreview').style.display = 'none'; $('imgPlaceholder').style.display = 'block';
   }
 }
@@ -1594,13 +1712,40 @@ function saveProduct(){
   const catEn = $('pf_catEn').value.trim() || 'General';
   const badge = $('pf_badge').value;
   const stock = parseInt($('pf_stock').value) || 0;
+  
+  // إعدادات الشحن
+  const shipType = $('pf_shipType').value;
+  const customShipping = shipType === 'custom' ? (parseFloat($('pf_customShipping').value) || 0) : null;
+  const freeShipping = shipType === 'free';
+  
+  if(shipType === 'custom' && (!customShipping || customShipping <= 0)){
+    toast('أدخل مبلغ شحن صحيح', 'error'); return;
+  }
+  
   if(!nameAr || !price){ toast('❌ املأ الاسم والسعر', 'error'); return; }
+  
   if(id){
     const p = products.find(x => x.id === parseInt(id));
-    Object.assign(p, {name:{ar:nameAr,en:nameEn||nameAr}, desc:{ar:descAr,en:descEn||descAr}, price, oldPrice, cat:{ar:catAr,en:catEn}, badge, stock, image:currentImage || p.image});
+    Object.assign(p, {
+      name:{ar:nameAr,en:nameEn||nameAr},
+      desc:{ar:descAr,en:descEn||descAr},
+      price, oldPrice,
+      cat:{ar:catAr,en:catEn}, badge, stock,
+      image:currentImage || p.image,
+      freeShipping,
+      customShipping
+    });
     log('تعديل منتج', 'warning', nameAr);
   } else {
-    products.push({id:Date.now(), name:{ar:nameAr,en:nameEn||nameAr}, desc:{ar:descAr,en:descEn||descAr}, price, oldPrice, cat:{ar:catAr,en:catEn}, badge, stock, icon:'📦', image:currentImage || ''});
+    products.push({
+      id:Date.now(),
+      name:{ar:nameAr,en:nameEn||nameAr},
+      desc:{ar:descAr,en:descEn||descAr},
+      price, oldPrice,
+      cat:{ar:catAr,en:catEn}, badge, stock,
+      icon:'📦', image:currentImage || '',
+      freeShipping, customShipping
+    });
     log('إضافة منتج', 'success', nameAr);
   }
   saveProducts(); closeModal('productModal');
@@ -1773,7 +1918,7 @@ function generateReport(){
   const data = getReportData();
   const totalOrders = data.length;
   const totalSales = data.reduce((s, [,o]) => s + o.total, 0);
-  const totalDelivery = data.reduce((s, [,o]) => s + (o.delivery||0), 0);
+  const totalShipping = data.reduce((s, [,o]) => s + (o.shipping||0), 0);
   const avg = totalOrders ? Math.round(totalSales / totalOrders) : 0;
   const productCounts = {}, customerCounts = {}, govCounts = {}, statusCounts = {};
   data.forEach(([,o]) => {
@@ -1790,7 +1935,7 @@ function generateReport(){
       <div class="kpi"><span class="k-val">${totalOrders}</span><span class="k-lbl">عدد الطلبات</span></div>
       <div class="kpi success"><span class="k-val">${totalSales.toLocaleString('ar-EG')}</span><span class="k-lbl">إجمالي المبيعات</span></div>
       <div class="kpi info"><span class="k-val">${avg.toLocaleString('ar-EG')}</span><span class="k-lbl">متوسط الطلب</span></div>
-      <div class="kpi"><span class="k-val">${totalDelivery.toLocaleString('ar-EG')}</span><span class="k-lbl">إيرادات الشحن</span></div>
+      <div class="kpi warning"><span class="k-val">${totalShipping.toLocaleString('ar-EG')}</span><span class="k-lbl">إيرادات الشحن</span></div>
     </div>
     <div class="chart-grid" style="margin-top:16px">
       <div class="chart-box"><h4>🏆 أفضل 10 منتجات</h4>
@@ -1814,8 +1959,8 @@ function generateReport(){
 function exportReportCSV(){
   const data = getReportData();
   if(data.length === 0){ toast('لا بيانات', 'error'); return; }
-  const headers = ['رقم','التاريخ','الاسم','التليفون','المحافظة','المبلغ','الحالة'];
-  const rows = data.map(([k, o]) => [o.orderNo, o.date, o.name, o.phone1, o.gov, o.total, o.status]);
+  const headers = ['رقم','التاريخ','الاسم','التليفون','المحافظة','المنتجات','الشحن','الإجمالي','الحالة'];
+  const rows = data.map(([k, o]) => [o.orderNo, o.date, o.name, o.phone1, o.gov, o.subtotal||'', o.shipping||0, o.total, o.status]);
   const csv = '\uFEFF' + headers.join(',') + '\n' + rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
   const a = document.createElement('a');
@@ -1918,7 +2063,7 @@ function nuclearReset(){
 }
 function exportBackup(){
   const data = {
-    version:'2.0', exportedAt:new Date().toISOString(),
+    version:'2.3', exportedAt:new Date().toISOString(),
     settings:SETTINGS, delivery:DELIVERY,
     products:products, orders:orders(), users:getUsers(), activityLog:logs
   };
@@ -1939,7 +2084,13 @@ function importBackup(e){
       if(!confirm('استبدال كل البيانات الحالية؟')) return;
       if(data.settings) SETTINGS = data.settings;
       if(data.delivery) DELIVERY = data.delivery;
-      if(data.products) products = data.products;
+      if(data.products){
+        products = data.products.map(p => ({
+          ...p,
+          freeShipping: p.freeShipping ?? false,
+          customShipping: p.customShipping ?? null
+        }));
+      }
       if(data.orders) setOrders(data.orders);
       if(data.users) saveUsers(data.users);
       if(data.activityLog) logs = data.activityLog;
@@ -1973,12 +2124,21 @@ function globalSearchHandler(q){
    ================================================================ */
 function init(){
   const version = localStorage.getItem('storeVersion');
-  if(version !== '2.1'){
-    localStorage.removeItem('products');
-    localStorage.removeItem('coupon');
-    products = [...DEFAULT_PRODUCTS];
+  if(version !== '2.3'){
+    // ترحيل البيانات القديمة (إضافة حقول الشحن للمنتجات الموجودة)
+    products = products.map(p => ({
+      ...p,
+      freeShipping: p.freeShipping ?? false,
+      customShipping: p.customShipping ?? null
+    }));
     saveProducts();
-    localStorage.setItem('storeVersion', '2.1');
+    
+    // تحديث تسعيرة الشحن للتسعيرة الجديدة
+    DELIVERY = {...DEFAULT_DELIVERY};
+    saveDelivery();
+    
+    localStorage.removeItem('coupon');
+    localStorage.setItem('storeVersion', '2.3');
   }
   initTheme();
   fillGovs();
