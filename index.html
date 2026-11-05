@@ -33,14 +33,17 @@ label{font-weight:bold;font-size:.9em;display:block;margin-bottom:2px}
 .cat-pill .count{background:rgba(0,0,0,.1);padding:1px 7px;border-radius:10px;font-size:.85em}
 .cat-pill.active .count{background:rgba(255,255,255,.25)}
 .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
 .card-img{height:150px;background:linear-gradient(135deg,#dfe9f5,#c6d9f0);display:flex;align-items:center;justify-content:center;font-size:2.4em;position:relative;overflow:hidden}
 .card-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
 [data-theme="dark"] .card-img{background:linear-gradient(135deg,#233042,#2c3a4f)}
 .badge{position:absolute;top:8px;right:8px;background:var(--danger);color:#fff;font-size:.7em;padding:3px 8px;border-radius:20px;font-weight:bold;z-index:2}
 .badge.new{background:var(--success)}
-.badge.free{position:absolute;bottom:8px;left:8px;top:auto;right:auto;background:linear-gradient(135deg,#ff9500 0%,#ff5000 100%);color:#fff;font-size:.6em;padding:4px 9px;border-radius:20px;font-weight:bold;z-index:3;display:inline-flex;align-items:center;gap:4px;letter-spacing:.3px;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 10px rgba(255,80,0,.5);animation:freeShipPulse 2.5s ease-in-out infinite;white-space:nowrap}
+.badge.free{position:absolute;bottom:8px;left:8px;top:auto;right:auto;background:linear-gradient(135deg,#ff9500 0%,#ff5000 100%);color:#fff;font-size:.6em;padding:4px 9px;border-radius:20px;font-weight:bold;z-index:3;display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 10px rgba(255,80,0,.5);animation:freeShipPulse 2.5s ease-in-out infinite;white-space:nowrap}
 @keyframes freeShipPulse{0%,100%{box-shadow:0 2px 10px rgba(255,80,0,.5);transform:scale(1)}50%{box-shadow:0 2px 16px rgba(255,80,0,.85);transform:scale(1.06)}}
+.card-cart-btn{position:absolute;top:8px;left:8px;z-index:5;background:#fff;color:var(--primary);border:0;width:38px;height:38px;border-radius:50%;font-size:1.15em;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.card-cart-btn:hover{background:var(--primary);color:#fff;transform:scale(1.1)}
+.card-cart-btn.added{background:var(--success);color:#fff}
 .card-body{padding:12px;flex:1;display:flex;flex-direction:column}
 .card h3{margin:0 0 6px;font-size:.9em;line-height:1.3}
 .card .desc{margin:0 0 8px;font-size:.75em;color:var(--muted);flex:1;line-height:1.4}
@@ -62,6 +65,20 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .btn-sm{padding:6px 10px;font-size:.82em}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:520px){.row{grid-template-columns:1fr}}
+.cart-item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding:10px 0;gap:10px;font-size:.9em}
+.cart-item:last-child{border-bottom:0}
+.cart-item .info{flex:1}
+.cart-item .name{font-weight:bold;display:block;margin-bottom:3px}
+.cart-item .unit{color:var(--muted);font-size:.82em}
+.qty-ctrl{display:flex;align-items:center;gap:6px}
+.qty-btn{width:28px;height:28px;border-radius:6px;padding:0;font-size:1em;display:flex;align-items:center;justify-content:center}
+.qty-num{min-width:26px;text-align:center;font-weight:bold}
+.remove-btn{background:transparent;color:var(--danger);padding:4px 8px;font-size:1.1em}
+.empty{text-align:center;color:var(--muted);padding:25px 10px;font-size:.95em}
+.empty .big{font-size:2.5em;display:block;margin-bottom:8px;opacity:.4}
+.total-box{text-align:center;padding:16px;border-top:2px solid var(--primary);margin:14px 0 12px;background:linear-gradient(180deg,transparent,rgba(10,124,255,.06));border-radius:0 0 10px 10px}
+.total-box .lbl{font-size:.85em;color:var(--muted);display:block;margin-bottom:4px}
+.total-box .val{font-size:1.7em;font-weight:bold;color:var(--primary)}
 .toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%) translateY(100px);background:#333;color:#fff;padding:12px 22px;border-radius:30px;font-size:.9em;box-shadow:0 6px 20px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:all .35s;z-index:9999;max-width:90%}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.success{background:var(--success)}.toast.error{background:var(--danger)}.toast.warning{background:var(--warning)}
@@ -122,10 +139,9 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .adm-topbar .spacer{flex:1}
 .adm-topbar .search{position:relative;max-width:280px;flex:1}
 .adm-topbar .search input{margin:0;padding:9px 34px 9px 12px}
-.adm-topbar .search::before{content:"🔍";position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none}
 .adm-content{flex:1;overflow-y:auto;padding:20px}
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:20px}
-.kpi{background:var(--card);border-radius:12px;padding:16px;box-shadow:var(--shadow);border-right:4px solid var(--primary);position:relative;overflow:hidden}
+.kpi{background:var(--card);border-radius:12px;padding:16px;box-shadow:var(--shadow);border-right:4px solid var(--primary);position:relative}
 [dir="ltr"] .kpi{border-right:0;border-left:4px solid var(--primary)}
 .kpi.success{border-color:var(--success)}.kpi.warning{border-color:var(--warning)}.kpi.danger{border-color:var(--danger)}.kpi.info{border-color:var(--info)}
 .kpi .k-ic{position:absolute;top:12px;left:12px;font-size:1.6em;opacity:.25}
@@ -134,10 +150,8 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .kpi .k-lbl{font-size:.82em;color:var(--muted)}
 .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-bottom:20px}
 .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
-.chart-box h4{margin:0 0 12px;font-size:.95em;color:var(--text);display:flex;align-items:center;gap:8px}
+.chart-box h4{margin:0 0 12px;font-size:.95em;display:flex;align-items:center;gap:8px}
 .chart-box canvas{max-width:100%;display:block}
-.adm-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px;background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow)}
-.adm-filters input,.adm-filters select{margin:0;font-size:.85em;padding:9px}
 .adm-table-wrap{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);overflow-x:auto}
 .adm-table{width:100%;border-collapse:collapse;font-size:.85em}
 .adm-table th{background:var(--bg);padding:12px 10px;text-align:right;font-weight:bold;font-size:.8em;color:var(--muted);border-bottom:2px solid var(--border);white-space:nowrap}
@@ -145,7 +159,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .adm-table td{padding:12px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
 .adm-table tr:hover{background:rgba(10,124,255,.03)}
 .adm-table tr.selected{background:rgba(10,124,255,.08)}
-.adm-table tr.row-hidden{background:rgba(120,120,120,.04)}
 .adm-table tr.row-hidden td{opacity:.7}
 .adm-table .cell-actions{display:flex;gap:4px;flex-wrap:nowrap}
 .adm-table input[type="checkbox"]{width:auto;margin:0;cursor:pointer;transform:scale(1.2)}
@@ -156,7 +169,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .bulk-bar.show{display:flex}
 .bulk-bar .bulk-actions{display:flex;gap:6px;flex-wrap:wrap}
 .bulk-bar button{background:rgba(255,255,255,.25);color:#fff;font-size:.82em;padding:7px 12px}
-.bulk-bar button:hover{background:rgba(255,255,255,.4)}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1999}
 .menu-btn{display:none;background:transparent;color:var(--text);font-size:1.4em;padding:0;width:36px;height:36px;border:0;cursor:pointer;align-items:center;justify-content:center}
 .log-item{background:var(--card);border-right:3px solid var(--info);border-radius:8px;padding:12px;margin-bottom:8px;font-size:.85em;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
@@ -168,28 +180,28 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .info-banner.success{background:rgba(40,167,69,.1);border-color:rgba(40,167,69,.3);color:var(--success)}
 .info-banner.warning{background:rgba(243,156,18,.1);border-color:rgba(243,156,18,.3);color:var(--warning)}
 .info-banner.danger{background:rgba(231,76,60,.1);border-color:rgba(231,76,60,.3);color:var(--danger)}
-.track-step{display:flex;gap:14px;margin-bottom:18px;position:relative}
+.track-step{display:flex;gap:14px;margin-bottom:18px}
 .track-step:last-child{margin-bottom:0}
 .track-step .circle{width:46px;height:46px;border-radius:50%;background:var(--border);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3em;flex-shrink:0;transition:all .3s}
 .track-step.reached .circle{background:var(--success)}
-.track-step.active .circle{box-shadow:0 0 0 4px rgba(40,167,69,.2);animation:freeShipPulse 2s infinite}
+.track-step.active .circle{box-shadow:0 0 0 4px rgba(40,167,69,.2)}
 .track-step .txt{padding-top:6px;flex:1}
-.track-step .lbl{font-weight:bold;color:var(--muted);font-size:1em}
+.track-step .lbl{font-weight:bold;color:var(--muted)}
 .track-step.reached .lbl{color:var(--text)}
 .track-step .desc{font-size:.82em;color:var(--muted);margin-top:2px}
-.track-badge{margin-left:auto;background:var(--success);color:#fff;font-size:.7em;padding:3px 9px;border-radius:20px;align-self:flex-start;margin-top:8px;font-weight:bold;white-space:nowrap}
-/* WhatsApp */
+.track-badge{margin-left:auto;background:var(--success);color:#fff;font-size:.7em;padding:3px 9px;border-radius:20px;align-self:flex-start;margin-top:8px;font-weight:bold}
 .btn-order-wa{background:linear-gradient(135deg,#25D366,#128C7E)!important;color:#fff!important;padding:13px 10px!important;font-size:.92em!important;font-weight:bold;border-radius:8px;width:100%;margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 10px rgba(37,211,102,.35);transition:all .2s;border:0;cursor:pointer;font-family:inherit}
-.btn-order-wa:hover:not(:disabled){background:linear-gradient(135deg,#128C7E,#075E54)!important;box-shadow:0 5px 16px rgba(37,211,102,.6);transform:translateY(-2px)}
-.btn-order-wa:disabled{opacity:.5;cursor:not-allowed;background:#999!important;box-shadow:none!important}
-.btn-wa{background:linear-gradient(135deg,#25D366,#128C7E)!important;color:#fff!important;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-order-wa:hover:not(:disabled){background:linear-gradient(135deg,#128C7E,#075E54)!important;transform:translateY(-2px)}
+.btn-order-wa:disabled{opacity:.5;cursor:not-allowed;background:#999!important}
+.btn-wa{background:linear-gradient(135deg,#25D366,#128C7E)!important;color:#fff!important;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px!important;font-size:1.05em!important}
 .btn-wa:hover{background:linear-gradient(135deg,#128C7E,#075E54)!important}
 #floatingWA{position:fixed;bottom:20px;left:20px;width:58px;height:58px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7em;cursor:pointer;box-shadow:0 6px 20px rgba(37,211,102,.5);z-index:1500;text-decoration:none;transition:transform .2s;animation:waPulse 2.5s ease-in-out infinite;border:0}
 #floatingWA:hover{transform:scale(1.1)}
 #floatingWA.wa-hidden{display:none!important}
 @keyframes waPulse{0%,100%{box-shadow:0 6px 20px rgba(37,211,102,.5)}50%{box-shadow:0 6px 28px rgba(37,211,102,.9)}}
-/* إخفاء السلة */
-#cartSection{display:none!important}
+#floatingCart{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#0a7cff,#0052b8);color:#fff;border:0;padding:14px 20px;border-radius:30px;font-size:1em;font-weight:bold;cursor:pointer;box-shadow:0 6px 20px rgba(10,124,255,.5);z-index:1500;display:none;align-items:center;gap:10px;font-family:inherit}
+#floatingCart.show{display:flex}
+#floatingCart .count-badge{background:#fff;color:#0a7cff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.85em;font-weight:bold}
 @media(max-width:900px){
   .adm-sidebar{position:absolute;left:-100%;transition:left .3s;z-index:2001;height:100%}
   [dir="ltr"] .adm-sidebar{left:auto;right:-100%}
@@ -206,7 +218,8 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   .card h3{font-size:.8em}
   .price{font-size:.95em}
   .badge.free{font-size:.55em;padding:3px 7px}
-  #floatingWA{bottom:15px;left:15px;width:50px;height:50px;font-size:1.4em}
+  #floatingWA,#floatingCart{bottom:15px;width:auto;height:auto;padding:12px 16px;font-size:.9em}
+  #floatingWA{width:50px;height:50px;padding:0;font-size:1.4em}
 }
 @media print{
   body *{visibility:hidden}
@@ -239,7 +252,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <button class="icon-btn" onclick="openAdmin()">⚙️</button>
   </div>
   <h1>🛒 SH STORE</h1>
-  <p>اطلب الآن عبر واتساب</p>
+  <p>اطلب الآن واستلم على باب البيت</p>
 </header>
 
 <div class="container">
@@ -266,6 +279,35 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     </div>
     <div class="products" id="productsGrid"></div>
   </section>
+
+  <section id="cartSection">
+    <h2 data-t="cart">🛒 سلة المشتريات <span id="cartCount" style="display:none;background:var(--danger);color:#fff;border-radius:50%;padding:1px 8px;font-size:.75em;vertical-align:middle;margin-right:6px">0</span></h2>
+    <div id="cartItems"></div>
+
+    <div class="total-box">
+      <span class="lbl" id="cartTotalLbl">الإجمالي</span>
+      <span class="val" id="cartTotal">0</span>
+    </div>
+
+    <div class="info-banner" style="font-size:.82em">
+      📝 املأ بياناتك ثم اضغط "إرسال الطلب على واتساب" — سيتم فتح واتساب برسالة تحتوي كل تفاصيل طلبك.
+    </div>
+
+    <div class="row">
+      <div><label>الاسم بالكامل <span style="color:var(--danger)">*</span></label><input id="coName" placeholder="اسم المستلم"></div>
+      <div><label>رقم الهاتف <span style="color:var(--danger)">*</span></label><input id="coPhone" inputmode="tel" placeholder="01xxxxxxxxx"></div>
+    </div>
+    <div class="row">
+      <div><label>المحافظة <span style="color:var(--danger)">*</span></label><select id="coGov"><option value="">-- اختر المحافظة --</option></select></div>
+      <div><label>المدينة <span style="color:var(--danger)">*</span></label><input id="coCity" placeholder="مثال: مدينة نصر"></div>
+    </div>
+    <label>العنوان بالتفصيل <span style="color:var(--danger)">*</span></label>
+    <input id="coAddress" placeholder="الشارع، رقم المبنى، الشقة، علامة مميزة">
+    <label>ملاحظات (اختياري)</label>
+    <textarea id="coNotes" rows="2" placeholder="أي تفاصيل إضافية..."></textarea>
+
+    <button class="btn-full btn-wa" onclick="sendCartToWhatsApp()">📤 إرسال الطلب على واتساب</button>
+  </section>
 </div>
 
 <footer>
@@ -276,6 +318,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 </footer>
 
 <a id="floatingWA" onclick="openWhatsApp()" title="تواصل معنا عبر واتساب">💬</a>
+<button id="floatingCart" onclick="scrollToCart()">🛒 السلة <span class="count-badge" id="floatingCount">0</span></button>
 
 <div class="toast" id="toast"></div>
 
@@ -334,24 +377,24 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <label>اسم المنتج</label>
     <input id="pf_name" placeholder="مثال: هاتف ذكي Pro">
     <label>الوصف</label>
-    <textarea id="pf_desc" rows="2" placeholder="مواصفات مختصرة..."></textarea>
+    <textarea id="pf_desc" rows="2"></textarea>
     <div class="row">
       <div><label>السعر</label><input id="pf_price" type="number" min="0" step="0.01"></div>
-      <div><label>السعر قبل الخصم (اختياري)</label><input id="pf_old" type="number" min="0" step="0.01"></div>
+      <div><label>السعر قبل الخصم</label><input id="pf_old" type="number" min="0" step="0.01"></div>
     </div>
     <div class="row">
       <div><label>القسم</label><select id="pf_cat"></select></div>
       <div><label>المخزون</label><input id="pf_stock" type="number" min="0" value="10"></div>
     </div>
     <div class="row">
-      <div><label>أيقونة (بديل الصورة)</label><input id="pf_icon" placeholder="📦" maxlength="4"></div>
+      <div><label>أيقونة</label><input id="pf_icon" placeholder="📦" maxlength="4"></div>
       <div style="display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding-bottom:12px">
-        <label style="display:flex;align-items:center;gap:8px;font-weight:normal"><input type="checkbox" id="pf_new" style="width:auto;margin:0"> منتج جديد</label>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:normal"><input type="checkbox" id="pf_new" style="width:auto;margin:0"> جديد</label>
         <label style="display:flex;align-items:center;gap:8px;font-weight:normal"><input type="checkbox" id="pf_free" style="width:auto;margin:0"> شحن مجاني</label>
-        <label style="display:flex;align-items:center;gap:8px;font-weight:normal"><input type="checkbox" id="pf_hidden" style="width:auto;margin:0"> إخفاء المنتج من المتجر</label>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:normal"><input type="checkbox" id="pf_hidden" style="width:auto;margin:0"> إخفاء</label>
       </div>
     </div>
-    <button class="btn-full" onclick="saveProductForm()">💾 حفظ المنتج</button>
+    <button class="btn-full" onclick="saveProductForm()">💾 حفظ</button>
   </div>
 </div>
 
@@ -363,47 +406,34 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     </div>
     <input type="hidden" id="cf_id">
     <label>اسم القسم</label>
-    <input id="cf_name" placeholder="مثال: إلكترونيات">
+    <input id="cf_name">
     <label>الأيقونة</label>
-    <input id="cf_icon" placeholder="📱" maxlength="4">
+    <input id="cf_icon" maxlength="4">
     <button class="btn-full" onclick="saveCategoryForm()">💾 حفظ</button>
   </div>
 </div>
 
 <div class="modal-overlay" id="profileModal">
   <div class="modal" style="max-width:460px">
-    <div class="modal-header">
-      <h3>👤 حسابي</h3>
-      <button class="close-btn" onclick="closeModal('profileModal')">✕</button>
-    </div>
-    <label>الاسم</label>
-    <input id="pr_name">
-    <label>رقم الهاتف</label>
-    <input id="pr_phone">
-    <label>العنوان</label>
-    <input id="pr_address">
-    <label>كلمة مرور جديدة (اتركها فارغة للإبقاء)</label>
-    <input type="password" id="pr_pass" placeholder="••••••••">
-    <button class="btn-full btn-success" onclick="saveProfile()">💾 حفظ التعديلات</button>
+    <div class="modal-header"><h3>👤 حسابي</h3><button class="close-btn" onclick="closeModal('profileModal')">✕</button></div>
+    <label>الاسم</label><input id="pr_name">
+    <label>رقم الهاتف</label><input id="pr_phone">
+    <label>العنوان</label><input id="pr_address">
+    <label>كلمة مرور جديدة</label><input type="password" id="pr_pass" placeholder="اتركها فارغة للإبقاء">
+    <button class="btn-full btn-success" onclick="saveProfile()">💾 حفظ</button>
   </div>
 </div>
 
 <div class="modal-overlay" id="myOrdersModal">
   <div class="modal" style="max-width:700px">
-    <div class="modal-header">
-      <h3>📦 طلباتي</h3>
-      <button class="close-btn" onclick="closeModal('myOrdersModal')">✕</button>
-    </div>
+    <div class="modal-header"><h3>📦 طلباتي</h3><button class="close-btn" onclick="closeModal('myOrdersModal')">✕</button></div>
     <div id="myOrdersBody"></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="trackingModal">
   <div class="modal" style="max-width:560px">
-    <div class="modal-header">
-      <h3>🔍 تتبع الطلب</h3>
-      <button class="close-btn" onclick="closeModal('trackingModal')">✕</button>
-    </div>
+    <div class="modal-header"><h3>🔍 تتبع الطلب</h3><button class="close-btn" onclick="closeModal('trackingModal')">✕</button></div>
     <div id="trackingBody"></div>
   </div>
 </div>
@@ -421,11 +451,8 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
       <button data-tab="logs" onclick="setAdmTab('logs')"><span class="ic">📝</span> السجل</button>
       <button data-tab="settings" onclick="setAdmTab('settings')"><span class="ic">⚙️</span> الإعدادات</button>
     </nav>
-    <div class="adm-sidebar-foot">
-      <button class="btn-ghost btn-sm" style="flex:1" onclick="closeAdmin()">⬅ خروج</button>
-    </div>
+    <div class="adm-sidebar-foot"><button class="btn-ghost btn-sm" style="flex:1" onclick="closeAdmin()">⬅ خروج</button></div>
   </aside>
-
   <main class="adm-main">
     <div class="adm-topbar">
       <button class="menu-btn" onclick="toggleSidebar(true)">☰</button>
@@ -467,6 +494,7 @@ let categories = DB.get('categories', null);
 let products   = DB.get('products', null);
 let orders     = DB.get('orders', []);
 let users      = DB.get('users', []);
+let cart       = DB.get('cart', []);
 let logs       = DB.get('logs', []);
 let session    = DB.get('session', null);
 let settings   = DB.get('settings', null);
@@ -504,16 +532,16 @@ const EGYPT_GOVERNORATES = [
   }
   if(!products){
     products = [
-      {id:'p1', name:'هاتف ذكي Pro Max', desc:'شاشة 6.7" • 256GB • كاميرا 108MP', price:2999, oldPrice:3499, cat:'c1', img:'', icon:'📱', stock:15, isNew:true,  freeShip:true,  hidden:false},
-      {id:'p2', name:'لابتوب ألترا بوك',  desc:'معالج i7 • رام 16GB • SSD 512GB', price:8450, oldPrice:0,    cat:'c1', img:'', icon:'💻', stock:6,  isNew:true,  freeShip:true,  hidden:false},
-      {id:'p3', name:'سماعات لاسلكية',    desc:'عزل ضوضاء • بطارية 30 ساعة',      price:499,  oldPrice:699,  cat:'c1', img:'', icon:'🎧', stock:25, isNew:false, freeShip:false, hidden:false},
-      {id:'p4', name:'تيشيرت قطن أصلي',    desc:'قطن 100% • مقاسات M/L/XL',        price:199,  oldPrice:0,    cat:'c2', img:'', icon:'👕', stock:40, isNew:false, freeShip:false, hidden:false},
-      {id:'p5', name:'جاكيت شتوي',         desc:'عازل للماء • مبطن',               price:649,  oldPrice:899,  cat:'c2', img:'', icon:'🧥', stock:12, isNew:true,  freeShip:false, hidden:false},
-      {id:'p6', name:'طقم أواني طهي',      desc:'5 قطع • ستانلس ستيل',             price:1199, oldPrice:0,    cat:'c3', img:'', icon:'🍳', stock:9,  isNew:false, freeShip:true,  hidden:false},
-      {id:'p7', name:'مصباح LED ذكي',      desc:'إضاءة متعددة • تحكم بالتطبيق',    price:249,  oldPrice:0,    cat:'c3', img:'', icon:'💡', stock:33, isNew:false, freeShip:false, hidden:false},
-      {id:'p8', name:'دمبل 10 كجم',        desc:'مطاطي • مقبض مانع للانزلاق',      price:349,  oldPrice:0,    cat:'c4', img:'', icon:'🏋️', stock:18, isNew:false, freeShip:false, hidden:false},
-      {id:'p9', name:'حزمة عناية بالبشرة', desc:'غسول + مرطب + واقي شمس',          price:459,  oldPrice:599,  cat:'c5', img:'', icon:'🧴', stock:22, isNew:true,  freeShip:false, hidden:false},
-      {id:'p10',name:'ساعة رياضية ذكية',   desc:'قياس نبض • GPS • مقاومة للماء',    price:899,  oldPrice:0,    cat:'c4', img:'', icon:'⌚', stock:3,  isNew:false, freeShip:false, hidden:false}
+      {id:'p1', name:'هاتف ذكي Pro Max', desc:'شاشة 6.7" • 256GB • كاميرا 108MP', price:2999, oldPrice:3499, cat:'c1', img:'', icon:'📱', stock:15, isNew:true, freeShip:true, hidden:false},
+      {id:'p2', name:'لابتوب ألترا بوك',  desc:'معالج i7 • رام 16GB • SSD 512GB', price:8450, oldPrice:0, cat:'c1', img:'', icon:'💻', stock:6, isNew:true, freeShip:true, hidden:false},
+      {id:'p3', name:'سماعات لاسلكية',    desc:'عزل ضوضاء • بطارية 30 ساعة', price:499, oldPrice:699, cat:'c1', img:'', icon:'🎧', stock:25, isNew:false, freeShip:false, hidden:false},
+      {id:'p4', name:'تيشيرت قطن أصلي',    desc:'قطن 100% • مقاسات M/L/XL', price:199, oldPrice:0, cat:'c2', img:'', icon:'👕', stock:40, isNew:false, freeShip:false, hidden:false},
+      {id:'p5', name:'جاكيت شتوي',         desc:'عازل للماء • مبطن', price:649, oldPrice:899, cat:'c2', img:'', icon:'🧥', stock:12, isNew:true, freeShip:false, hidden:false},
+      {id:'p6', name:'طقم أواني طهي',      desc:'5 قطع • ستانلس ستيل', price:1199, oldPrice:0, cat:'c3', img:'', icon:'🍳', stock:9, isNew:false, freeShip:true, hidden:false},
+      {id:'p7', name:'مصباح LED ذكي',      desc:'إضاءة متعددة • تحكم بالتطبيق', price:249, oldPrice:0, cat:'c3', img:'', icon:'💡', stock:33, isNew:false, freeShip:false, hidden:false},
+      {id:'p8', name:'دمبل 10 كجم',        desc:'مطاطي • مقبض مانع للانزلاق', price:349, oldPrice:0, cat:'c4', img:'', icon:'🏋️', stock:18, isNew:false, freeShip:false, hidden:false},
+      {id:'p9', name:'حزمة عناية بالبشرة', desc:'غسول + مرطب + واقي شمس', price:459, oldPrice:599, cat:'c5', img:'', icon:'🧴', stock:22, isNew:true, freeShip:false, hidden:false},
+      {id:'p10',name:'ساعة رياضية ذكية',   desc:'قياس نبض • GPS • مقاومة للماء', price:899, oldPrice:0, cat:'c4', img:'', icon:'⌚', stock:3, isNew:false, freeShip:false, hidden:false}
     ];
     DB.set('products', products);
   }
@@ -536,6 +564,7 @@ const saveProducts   = () => DB.set('products', products);
 const saveCategories = () => DB.set('categories', categories);
 const saveOrders     = () => DB.set('orders', orders);
 const saveUsers      = () => DB.set('users', users);
+const saveCart       = () => DB.set('cart', cart);
 const saveSettings   = () => DB.set('settings', settings);
 const saveSession    = () => DB.set('session', session);
 
@@ -548,10 +577,8 @@ function addLog(type, msg){
 const money = n => (Number(n) || 0).toLocaleString('en-US') + ' ' + settings.currency;
 const currentUser = () => (session && session.role === 'user') ? (users.find(u => u.id === session.id) || null) : null;
 const isAdmin = () => !!(session && session.role === 'admin');
+const cartSubtotal = () => cart.reduce((s,i) => { const p = products.find(x => x.id === i.pid); return s + (p ? p.price * i.qty : 0); }, 0);
 
-/* ============================================================
-   HEADER / THEME / LANG
-============================================================ */
 function renderHeader(){
   const u = currentUser();
   if(u){
@@ -564,6 +591,9 @@ function renderHeader(){
     $('#loginBtn').style.display = 'flex';
   }
   $('#guestBanner').style.display = u ? 'none' : 'flex';
+  const count = cart.reduce((s,i) => s + i.qty, 0);
+  const cc = $('#cartCount');
+  if(cc){ cc.textContent = count; cc.style.display = count ? 'inline-block' : 'none'; }
 }
 
 function toggleUserMenu(){ $('#userDropdown').classList.toggle('show'); }
@@ -578,10 +608,7 @@ function toggleTheme(){
   $('#themeBtn').textContent = cur === 'dark' ? '☀️' : '🌙';
 }
 
-const T = {
-  ar: {products:'المنتجات', cart:'🛒 سلة المشتريات'},
-  en: {products:'Products', cart:'🛒 Shopping Cart'}
-};
+const T = {ar:{products:'المنتجات',cart:'🛒 سلة المشتريات'},en:{products:'Products',cart:'🛒 Shopping Cart'}};
 function toggleLang(){
   const cur = document.documentElement.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
   document.documentElement.setAttribute('dir', cur);
@@ -594,6 +621,11 @@ function applyLang(){
   const dir = document.documentElement.getAttribute('dir') || 'rtl';
   const dict = dir === 'rtl' ? T.ar : T.en;
   $$('[data-t]').forEach(el => { if(dict[el.dataset.t]) el.textContent = dict[el.dataset.t]; });
+}
+
+function scrollToCart(){
+  const el = document.getElementById('cartSection');
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 /* ============================================================
@@ -618,13 +650,13 @@ function renderShop(){
     (activeCat === 'all' || p.cat === activeCat) &&
     (!q || p.name.toLowerCase().includes(q) || (p.desc || '').toLowerCase().includes(q))
   );
-  if(sort === 'priceAsc')  list.sort((a,b) => a.price - b.price);
+  if(sort === 'priceAsc') list.sort((a,b) => a.price - b.price);
   else if(sort === 'priceDesc') list.sort((a,b) => b.price - a.price);
   else if(sort === 'name') list.sort((a,b) => a.name.localeCompare(b.name, 'ar'));
   else list.sort((a,b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
 
   if(!list.length){
-    $('#productsGrid').innerHTML = `<div class="empty-state" style="grid-column:1/-1"><span class="big">🔍</span>لا توجد منتجات مطابقة</div>`;
+    $('#productsGrid').innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">🔍</span>لا توجد منتجات مطابقة</div>`;
     return;
   }
 
@@ -632,9 +664,11 @@ function renderShop(){
     const cat = categories.find(c => c.id === p.cat);
     const out = p.stock <= 0;
     const hasDiscount = p.oldPrice > p.price;
+    const inCart = cart.some(i => i.pid === p.id);
     return `<div class="card">
       <div class="card-img">
         ${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.name)}">` : (p.icon || '📦')}
+        ${!out ? `<button class="card-cart-btn ${inCart?'added':''}" onclick="addToCart('${p.id}')" title="أضف للسلة">🛒</button>` : ''}
         ${p.isNew ? '<span class="badge new">جديد</span>' : (hasDiscount ? '<span class="badge">خصم</span>' : '')}
         ${p.freeShip ? '<span class="badge free">🚚 شحن مجاني</span>' : ''}
       </div>
@@ -653,34 +687,124 @@ function renderShop(){
 }
 
 /* ============================================================
-   WHATSAPP INTEGRATION
+   CART
 ============================================================ */
-function waNumber(){
-  return (settings.whatsapp || '').replace(/\D/g, '');
+function addToCart(pid){
+  const p = products.find(x => x.id === pid);
+  if(!p || p.hidden){ toast('هذا المنتج غير متوفر', 'error'); return; }
+  if(p.stock <= 0){ toast('هذا المنتج غير متوفر', 'error'); return; }
+  const item = cart.find(i => i.pid === pid);
+  if(item){
+    if(item.qty >= p.stock){ toast('الكمية المتاحة: ' + p.stock, 'warning'); return; }
+    item.qty++;
+  } else {
+    cart.push({pid, qty: 1});
+  }
+  saveCart(); renderHeader(); renderCart(); renderShop();
+  toast(`✅ تمت إضافة "${p.name}" إلى السلة`, 'success');
 }
-function openWhatsApp(){
-  const num = waNumber();
-  if(!num){
-    toast('⚠️ لم يتم إعداد رقم واتساب المتجر — تواصل مع الإدارة', 'warning');
+function changeQty(pid, d){
+  const item = cart.find(i => i.pid === pid);
+  if(!item) return;
+  const p = products.find(x => x.id === pid);
+  if(!p || p.hidden){ removeFromCart(pid); return; }
+  const next = item.qty + d;
+  if(next <= 0){ removeFromCart(pid); return; }
+  if(next > p.stock){ toast('الكمية المتاحة: ' + p.stock, 'warning'); return; }
+  item.qty = next;
+  saveCart(); renderHeader(); renderCart(); renderShop();
+}
+function removeFromCart(pid){
+  cart = cart.filter(i => i.pid !== pid);
+  saveCart(); renderHeader(); renderCart(); renderShop();
+  toast('تم الحذف من السلة', '');
+}
+function renderCart(){
+  const el = $('#cartItems');
+  const before = cart.length;
+  cart = cart.filter(i => {
+    const p = products.find(x => x.id === i.pid);
+    return p && !p.hidden;
+  });
+  if(cart.length !== before){ saveCart(); }
+
+  const fCount = cart.reduce((s,i) => s + i.qty, 0);
+  const fc = $('#floatingCart');
+  if(fc){
+    $('#floatingCount').textContent = fCount;
+    fc.classList.toggle('show', fCount > 0);
+  }
+
+  if(!cart.length){
+    el.innerHTML = `<div class="empty"><span class="big">🛒</span>السلة فارغة — ابدأ بإضافة منتجات</div>`;
+    $('#cartTotal').textContent = money(0);
+    $('#cartTotalLbl').textContent = 'الإجمالي';
     return;
   }
+
+  el.innerHTML = cart.map(i => {
+    const p = products.find(x => x.id === i.pid);
+    if(!p) return '';
+    return `<div class="cart-item">
+      <div class="info">
+        <span class="name">${esc(p.name)}</span>
+        <span class="unit">${money(p.price)} × ${i.qty} = <b>${money(p.price * i.qty)}</b></span>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn btn-ghost" onclick="changeQty('${p.id}',-1)">−</button>
+        <span class="qty-num">${i.qty}</span>
+        <button class="qty-btn btn-ghost" onclick="changeQty('${p.id}',1)">+</button>
+        <button class="remove-btn" onclick="removeFromCart('${p.id}')">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const sub = cartSubtotal();
+  $('#cartTotalLbl').textContent = `المجموع (${cart.reduce((s,i)=>s+i.qty,0)} منتج)`;
+  $('#cartTotal').textContent = money(sub);
+}
+
+/* ============================================================
+   WHATSAPP
+============================================================ */
+function waNumber(){ return (settings.whatsapp || '').replace(/\D/g, ''); }
+
+function openWhatsApp(){
+  const num = waNumber();
+  if(!num){ toast('⚠️ لم يتم إعداد رقم واتساب المتجر', 'warning'); return; }
   const msg = `مرحباً ${settings.store} 👋\nأرغب في الاستفسار عن المنتجات`;
   window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
 }
+
+/* طلب منتج واحد مباشرة */
 function orderViaWhatsApp(pid){
   const p = products.find(x => x.id === pid);
   if(!p){ toast('المنتج غير موجود', 'error'); return; }
   const num = waNumber();
-  if(!num){
-    toast('⚠️ لم يتم إعداد رقم واتساب المتجر — تواصل مع الإدارة', 'warning');
-    return;
+  if(!num){ toast('⚠️ لم يتم إعداد رقم واتساب المتجر', 'warning'); return; }
+
+  const visibleProducts = products.filter(x => !x.hidden);
+  const productNum = visibleProducts.findIndex(x => x.id === pid) + 1;
+
+  let qty = 1;
+  if(p.stock > 1){
+    const input = prompt(`كم عدد "${p.name}" الذي تريده؟\n\n📦 المتاح: ${p.stock}`, '1');
+    if(input === null) return;
+    qty = parseInt(input);
+    if(!qty || qty < 1) qty = 1;
+    if(qty > p.stock){ toast(`⚠️ المتاح فقط ${p.stock}`, 'warning'); qty = p.stock; }
   }
+
+  const total = p.price * qty;
   const msg = 
     `🛒 *طلب منتج جديد*\n` +
     `━━━━━━━━━━━━━━━━━━\n\n` +
-    `📦 *المنتج:* ${p.name}\n` +
-    `📝 *الوصف:* ${p.desc || '—'}\n` +
-    `💰 *السعر:* ${money(p.price)}\n` +
+    `🔢 *رقم المنتج:* #${productNum}\n` +
+    `📦 *اسم المنتج:* ${p.name}\n` +
+    `📝 *الوصف:* ${p.desc || '—'}\n\n` +
+    `🔢 *العدد:* X${qty}\n` +
+    `💰 *سعر الوحدة:* ${money(p.price)}\n` +
+    `💵 *الإجمالي:* ${money(total)}\n` +
     (p.oldPrice > p.price ? `🎁 *قبل الخصم:* ${money(p.oldPrice)}\n` : '') +
     (p.freeShip ? `🚚 *شحن مجاني* 🎉\n` : '') +
     `\n━━━━━━━━━━━━━━━━━━\n\n` +
@@ -690,10 +814,106 @@ function orderViaWhatsApp(pid){
     `3. العنوان بالتفصيل (المحافظة، المدينة، الشارع)\n\n` +
     `━━━━━━━━━━━━━━━━━━\n\n` +
     `✅ سنؤكد طلبك فوراً`;
+
   window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
-  addLog('info', `طلب واتساب لمنتج: ${p.name}`);
-  toast('✅ تم فتح واتساب — أكمل بياناتك هناك', 'success');
+  addLog('info', `طلب واتساب لمنتج: ${p.name} × ${qty}`);
+  toast(`✅ تم فتح واتساب — العدد X${qty}`, 'success');
 }
+
+/* إرسال الطلب كاملاً من السلة */
+function sendCartToWhatsApp(){
+  if(!cart.length){ toast('السلة فارغة', 'error'); return; }
+  const num = waNumber();
+  if(!num){ toast('⚠️ لم يتم إعداد رقم واتساب المتجر', 'warning'); return; }
+
+  const name = ($('#coName')?.value || '').trim();
+  const phone = ($('#coPhone')?.value || '').trim();
+  const gov = ($('#coGov')?.value || '').trim();
+  const city = ($('#coCity')?.value || '').trim();
+  const addr = ($('#coAddress')?.value || '').trim();
+  const notes = ($('#coNotes')?.value || '').trim();
+
+  if(!name || !phone || !gov || !city || !addr){
+    toast('⚠️ أكمل بيانات الشحن أولاً (الاسم، الهاتف، المحافظة، المدينة، العنوان)', 'warning');
+    return;
+  }
+  if(phone.replace(/\D/g,'').length < 8){
+    toast('⚠️ رقم هاتف غير صالح', 'warning');
+    return;
+  }
+
+  /* بيانات الطلب */
+  const items = cart.map(i => {
+    const p = products.find(x => x.id === i.pid);
+    return p ? {name: p.name, price: p.price, qty: i.qty, id: p.id} : null;
+  }).filter(Boolean);
+
+  const visibleProducts = products.filter(x => !x.hidden);
+  const subtotal = items.reduce((s, it) => s + (it.price * it.qty), 0);
+  const orderId = 'ORD-' + (1000 + orders.length + 1);
+  const dateStr = new Date().toLocaleString('en-GB', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', hour12: true
+  });
+  const fullAddress = [gov, city, addr].join('، ');
+
+  /* قائمة المنتجات مع الترقيم */
+  const itemsList = items.map((it, idx) => {
+    const productNum = visibleProducts.findIndex(x => x.id === it.id) + 1;
+    return `${idx + 1}. 📦 ${it.name}\n` +
+           `   🔢 رقم المنتج: #${productNum}\n` +
+           `   🔢 العدد: X${it.qty}  |  💵 الإجمالي: ${money(it.price * it.qty)}`;
+  }).join('\n\n');
+
+  const msg =
+    `🛒 *طلب جديد*\n` +
+    `━━━━━━━━━━━━━━━━━━\n\n` +
+    `📋 *Order No:* ${orderId}\n` +
+    `📅 *Date:* ${dateStr}\n\n` +
+    `━━━━━━━━━━━━━━━━━━\n` +
+    `👤 *بيانات المستلم*\n` +
+    `الاسم: ${name}\n` +
+    `الهاتف: ${phone}\n` +
+    `العنوان: ${fullAddress}\n\n` +
+    `━━━━━━━━━━━━━━━━━━\n` +
+    `🛍️ *المنتجات*\n\n${itemsList}\n\n` +
+    `━━━━━━━━━━━━━━━━━━\n` +
+    `💰 *الإجمالي: ${money(subtotal)}*\n\n` +
+    `💳 الدفع: الدفع عند الاستلام` +
+    (notes ? `\n\n📝 ملاحظات: ${notes}` : '') +
+    `\n\n━━━━━━━━━━━━━━━━━━\n` +
+    `✅ يرجى تأكيد استلام الطلب`;
+
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
+
+  /* حفظ الطلب في السجل الداخلي للتتبع */
+  const order = {
+    id: orderId,
+    userId: currentUser() ? session.id : null,
+    name, phone, address: fullAddress, gov, city,
+    notes,
+    items: items.map(it => ({id: it.id, name: it.name, price: it.price, qty: it.qty})),
+    subtotal, shipping: 0, total: subtotal,
+    payment: 'cod',
+    status: 'pending',
+    date: new Date().toISOString()
+  };
+  orders.unshift(order);
+  saveOrders();
+  addLog('info', `طلب واتساب ${orderId} — ${money(subtotal)}`);
+
+  /* تفريغ السلة */
+  cart = [];
+  saveCart();
+  ['coName','coPhone','coCity','coAddress','coNotes'].forEach(id => {
+    const el = $('#' + id); if(el) el.value = '';
+  });
+  $('#coGov').value = '';
+
+  renderHeader(); renderCart(); renderShop();
+  toast(`✅ تم فتح واتساب — رقم الطلب: ${orderId}`, 'success');
+}
+
 function updateFloatingWA(){
   const wa = $('#floatingWA');
   if(!wa) return;
@@ -727,16 +947,12 @@ function invoiceHTML(o){
       <thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
       <tbody>
         ${o.items.map(it => `<tr>
-          <td>${esc(it.name)}</td>
-          <td>${it.qty}</td>
-          <td>${money(it.price)}</td>
-          <td>${money(it.price * it.qty)}</td>
+          <td>${esc(it.name)}</td><td>${it.qty}</td>
+          <td>${money(it.price)}</td><td>${money(it.price * it.qty)}</td>
         </tr>`).join('')}
       </tbody>
     </table>
     <div class="totals">
-      <div style="display:flex;justify-content:space-between"><span>المجموع الفرعي</span><b>${money(o.subtotal)}</b></div>
-      <div style="display:flex;justify-content:space-between"><span>الشحن</span><b>${o.shipping ? money(o.shipping) : 'مجاني'}</b></div>
       <div class="grand">الإجمالي: ${money(o.total)}</div>
     </div>
   </div>`;
@@ -758,7 +974,7 @@ function showInvoice(o){ $('#invoiceBody').innerHTML = invoiceHTML(o); $('#invoi
 function showLabel(o){ $('#labelBody').innerHTML = labelHTML(o); $('#labelModal').classList.add('show'); }
 
 /* ============================================================
-   ORDER TRACKING
+   TRACKING
 ============================================================ */
 function openTracking(orderId = null){
   $('#trackingModal').classList.add('show');
@@ -795,7 +1011,7 @@ function renderTracking(orderId){
     timelineHTML = `<div class="info-banner danger" style="text-align:center">
       <div style="font-size:2em;margin-bottom:6px">↩️</div>
       <b>هذا الطلب مرتجع</b><br>
-      <span style="font-size:.85em">تواصل مع خدمة العملاء لمزيد من التفاصيل</span>
+      <span style="font-size:.85em">تواصل مع خدمة العملاء</span>
     </div>`;
   } else {
     timelineHTML = `<div style="background:var(--bg);border-radius:10px;padding:20px">
@@ -851,17 +1067,12 @@ const SECURITY_QUESTIONS = [
 function openAuth(mode = 'user'){
   authMode = mode;
   authTab = 'login';
-  forgotStep = 1;
-  forgotUser = null;
-  adminForgotStep = 1;
+  forgotStep = 1; forgotUser = null; adminForgotStep = 1;
   $('#authModal').classList.add('show');
   renderAuthForm();
 }
-function switchAuthTab(t){
-  authTab = t;
-  if(t === 'forgot'){ forgotStep = 1; forgotUser = null; }
-  renderAuthForm();
-}
+function switchAuthTab(t){ authTab = t; if(t === 'forgot'){ forgotStep = 1; forgotUser = null; } renderAuthForm(); }
+
 function renderAuthForm(){
   const admin = authMode === 'admin';
   $('#authTabs').style.display = admin ? 'none' : 'flex';
@@ -871,126 +1082,78 @@ function renderAuthForm(){
   $$('#authTabs .tab').forEach(b => b.classList.toggle('active', b.dataset.tab === authTab));
   const f = $('#authForm');
   if(admin){
-    f.innerHTML = `
-      <label>كلمة مرور المدير</label>
+    f.innerHTML = `<label>كلمة مرور المدير</label>
       <input type="password" id="admPass" placeholder="••••••••">
       <button class="btn-full" onclick="doAdminLogin()">🔐 دخول</button>
       <div style="text-align:center;margin-top:14px">
         <a href="#" onclick="adminForgotStep=1;renderAdminForgot();return false" style="color:var(--primary);font-size:.85em;text-decoration:none">🔑 نسيت كلمة المرور؟</a>
       </div>`;
   } else if(authTab === 'login'){
-    f.innerHTML = `
-      <label>رقم الهاتف</label>
-      <input id="lgPhone" inputmode="tel" placeholder="01xxxxxxxxx">
-      <label>كلمة المرور</label>
-      <input type="password" id="lgPass" placeholder="••••••••">
+    f.innerHTML = `<label>رقم الهاتف</label><input id="lgPhone" inputmode="tel" placeholder="01xxxxxxxxx">
+      <label>كلمة المرور</label><input type="password" id="lgPass" placeholder="••••••••">
       <button class="btn-full" onclick="doLogin()">دخول</button>
-      <div style="text-align:center;margin-top:14px">
-        <a href="#" onclick="switchAuthTab('forgot');return false" style="color:var(--primary);font-size:.85em;text-decoration:none">🔑 نسيت كلمة المرور؟</a>
-      </div>`;
+      <div style="text-align:center;margin-top:14px"><a href="#" onclick="switchAuthTab('forgot');return false" style="color:var(--primary);font-size:.85em;text-decoration:none">🔑 نسيت كلمة المرور؟</a></div>`;
   } else if(authTab === 'register'){
-    f.innerHTML = `
-      <label>الاسم</label>
-      <input id="rgName" placeholder="اسمك الكامل">
-      <label>رقم الهاتف</label>
-      <input id="rgPhone" inputmode="tel" placeholder="01xxxxxxxxx">
-      <div class="row">
-        <div><label>كلمة المرور</label><input type="password" id="rgPass" placeholder="6 أحرف على الأقل"></div>
-        <div><label>تأكيد كلمة المرور</label><input type="password" id="rgPass2" placeholder="أعد كلمة المرور"></div>
-      </div>
-      <label>العنوان</label>
-      <input id="rgAddress" placeholder="المدينة، الشارع...">
-      <div class="info-banner" style="margin-top:8px">🔒 <b>سؤال الأمان</b> — يُستخدم لاستعادة كلمة المرور. احفظ الإجابة.</div>
-      <label>سؤال الأمان <span style="color:var(--danger)">*</span></label>
-      <select id="rgQ">
-        <option value="">-- اختر سؤالاً --</option>
-        ${SECURITY_QUESTIONS.map(q => `<option>${esc(q)}</option>`).join('')}
-      </select>
-      <label>إجابة سؤال الأمان <span style="color:var(--danger)">*</span></label>
-      <input id="rgA" placeholder="إجابتك">
-      <button class="btn-full btn-success" onclick="doRegister()">إنشاء الحساب</button>
-      <div style="text-align:center;margin-top:12px">
-        <a href="#" onclick="switchAuthTab('login');return false" style="color:var(--muted);font-size:.82em;text-decoration:none">← رجوع للدخول</a>
-      </div>`;
-  } else if(authTab === 'forgot'){
-    renderForgotForm();
-  }
+    f.innerHTML = `<label>الاسم</label><input id="rgName" placeholder="اسمك الكامل">
+      <label>رقم الهاتف</label><input id="rgPhone" inputmode="tel" placeholder="01xxxxxxxxx">
+      <div class="row"><div><label>كلمة المرور</label><input type="password" id="rgPass"></div><div><label>تأكيد</label><input type="password" id="rgPass2"></div></div>
+      <label>العنوان</label><input id="rgAddress">
+      <div class="info-banner" style="margin-top:8px;font-size:.8em">🔒 سؤال الأمان — للاستعادة</div>
+      <label>سؤال الأمان *</label>
+      <select id="rgQ"><option value="">-- اختر --</option>${SECURITY_QUESTIONS.map(q => `<option>${esc(q)}</option>`).join('')}</select>
+      <label>الإجابة *</label><input id="rgA" placeholder="احفظها جيداً">
+      <button class="btn-full btn-success" onclick="doRegister()">إنشاء الحساب</button>`;
+  } else if(authTab === 'forgot'){ renderForgotForm(); }
 }
 function renderForgotForm(){
   const f = $('#authForm');
   if(forgotStep === 1){
-    f.innerHTML = `
-      <div class="info-banner">🛡️ أدخل رقم هاتفك المسجل لاستعادة كلمة المرور.</div>
-      <label>رقم الهاتف</label>
-      <input id="fgPhone" inputmode="tel" placeholder="01xxxxxxxxx">
+    f.innerHTML = `<div class="info-banner">🛡️ أدخل رقم هاتفك</div>
+      <label>رقم الهاتف</label><input id="fgPhone" inputmode="tel">
       <button class="btn-full" onclick="startForgot()">التالي ←</button>
-      <div style="text-align:center;margin-top:12px">
-        <a href="#" onclick="switchAuthTab('login');return false" style="color:var(--muted);font-size:.82em;text-decoration:none">← رجوع للدخول</a>
-      </div>`;
+      <div style="text-align:center;margin-top:12px"><a href="#" onclick="switchAuthTab('login');return false" style="color:var(--muted);font-size:.82em">← رجوع</a></div>`;
   } else if(forgotStep === 2){
     if(!forgotUser.securityQuestion){
-      f.innerHTML = `
-        <div style="text-align:center;padding:16px 0">
-          <div style="font-size:2.5em;margin-bottom:10px">⚠️</div>
-          <div style="font-weight:bold;margin-bottom:8px">لم يتم إعداد سؤال أمان لهذا الحساب</div>
-          <div style="color:var(--muted);font-size:.85em;margin-bottom:16px;line-height:1.6">لا يمكن استعادة كلمة المرور تلقائياً.<br>تواصل مع المدير.</div>
-          <button class="btn-full btn-ghost" onclick="switchAuthTab('login')">← رجوع للدخول</button>
-        </div>`;
+      f.innerHTML = `<div style="text-align:center;padding:16px 0"><div style="font-size:2.5em;margin-bottom:10px">⚠️</div>
+        <div style="font-weight:bold;margin-bottom:8px">لا يوجد سؤال أمان</div>
+        <div style="color:var(--muted);font-size:.85em;margin-bottom:16px">تواصل مع المدير</div>
+        <button class="btn-full btn-ghost" onclick="switchAuthTab('login')">← رجوع</button></div>`;
       return;
     }
-    f.innerHTML = `
-      <div class="info-banner"><b>سؤال الأمان:</b><br>${esc(forgotUser.securityQuestion)}</div>
-      <label>الإجابة</label>
-      <input id="fgAnswer" placeholder="أدخل إجابتك">
-      <button class="btn-full" onclick="verifySecurity()">تحقق ←</button>
-      <div style="text-align:center;margin-top:12px">
-        <a href="#" onclick="forgotStep=1;forgotUser=null;renderForgotForm();return false" style="color:var(--muted);font-size:.82em;text-decoration:none">← رجوع</a>
-      </div>`;
+    f.innerHTML = `<div class="info-banner"><b>سؤال:</b><br>${esc(forgotUser.securityQuestion)}</div>
+      <label>الإجابة</label><input id="fgAnswer">
+      <button class="btn-full" onclick="verifySecurity()">تحقق ←</button>`;
   } else if(forgotStep === 3){
-    f.innerHTML = `
-      <div class="info-banner success">✅ تم التحقق. اختر كلمة مرور جديدة.</div>
-      <label>كلمة المرور الجديدة</label>
-      <input type="password" id="fgNewPass" placeholder="6 أحرف على الأقل">
-      <label>تأكيد كلمة المرور</label>
-      <input type="password" id="fgNewPass2" placeholder="أعد إدخال كلمة المرور">
-      <button class="btn-full btn-success" onclick="resetPassword()">💾 حفظ كلمة المرور الجديدة</button>`;
+    f.innerHTML = `<div class="info-banner success">✅ تم التحقق</div>
+      <label>كلمة المرور الجديدة</label><input type="password" id="fgNewPass">
+      <label>تأكيد</label><input type="password" id="fgNewPass2">
+      <button class="btn-full btn-success" onclick="resetPassword()">💾 حفظ</button>`;
   }
 }
 function startForgot(){
   const phone = $('#fgPhone').value.trim();
-  if(!phone){ toast('أدخل رقم الهاتف', 'warning'); return; }
+  if(!phone){ toast('أدخل الهاتف', 'warning'); return; }
   const u = users.find(x => x.phone === phone);
-  if(!u){ toast('رقم الهاتف غير مسجل', 'error'); return; }
-  forgotUser = u;
-  forgotStep = 2;
-  renderForgotForm();
+  if(!u){ toast('رقم غير مسجل', 'error'); return; }
+  forgotUser = u; forgotStep = 2; renderForgotForm();
 }
 function verifySecurity(){
   const ans = ($('#fgAnswer').value || '').trim().toLowerCase();
   if(!ans){ toast('أدخل الإجابة', 'warning'); return; }
-  const correct = (forgotUser.securityAnswer || '').trim().toLowerCase();
-  if(ans !== correct){ toast('الإجابة غير صحيحة', 'error'); return; }
-  forgotStep = 3;
-  renderForgotForm();
+  if(ans !== (forgotUser.securityAnswer || '').trim().toLowerCase()){ toast('إجابة خاطئة', 'error'); return; }
+  forgotStep = 3; renderForgotForm();
 }
 function resetPassword(){
-  const p1 = $('#fgNewPass').value;
-  const p2 = $('#fgNewPass2').value;
-  if(!p1 || p1.length < 6){ toast('كلمة المرور 6 أحرف على الأقل', 'warning'); return; }
-  if(p1 !== p2){ toast('كلمتا المرور غير متطابقتين', 'warning'); return; }
-  const u = forgotUser;
-  if(!u) return;
-  u.password = p1;
+  const p1 = $('#fgNewPass').value, p2 = $('#fgNewPass2').value;
+  if(!p1 || p1.length < 6){ toast('6 أحرف على الأقل', 'warning'); return; }
+  if(p1 !== p2){ toast('غير متطابقتين', 'warning'); return; }
+  forgotUser.password = p1;
   saveUsers();
-  addLog('success', `استعادة كلمة مرور: ${u.name} (${u.phone})`);
-  toast('تم تغيير كلمة المرور ✅', 'success');
-  forgotStep = 1; forgotUser = null;
-  switchAuthTab('login');
+  addLog('success', `استعادة كلمة مرور: ${forgotUser.name}`);
+  toast('✅ تم تغيير كلمة المرور', 'success');
+  forgotStep = 1; forgotUser = null; switchAuthTab('login');
 }
 
-/* ============================================================
-   ADMIN PASSWORD RECOVERY
-============================================================ */
 function renderAdminForgot(){
   const f = $('#authForm');
   $('#authTitle').textContent = 'استعادة كلمة مرور المدير';
@@ -998,61 +1161,39 @@ function renderAdminForgot(){
   $('#authAdminMode').style.display = 'block';
   if(adminForgotStep === 1){
     if(!settings.adminSecurityQuestion){
-      f.innerHTML = `
-        <div style="text-align:center;padding:16px 0">
-          <div style="font-size:2.8em;margin-bottom:12px">🔒</div>
-          <div style="font-weight:bold;margin-bottom:10px">لا يمكن استعادة كلمة المرور</div>
-          <div style="color:var(--muted);font-size:.87em;line-height:1.8;margin-bottom:18px">لم يتم إعداد <b>سؤال أمان</b> لحساب المدير.</div>
-          <div class="info-banner warning" style="text-align:right;font-size:.8em">
-            💡 <b>لتجنّب ذلك:</b> بعد الدخول، اذهب إلى <b>⚙️ الإعدادات</b> وأعد سؤال الأمان.
-          </div>
-          <button class="btn-full btn-ghost" style="margin-top:14px" onclick="renderAuthForm()">← رجوع للدخول</button>
-        </div>`;
+      f.innerHTML = `<div style="text-align:center;padding:16px 0"><div style="font-size:2.8em;margin-bottom:12px">🔒</div>
+        <div style="font-weight:bold;margin-bottom:10px">لا يمكن الاستعادة</div>
+        <div style="color:var(--muted);font-size:.87em;line-height:1.8;margin-bottom:18px">لم يتم إعداد سؤال أمان.</div>
+        <button class="btn-full btn-ghost" onclick="renderAuthForm()">← رجوع</button></div>`;
       return;
     }
-    f.innerHTML = `
-      <div class="info-banner"><b>سؤال الأمان:</b><br>${esc(settings.adminSecurityQuestion)}</div>
-      <label>الإجابة</label>
-      <input id="admForgotAns" placeholder="أدخل إجابتك">
-      <button class="btn-full" onclick="verifyAdminSecurity()">تحقق ←</button>
-      <div style="text-align:center;margin-top:12px">
-        <a href="#" onclick="adminForgotStep=1;renderAuthForm();return false" style="color:var(--muted);font-size:.82em;text-decoration:none">← رجوع</a>
-      </div>`;
+    f.innerHTML = `<div class="info-banner"><b>سؤال:</b><br>${esc(settings.adminSecurityQuestion)}</div>
+      <label>الإجابة</label><input id="admForgotAns">
+      <button class="btn-full" onclick="verifyAdminSecurity()">تحقق ←</button>`;
   } else if(adminForgotStep === 2){
-    f.innerHTML = `
-      <div class="info-banner success">✅ تم التحقق. اختر كلمة مرور جديدة.</div>
-      <label>كلمة المرور الجديدة</label>
-      <input type="password" id="admNewPass" placeholder="6 أحرف على الأقل">
-      <label>تأكيد كلمة المرور</label>
-      <input type="password" id="admNewPass2" placeholder="أعد إدخال كلمة المرور">
+    f.innerHTML = `<div class="info-banner success">✅ تم التحقق</div>
+      <label>كلمة المرور الجديدة</label><input type="password" id="admNewPass">
+      <label>تأكيد</label><input type="password" id="admNewPass2">
       <button class="btn-full btn-success" onclick="resetAdminPassword()">💾 حفظ</button>`;
   }
 }
 function verifyAdminSecurity(){
   const ans = ($('#admForgotAns').value || '').trim().toLowerCase();
   if(!ans){ toast('أدخل الإجابة', 'warning'); return; }
-  const correct = (settings.adminSecurityAnswer || '').trim().toLowerCase();
-  if(ans !== correct){ toast('الإجابة غير صحيحة', 'error'); return; }
-  adminForgotStep = 2;
-  renderAdminForgot();
+  if(ans !== (settings.adminSecurityAnswer || '').trim().toLowerCase()){ toast('إجابة خاطئة', 'error'); return; }
+  adminForgotStep = 2; renderAdminForgot();
 }
 function resetAdminPassword(){
-  const p1 = $('#admNewPass').value;
-  const p2 = $('#admNewPass2').value;
-  if(!p1 || p1.length < 6){ toast('كلمة المرور 6 أحرف على الأقل', 'warning'); return; }
-  if(p1 !== p2){ toast('كلمتا المرور غير متطابقتين', 'warning'); return; }
+  const p1 = $('#admNewPass').value, p2 = $('#admNewPass2').value;
+  if(!p1 || p1.length < 6){ toast('6 أحرف على الأقل', 'warning'); return; }
+  if(p1 !== p2){ toast('غير متطابقتين', 'warning'); return; }
   settings.adminPass = p1;
   saveSettings();
   addLog('warning', 'استعادة كلمة مرور المدير');
-  toast('تم تغيير كلمة المرور ✅', 'success');
-  adminForgotStep = 1;
-  authMode = 'admin';
-  renderAuthForm();
+  toast('✅ تم التغيير', 'success');
+  adminForgotStep = 1; authMode = 'admin'; renderAuthForm();
 }
 
-/* ============================================================
-   LOGIN / REGISTER
-============================================================ */
 function doAdminLogin(){
   const pass = $('#admPass').value;
   if(pass !== settings.adminPass){ toast('كلمة المرور غير صحيحة', 'error'); return; }
@@ -1060,16 +1201,15 @@ function doAdminLogin(){
   saveSession();
   closeModal('authModal');
   $('#adminDash').classList.add('show');
-  admTab = 'dashboard';
-  renderAdmin();
+  admTab = 'dashboard'; renderAdmin();
   addLog('success', 'تسجيل دخول المدير');
-  toast('مرحباً بك في لوحة التحكم 👋', 'success');
+  toast('مرحباً بك 👋', 'success');
 }
 function doLogin(){
   const phone = $('#lgPhone').value.trim();
-  const pass  = $('#lgPass').value;
+  const pass = $('#lgPass').value;
   const u = users.find(x => x.phone === phone && x.password === pass);
-  if(!u){ toast('رقم الهاتف أو كلمة المرور غير صحيحة', 'error'); return; }
+  if(!u){ toast('بيانات خاطئة', 'error'); return; }
   session = {role: 'user', id: u.id};
   saveSession();
   closeModal('authModal');
@@ -1077,45 +1217,32 @@ function doLogin(){
   toast('مرحباً ' + u.name + ' 👋', 'success');
 }
 function doRegister(){
-  const name    = $('#rgName').value.trim();
-  const phone   = $('#rgPhone').value.trim();
-  const pass    = $('#rgPass').value;
-  const pass2   = $('#rgPass2').value;
+  const name = $('#rgName').value.trim();
+  const phone = $('#rgPhone').value.trim();
+  const pass = $('#rgPass').value;
+  const pass2 = $('#rgPass2').value;
   const address = $('#rgAddress').value.trim();
-  const q       = $('#rgQ').value;
-  const a       = $('#rgA').value.trim();
-
-  if(!name || !phone || !pass){ toast('أكمل جميع الحقول المطلوبة', 'warning'); return; }
-  if(pass.length < 6){ toast('كلمة المرور 6 أحرف على الأقل', 'warning'); return; }
-  if(pass !== pass2){ toast('كلمتا المرور غير متطابقتين', 'warning'); return; }
-  if(!q || !a){ toast('اختر سؤال أمان وأدخل الإجابة', 'warning'); return; }
-  if(users.some(u => u.phone === phone)){ toast('رقم الهاتف مسجل بالفعل', 'error'); return; }
-
-  const u = {
-    id: uid('u'), name, phone, password: pass, address,
-    securityQuestion: q, securityAnswer: a,
-    createdAt: new Date().toISOString()
-  };
-  users.push(u);
-  saveUsers();
-  session = {role: 'user', id: u.id};
-  saveSession();
-  closeModal('authModal');
-  renderHeader();
+  const q = $('#rgQ').value;
+  const a = $('#rgA').value.trim();
+  if(!name || !phone || !pass){ toast('أكمل الحقول', 'warning'); return; }
+  if(pass.length < 6){ toast('6 أحرف على الأقل', 'warning'); return; }
+  if(pass !== pass2){ toast('غير متطابقتين', 'warning'); return; }
+  if(!q || !a){ toast('اختر سؤال أمان', 'warning'); return; }
+  if(users.some(u => u.phone === phone)){ toast('رقم مسجل', 'error'); return; }
+  const u = {id: uid('u'), name, phone, password: pass, address, securityQuestion: q, securityAnswer: a, createdAt: new Date().toISOString()};
+  users.push(u); saveUsers();
+  session = {role: 'user', id: u.id}; saveSession();
+  closeModal('authModal'); renderHeader();
   addLog('success', `عميل جديد: ${name}`);
-  toast('تم إنشاء الحساب بنجاح ✅', 'success');
+  toast('✅ تم إنشاء الحساب', 'success');
 }
 function logout(){
-  session = null;
-  saveSession();
+  session = null; saveSession();
   $('#adminDash').classList.remove('show');
   renderHeader();
   toast('تم تسجيل الخروج', '');
 }
 
-/* ============================================================
-   PROFILE / MY ORDERS
-============================================================ */
 function openProfile(){
   const u = currentUser();
   if(!u) return;
@@ -1131,28 +1258,21 @@ function saveProfile(){
   const name = $('#pr_name').value.trim();
   const phone = $('#pr_phone').value.trim();
   if(!name || !phone){ toast('الاسم والهاتف مطلوبان', 'warning'); return; }
-  if(users.some(x => x.id !== u.id && x.phone === phone)){ toast('رقم الهاتف مستخدم بالفعل', 'error'); return; }
-  u.name = name;
-  u.phone = phone;
+  if(users.some(x => x.id !== u.id && x.phone === phone)){ toast('رقم مستخدم', 'error'); return; }
+  u.name = name; u.phone = phone;
   u.address = $('#pr_address').value.trim();
   if($('#pr_pass').value) u.password = $('#pr_pass').value;
   saveUsers(); renderHeader();
   closeModal('profileModal');
-  toast('تم حفظ التعديلات ✅', 'success');
+  toast('✅ تم الحفظ', 'success');
 }
-function openMyOrders(){
-  $('#myOrdersModal').classList.add('show');
-  renderMyOrders();
-}
+function openMyOrders(){ $('#myOrdersModal').classList.add('show'); renderMyOrders(); }
 function renderMyOrders(){
   const body = $('#myOrdersBody');
   if(!body) return;
   const u = currentUser();
   const list = u ? orders.filter(o => o.userId === u.id) : [];
-  if(!list.length){
-    body.innerHTML = `<div class="empty-state"><span class="big">📦</span>لا توجد طلبات بعد</div>`;
-    return;
-  }
+  if(!list.length){ body.innerHTML = `<div class="empty"><span class="big">📦</span>لا توجد طلبات</div>`; return; }
   const st = {pending: ['قيد الانتظار',''], shipped: ['تم الشحن','ship'], done: ['مكتمل','done'], returns: ['مرتجع','returns']};
   body.innerHTML = list.map(o => {
     const s = st[o.status] || ['—',''];
@@ -1174,12 +1294,8 @@ function renderMyOrders(){
    ADMIN
 ============================================================ */
 function openAdmin(){
-  if(isAdmin()){
-    $('#adminDash').classList.add('show');
-    renderAdmin();
-  } else {
-    openAuth('admin');
-  }
+  if(isAdmin()){ $('#adminDash').classList.add('show'); renderAdmin(); }
+  else { openAuth('admin'); }
 }
 function closeAdmin(){ $('#adminDash').classList.remove('show'); }
 function toggleSidebar(open){ $('#admSidebar').classList.toggle('open', open); $('#sidebarOverlay').classList.toggle('show', open); }
@@ -1195,48 +1311,37 @@ function renderAdmin(){
   const titles = {dashboard:'نظرة عامة', products:'المنتجات', orders:'الطلبات', customers:'العملاء', categories:'الأقسام', logs:'السجل', settings:'الإعدادات'};
   $('#admTitle').textContent = titles[admTab] || '';
   const c = $('#admContent');
-  if(admTab === 'dashboard')      { c.innerHTML = dashboardHTML(); drawRevenueChart(); }
-  else if(admTab === 'products')  c.innerHTML = productsAdminHTML();
-  else if(admTab === 'orders')    c.innerHTML = ordersAdminHTML();
+  if(admTab === 'dashboard') { c.innerHTML = dashboardHTML(); drawRevenueChart(); }
+  else if(admTab === 'products') c.innerHTML = productsAdminHTML();
+  else if(admTab === 'orders') c.innerHTML = ordersAdminHTML();
   else if(admTab === 'customers') c.innerHTML = customersAdminHTML();
-  else if(admTab === 'categories')c.innerHTML = categoriesAdminHTML();
-  else if(admTab === 'logs')      c.innerHTML = logsAdminHTML();
-  else if(admTab === 'settings')  c.innerHTML = settingsAdminHTML();
+  else if(admTab === 'categories') c.innerHTML = categoriesAdminHTML();
+  else if(admTab === 'logs') c.innerHTML = logsAdminHTML();
+  else if(admTab === 'settings') c.innerHTML = settingsAdminHTML();
 }
 
-/* ---------- Dashboard ---------- */
 function dashboardHTML(){
   const revenue = orders.filter(o => o.status !== 'returns').reduce((s,o) => s + o.total, 0);
   const pending = orders.filter(o => o.status === 'pending').length;
   const low = products.filter(p => p.stock <= 3 && !p.hidden).length;
   const hidden = products.filter(p => p.hidden).length;
   const visible = products.length - hidden;
-  const noSec = users.filter(u => !u.securityQuestion).length;
   const noWa = !settings.whatsapp;
 
-  return `${noWa ? `<div class="info-banner danger" style="margin-bottom:16px">
-    ⚠️ <b>لم يتم إعداد رقم واتساب!</b> الأزرار لن تعمل. اذهب إلى <b>⚙️ الإعدادات</b> وأضف الرقم.
-  </div>` : ''}
-  ${!settings.adminSecurityQuestion ? `<div class="info-banner warning" style="margin-bottom:16px">
-    ⚠️ حساب المدير بدون سؤال أمان — يُنصح بإعداده من الإعدادات.
-  </div>` : ''}
+  return `${noWa ? `<div class="info-banner danger" style="margin-bottom:16px">⚠️ <b>لم يتم إعداد رقم واتساب!</b> اذهب إلى ⚙️ الإعدادات</div>` : ''}
+  ${!settings.adminSecurityQuestion ? `<div class="info-banner warning" style="margin-bottom:16px">⚠️ المدير بدون سؤال أمان</div>` : ''}
   <div class="kpi-grid">
     <div class="kpi"><span class="k-ic">💰</span><span class="k-val">${money(revenue)}</span><span class="k-lbl">إجمالي الإيرادات</span></div>
-    <div class="kpi success"><span class="k-ic">🧾</span><span class="k-val">${orders.length}</span><span class="k-lbl">إجمالي الطلبات</span></div>
+    <div class="kpi success"><span class="k-ic">🧾</span><span class="k-val">${orders.length}</span><span class="k-lbl">الطلبات</span></div>
     <div class="kpi warning"><span class="k-ic">⏳</span><span class="k-val">${pending}</span><span class="k-lbl">قيد الانتظار</span></div>
-    <div class="kpi info"><span class="k-ic">📦</span><span class="k-val">${visible}</span><span class="k-lbl">منتجات مرئية</span></div>
-    <div class="kpi danger"><span class="k-ic">🙈</span><span class="k-val">${hidden}</span><span class="k-lbl">منتجات مخفية</span></div>
+    <div class="kpi info"><span class="k-ic">📦</span><span class="k-val">${visible}</span><span class="k-lbl">مرئية</span></div>
+    <div class="kpi danger"><span class="k-ic">🙈</span><span class="k-val">${hidden}</span><span class="k-lbl">مخفية</span></div>
     <div class="kpi danger"><span class="k-ic">⚠️</span><span class="k-val">${low}</span><span class="k-lbl">مخزون منخفض</span></div>
     <div class="kpi info"><span class="k-ic">👥</span><span class="k-val">${users.length}</span><span class="k-lbl">العملاء</span></div>
-    ${noSec ? `<div class="kpi warning"><span class="k-ic">🔓</span><span class="k-val">${noSec}</span><span class="k-lbl">بدون سؤال أمان</span></div>` : ''}
   </div>
   <div class="chart-grid">
-    <div class="chart-box">
-      <h4>📈 الإيرادات — آخر 7 أيام</h4>
-      <canvas id="revChart" style="width:100%;height:220px"></canvas>
-    </div>
-    <div class="chart-box">
-      <h4>🕒 أحدث الطلبات</h4>
+    <div class="chart-box"><h4>📈 الإيرادات — آخر 7 أيام</h4><canvas id="revChart" style="width:100%;height:220px"></canvas></div>
+    <div class="chart-box"><h4>🕒 أحدث الطلبات</h4>
       ${orders.slice(0,5).map(o => `<div class="log-item" style="border-color:var(--primary)">
         <div><b>${o.id}</b> — ${esc(o.name)}<div class="time">${new Date(o.date).toLocaleString('ar-EG')}</div></div>
         <div class="money">${money(o.total)}</div>
@@ -1244,6 +1349,7 @@ function dashboardHTML(){
     </div>
   </div>`;
 }
+
 function drawRevenueChart(){
   const canvas = $('#revChart');
   if(!canvas) return;
@@ -1279,14 +1385,11 @@ function drawRevenueChart(){
   });
 }
 
-/* ---------- Products ---------- */
 function productsAdminHTML(){
   const q = admSearchTerm.toLowerCase();
   const list = products.filter(p => {
     const matchQ = !q || p.name.toLowerCase().includes(q);
-    const matchF = prodFilter === 'all' ||
-                   (prodFilter === 'visible' && !p.hidden) ||
-                   (prodFilter === 'hidden'  &&  p.hidden);
+    const matchF = prodFilter === 'all' || (prodFilter === 'visible' && !p.hidden) || (prodFilter === 'hidden' && p.hidden);
     return matchQ && matchF;
   });
   const totalHidden = products.filter(p => p.hidden).length;
@@ -1303,119 +1406,104 @@ function productsAdminHTML(){
     </div>
   </div>
   <div class="bulk-bar ${selProducts.size ? 'show' : ''}">
-    <span>تم تحديد ${selProducts.size} منتج</span>
+    <span>تم تحديد ${selProducts.size}</span>
     <div class="bulk-actions">
       <button onclick="bulkHideProducts()">🙈 إخفاء</button>
       <button onclick="bulkShowProducts()">👁️ إظهار</button>
       <button onclick="bulkDeleteProducts()">🗑️ حذف</button>
-      <button onclick="clearSelProducts()">إلغاء التحديد</button>
+      <button onclick="clearSelProducts()">إلغاء</button>
     </div>
   </div>
-  <div class="adm-table-wrap">
-    <table class="adm-table">
-      <thead><tr>
-        <th><input type="checkbox" onchange="toggleAllProducts(this.checked)"></th>
-        <th>المنتج</th><th>القسم</th><th>السعر</th><th>المخزون</th><th>الظهور</th><th>إجراءات</th>
-      </tr></thead>
-      <tbody>
-        ${list.map(p => {
-          const cat = categories.find(c => c.id === p.cat);
-          const stockBadge = p.stock <= 0
-            ? '<span class="status returns">نفد</span>'
-            : (p.stock <= 3 ? `<span class="status">${p.stock}</span>` : `<span class="status done">${p.stock}</span>`);
-          const visBadge = p.hidden
-            ? '<span class="status hidden-status">🙈 مخفي</span>'
-            : '<span class="status done">👁️ مرئي</span>';
-          return `<tr class="${selProducts.has(p.id) ? 'selected' : ''} ${p.hidden ? 'row-hidden' : ''}">
-            <td><input type="checkbox" ${selProducts.has(p.id) ? 'checked' : ''} onchange="toggleSelProduct('${p.id}',this.checked)"></td>
-            <td>
-              <div class="cell-flex">
-                <div class="avatar">${p.img ? `<img src="${esc(p.img)}" style="width:100%;height:100%;object-fit:cover">` : (p.icon || '📦')}</div>
-                <div><b>${esc(p.name)}</b><div style="color:var(--muted);font-size:.8em">${esc((p.desc || '').slice(0, 40))}</div></div>
-              </div>
-            </td>
-            <td>${cat ? esc(cat.name) : '—'}</td>
-            <td class="money">${money(p.price)}</td>
-            <td>${stockBadge}</td>
-            <td>${visBadge}</td>
-            <td>
-              <div class="cell-actions">
-                <button class="btn-sm ${p.hidden?'btn-warning':'btn-ghost'}" title="${p.hidden?'إظهار':'إخفاء'}" onclick="toggleHideProduct('${p.id}')">${p.hidden?'👁️':'🙈'}</button>
-                <button class="btn-sm btn-ghost" onclick="openProductModal('${p.id}')">✏️</button>
-                <button class="btn-sm btn-outline" onclick="deleteProduct('${p.id}')">🗑️</button>
-              </div>
-            </td>
-          </tr>`;
-        }).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">لا توجد منتجات</td></tr>'}
-      </tbody>
-    </table>
-  </div>`;
+  <div class="adm-table-wrap"><table class="adm-table">
+    <thead><tr>
+      <th><input type="checkbox" onchange="toggleAllProducts(this.checked)"></th>
+      <th>المنتج</th><th>القسم</th><th>السعر</th><th>المخزون</th><th>الظهور</th><th>إجراءات</th>
+    </tr></thead>
+    <tbody>
+      ${list.map(p => {
+        const cat = categories.find(c => c.id === p.cat);
+        const stockBadge = p.stock <= 0 ? '<span class="status returns">نفد</span>' : (p.stock <= 3 ? `<span class="status">${p.stock}</span>` : `<span class="status done">${p.stock}</span>`);
+        const visBadge = p.hidden ? '<span class="status hidden-status">🙈 مخفي</span>' : '<span class="status done">👁️ مرئي</span>';
+        return `<tr class="${selProducts.has(p.id) ? 'selected' : ''} ${p.hidden ? 'row-hidden' : ''}">
+          <td><input type="checkbox" ${selProducts.has(p.id) ? 'checked' : ''} onchange="toggleSelProduct('${p.id}',this.checked)"></td>
+          <td><div class="cell-flex">
+            <div class="avatar">${p.img ? `<img src="${esc(p.img)}" style="width:100%;height:100%;object-fit:cover">` : (p.icon || '📦')}</div>
+            <div><b>${esc(p.name)}</b><div style="color:var(--muted);font-size:.8em">${esc((p.desc || '').slice(0, 40))}</div></div>
+          </div></td>
+          <td>${cat ? esc(cat.name) : '—'}</td>
+          <td class="money">${money(p.price)}</td>
+          <td>${stockBadge}</td>
+          <td>${visBadge}</td>
+          <td><div class="cell-actions">
+            <button class="btn-sm ${p.hidden?'btn-warning':'btn-ghost'}" onclick="toggleHideProduct('${p.id}')">${p.hidden?'👁️':'🙈'}</button>
+            <button class="btn-sm btn-ghost" onclick="openProductModal('${p.id}')">✏️</button>
+            <button class="btn-sm btn-outline" onclick="deleteProduct('${p.id}')">🗑️</button>
+          </div></td>
+        </tr>`;
+      }).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">لا توجد منتجات</td></tr>'}
+    </tbody>
+  </table></div>`;
 }
 function toggleSelProduct(id, on){ on ? selProducts.add(id) : selProducts.delete(id); renderAdmin(); }
 function toggleAllProducts(on){
   const q = admSearchTerm.toLowerCase();
-  const list = products.filter(p => {
+  products.filter(p => {
     const matchQ = !q || p.name.toLowerCase().includes(q);
-    const matchF = prodFilter === 'all' ||
-                   (prodFilter === 'visible' && !p.hidden) ||
-                   (prodFilter === 'hidden'  &&  p.hidden);
+    const matchF = prodFilter === 'all' || (prodFilter === 'visible' && !p.hidden) || (prodFilter === 'hidden' && p.hidden);
     return matchQ && matchF;
-  });
-  list.forEach(p => on ? selProducts.add(p.id) : selProducts.delete(p.id));
+  }).forEach(p => on ? selProducts.add(p.id) : selProducts.delete(p.id));
   renderAdmin();
 }
 function clearSelProducts(){ selProducts.clear(); renderAdmin(); }
 function bulkDeleteProducts(){
-  if(!selProducts.size) return;
-  if(!confirm('حذف ' + selProducts.size + ' منتج؟')) return;
+  if(!selProducts.size || !confirm('حذف ' + selProducts.size + ' منتج؟')) return;
   products = products.filter(p => !selProducts.has(p.id));
-  saveProducts(); selProducts.clear();
+  cart = cart.filter(i => !selProducts.has(i.pid));
+  saveProducts(); saveCart(); selProducts.clear();
   addLog('danger', 'حذف مجموعة منتجات');
-  renderAdmin(); renderShop();
+  renderAdmin(); renderShop(); renderCart();
   toast('تم الحذف', 'success');
 }
 function bulkHideProducts(){
   if(!selProducts.size) return;
   let n = 0;
-  selProducts.forEach(id => {
-    const p = products.find(x => x.id === id);
-    if(p && !p.hidden){ p.hidden = true; n++; }
-  });
-  saveProducts();
+  selProducts.forEach(id => { const p = products.find(x => x.id === id); if(p && !p.hidden){ p.hidden = true; n++; } });
+  cart = cart.filter(i => !selProducts.has(i.pid));
+  saveProducts(); saveCart();
   addLog('warning', `إخفاء ${n} منتج`);
-  renderAdmin(); renderShop();
-  toast(`تم إخفاء ${n} منتج 🙈`, 'success');
+  renderAdmin(); renderShop(); renderCart();
+  toast(`تم إخفاء ${n}`, 'success');
 }
 function bulkShowProducts(){
   if(!selProducts.size) return;
   let n = 0;
-  selProducts.forEach(id => {
-    const p = products.find(x => x.id === id);
-    if(p && p.hidden){ p.hidden = false; n++; }
-  });
+  selProducts.forEach(id => { const p = products.find(x => x.id === id); if(p && p.hidden){ p.hidden = false; n++; } });
   saveProducts();
   addLog('success', `إظهار ${n} منتج`);
   renderAdmin(); renderShop();
-  toast(`تم إظهار ${n} منتج 👁️`, 'success');
+  toast(`تم إظهار ${n}`, 'success');
 }
 function toggleHideProduct(id){
   const p = products.find(x => x.id === id);
   if(!p) return;
   p.hidden = !p.hidden;
-  saveProducts();
+  if(p.hidden) cart = cart.filter(i => i.pid !== id);
+  saveProducts(); saveCart();
   addLog('warning', (p.hidden ? 'إخفاء' : 'إظهار') + ' منتج: ' + p.name);
-  renderAdmin(); renderShop();
-  toast(p.hidden ? 'تم إخفاء المنتج 🙈' : 'تم إظهار المنتج 👁️', 'success');
+  renderAdmin(); renderShop(); renderCart();
+  toast(p.hidden ? '🙈 مخفي' : '👁️ مرئي', 'success');
 }
 function deleteProduct(id){
   if(!confirm('حذف هذا المنتج؟')) return;
   const p = products.find(x => x.id === id);
   products = products.filter(x => x.id !== id);
-  saveProducts();
+  cart = cart.filter(i => i.pid !== id);
+  saveProducts(); saveCart();
   addLog('danger', 'حذف منتج: ' + (p ? p.name : id));
-  renderAdmin(); renderShop();
+  renderAdmin(); renderShop(); renderCart();
   toast('تم الحذف', 'success');
 }
+
 function openProductModal(id){
   const p = id ? products.find(x => x.id === id) : null;
   $('#productModalTitle').textContent = p ? 'تعديل المنتج' : 'إضافة منتج';
@@ -1430,9 +1518,7 @@ function openProductModal(id){
   $('#pf_free').checked = p ? !!p.freeShip : false;
   $('#pf_hidden').checked = p ? !!p.hidden : false;
   $('#pf_cat').innerHTML = categories.map(c => `<option value="${c.id}" ${p && p.cat === c.id ? 'selected' : ''}>${esc(c.icon)} ${esc(c.name)}</option>`).join('');
-  $('#pf_preview').innerHTML = (p && p.img)
-    ? `<img src="${esc(p.img)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`
-    : '<span class="big">🖼️</span>اضغط لاختيار صورة';
+  $('#pf_preview').innerHTML = (p && p.img) ? `<img src="${esc(p.img)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">` : '<span class="big">🖼️</span>اضغط لاختيار صورة';
   $('#pf_img').value = '';
   pendingImg = null;
   $('#productModal').classList.add('show');
@@ -1454,96 +1540,64 @@ function saveProductForm(){
   if(!name){ toast('اسم المنتج مطلوب', 'warning'); return; }
   if(!(price >= 0)){ toast('سعر غير صالح', 'warning'); return; }
   const data = {
-    name,
-    desc: $('#pf_desc').value.trim(),
-    price,
+    name, desc: $('#pf_desc').value.trim(), price,
     oldPrice: parseFloat($('#pf_old').value) || 0,
     cat: $('#pf_cat').value,
     stock: parseInt($('#pf_stock').value) || 0,
     icon: $('#pf_icon').value.trim() || '📦',
-    isNew: $('#pf_new').checked,
-    freeShip: $('#pf_free').checked,
-    hidden: $('#pf_hidden').checked
+    isNew: $('#pf_new').checked, freeShip: $('#pf_free').checked, hidden: $('#pf_hidden').checked
   };
   if(id){
     const p = products.find(x => x.id === id);
     Object.assign(p, data);
     if(pendingImg) p.img = pendingImg;
+    if(p.hidden) cart = cart.filter(i => i.pid !== id);
     addLog('warning', 'تعديل منتج: ' + name);
   } else {
     products.unshift(Object.assign({id: uid('p'), img: pendingImg || ''}, data));
     addLog('success', 'إضافة منتج: ' + name);
   }
   pendingImg = null;
-  saveProducts();
+  saveProducts(); saveCart();
   closeModal('productModal');
-  renderAdmin(); renderShop();
-  toast('تم الحفظ ✅', 'success');
+  renderAdmin(); renderShop(); renderCart();
+  toast('✅ تم الحفظ', 'success');
 }
 
-/* ---------- Orders ---------- */
 const ST_LABEL = {pending: ['قيد الانتظار',''], shipped: ['تم الشحن','ship'], done: ['مكتمل','done'], returns: ['مرتجع','returns']};
 function ordersAdminHTML(){
   const q = admSearchTerm.toLowerCase();
   const list = orders.filter(o => !q || o.id.toLowerCase().includes(q) || o.name.toLowerCase().includes(q) || o.phone.includes(q));
   return `
-  <div class="info-banner" style="margin-bottom:14px">
-    💡 الطلبات تصل عبر <b>واتساب</b> — يمكنك إضافتها يدوياً هنا لتتبعها.
-  </div>
-  <div class="adm-filters">
-    <select onchange="filterOrdersStatus(this.value)" id="ordStatusFilter">
-      <option value="">كل الحالات</option>
-      <option value="pending">قيد الانتظار</option>
-      <option value="shipped">تم الشحن</option>
-      <option value="done">مكتمل</option>
-      <option value="returns">مرتجع</option>
-    </select>
-    <div style="color:var(--muted);font-size:.85em;display:flex;align-items:center">${list.length} طلب</div>
-  </div>
-  <div class="adm-table-wrap">
-    <table class="adm-table">
-      <thead><tr>
-        <th>الطلب</th><th>العميل</th><th>الهاتف</th><th>الإجمالي</th><th>الحالة</th><th>التاريخ</th><th>إجراءات</th>
-      </tr></thead>
-      <tbody>
-        ${list.map(o => {
-          const s = ST_LABEL[o.status] || ['—',''];
-          const orderJSON = JSON.stringify(o).replace(/'/g, "&#39;");
-          return `<tr>
-            <td><b>${o.id}</b></td>
-            <td>${esc(o.name)}</td>
-            <td>${esc(o.phone)}</td>
-            <td class="money">${money(o.total)}</td>
-            <td><span class="status ${s[1]}">${s[0]}</span></td>
-            <td style="font-size:.8em;color:var(--muted)">${new Date(o.date).toLocaleDateString('ar-EG')}</td>
-            <td>
-              <div class="cell-actions">
-                <button class="btn-sm btn-ghost" onclick='showInvoice(${orderJSON})' title="فاتورة">🧾</button>
-                <button class="btn-sm btn-info" onclick='showLabel(${orderJSON})' title="بوليصة">🏷️</button>
-                <button class="btn-sm btn-success" onclick="openTracking('${o.id}')" title="تتبع">🔍</button>
-                <select class="btn-sm" style="margin:0;padding:5px;width:auto" onchange="setOrderStatus('${o.id}',this.value)">
-                  <option value="pending" ${o.status==='pending'?'selected':''}>قيد الانتظار</option>
-                  <option value="shipped" ${o.status==='shipped'?'selected':''}>تم الشحن</option>
-                  <option value="done" ${o.status==='done'?'selected':''}>مكتمل</option>
-                  <option value="returns" ${o.status==='returns'?'selected':''}>مرتجع</option>
-                </select>
-              </div>
-            </td>
-          </tr>`;
-        }).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">لا توجد طلبات</td></tr>'}
-      </tbody>
-    </table>
-  </div>`;
-}
-function filterOrdersStatus(v){
-  const rows = $$('#admContent tbody tr');
-  rows.forEach(tr => {
-    const statusEl = tr.querySelector('.status');
-    if(!statusEl) return;
-    const txt = statusEl.textContent.trim();
-    const map = {pending:'قيد الانتظار', shipped:'تم الشحن', done:'مكتمل', returns:'مرتجع'};
-    tr.style.display = (!v || txt === map[v]) ? '' : 'none';
-  });
+  <div style="margin-bottom:14px;color:var(--muted);font-size:.85em">${list.length} طلب</div>
+  <div class="adm-table-wrap"><table class="adm-table">
+    <thead><tr><th>الطلب</th><th>العميل</th><th>الهاتف</th><th>الإجمالي</th><th>الحالة</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+    <tbody>
+      ${list.map(o => {
+        const s = ST_LABEL[o.status] || ['—',''];
+        const orderJSON = JSON.stringify(o).replace(/'/g, "&#39;");
+        return `<tr>
+          <td><b>${o.id}</b></td>
+          <td>${esc(o.name)}</td>
+          <td>${esc(o.phone)}</td>
+          <td class="money">${money(o.total)}</td>
+          <td><span class="status ${s[1]}">${s[0]}</span></td>
+          <td style="font-size:.8em;color:var(--muted)">${new Date(o.date).toLocaleDateString('ar-EG')}</td>
+          <td><div class="cell-actions">
+            <button class="btn-sm btn-ghost" onclick='showInvoice(${orderJSON})'>🧾</button>
+            <button class="btn-sm btn-info" onclick='showLabel(${orderJSON})'>🏷️</button>
+            <button class="btn-sm btn-success" onclick="openTracking('${o.id}')">🔍</button>
+            <select class="btn-sm" style="margin:0;padding:5px;width:auto" onchange="setOrderStatus('${o.id}',this.value)">
+              <option value="pending" ${o.status==='pending'?'selected':''}>قيد الانتظار</option>
+              <option value="shipped" ${o.status==='shipped'?'selected':''}>تم الشحن</option>
+              <option value="done" ${o.status==='done'?'selected':''}>مكتمل</option>
+              <option value="returns" ${o.status==='returns'?'selected':''}>مرتجع</option>
+            </select>
+          </div></td>
+        </tr>`;
+      }).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">لا توجد طلبات</td></tr>'}
+    </tbody>
+  </table></div>`;
 }
 function setOrderStatus(id, status){
   const o = orders.find(x => x.id === id);
@@ -1552,77 +1606,62 @@ function setOrderStatus(id, status){
   saveOrders();
   addLog('warning', `تغيير حالة ${id} إلى ${ST_LABEL[status][0]}`);
   renderAdmin();
-  toast('تم تحديث الحالة', 'success');
+  toast('تم التحديث', 'success');
 }
 
-/* ---------- Customers ---------- */
 function customersAdminHTML(){
   const q = admSearchTerm.toLowerCase();
   const list = users.filter(u => !q || u.name.toLowerCase().includes(q) || u.phone.includes(q));
-  return `<div class="info-banner" style="margin-bottom:14px">
-    🔑 زر إعادة تعيين كلمة المرور متاح للمدير فقط.
-  </div>
-  <div class="adm-table-wrap">
-    <table class="adm-table">
-      <thead><tr><th>العميل</th><th>الهاتف</th><th>العنوان</th><th>الطلبات</th><th>أمان</th><th>تاريخ التسجيل</th><th>إجراءات</th></tr></thead>
-      <tbody>
-        ${list.map(u => {
-          const count = orders.filter(o => o.userId === u.id).length;
-          const secBadge = u.securityQuestion
-            ? '<span class="status done" title="' + esc(u.securityQuestion) + '">✅ مُعد</span>'
-            : '<span class="status returns">بدون</span>';
-          return `<tr>
-            <td><div class="cell-flex"><div class="avatar">${esc((u.name||'؟').charAt(0))}</div><b>${esc(u.name)}</b></div></td>
-            <td>${esc(u.phone)}</td>
-            <td style="color:var(--muted);font-size:.85em">${esc(u.address || '—')}</td>
-            <td><span class="status ship">${count}</span></td>
-            <td>${secBadge}</td>
-            <td style="font-size:.8em;color:var(--muted)">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('ar-EG') : '—'}</td>
-            <td>
-              <button class="btn-sm btn-warning" title="إعادة تعيين كلمة المرور" onclick="adminResetPassword('${u.id}')">🔑</button>
-            </td>
-          </tr>`;
-        }).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">لا يوجد عملاء</td></tr>'}
-      </tbody>
-    </table>
-  </div>`;
+  return `<div class="adm-table-wrap"><table class="adm-table">
+    <thead><tr><th>العميل</th><th>الهاتف</th><th>العنوان</th><th>الطلبات</th><th>أمان</th><th>إجراءات</th></tr></thead>
+    <tbody>
+      ${list.map(u => {
+        const count = orders.filter(o => o.userId === u.id).length;
+        const secBadge = u.securityQuestion ? '<span class="status done">✅</span>' : '<span class="status returns">بدون</span>';
+        return `<tr>
+          <td><div class="cell-flex"><div class="avatar">${esc((u.name||'؟').charAt(0))}</div><b>${esc(u.name)}</b></div></td>
+          <td>${esc(u.phone)}</td>
+          <td style="color:var(--muted);font-size:.85em">${esc(u.address || '—')}</td>
+          <td><span class="status ship">${count}</span></td>
+          <td>${secBadge}</td>
+          <td><button class="btn-sm btn-warning" onclick="adminResetPassword('${u.id}')">🔑</button></td>
+        </tr>`;
+      }).join('') || '<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">لا يوجد عملاء</td></tr>'}
+    </tbody>
+  </table></div>`;
 }
 function adminResetPassword(id){
   const u = users.find(x => x.id === id);
   if(!u) return;
-  const np = prompt(`إعادة تعيين كلمة المرور للعميل "${u.name}" (${u.phone}):\n\nأدخل كلمة المرور الجديدة (6 أحرف على الأقل):`);
+  const np = prompt(`كلمة مرور جديدة لـ "${u.name}" (6+ أحرف):`);
   if(np === null) return;
-  if(!np || np.length < 6){ toast('كلمة المرور 6 أحرف على الأقل', 'warning'); return; }
+  if(!np || np.length < 6){ toast('6 أحرف على الأقل', 'warning'); return; }
   u.password = np;
   saveUsers();
-  addLog('warning', `إعادة تعيين كلمة مرور: ${u.name} (${u.phone}) — بواسطة المدير`);
-  toast('تم إعادة تعيين كلمة المرور ✅', 'success');
+  addLog('warning', `إعادة تعيين كلمة مرور: ${u.name}`);
+  toast('✅ تم', 'success');
   renderAdmin();
 }
 
-/* ---------- Categories ---------- */
 function categoriesAdminHTML(){
-  return `
-  <div style="margin-bottom:14px"><button class="btn-success" onclick="openCategoryModal()">➕ إضافة قسم</button></div>
-  <div class="adm-table-wrap">
-    <table class="adm-table">
-      <thead><tr><th>القسم</th><th>الأيقونة</th><th>عدد المنتجات</th><th>إجراءات</th></tr></thead>
-      <tbody>
-        ${categories.map(c => {
-          const count = products.filter(p => p.cat === c.id && !p.hidden).length;
-          return `<tr>
-            <td><b>${esc(c.name)}</b></td>
-            <td style="font-size:1.3em">${esc(c.icon || '🏷️')}</td>
-            <td>${count}</td>
-            <td><div class="cell-actions">
-              <button class="btn-sm btn-ghost" onclick="openCategoryModal('${c.id}')">✏️</button>
-              <button class="btn-sm btn-outline" onclick="deleteCategory('${c.id}')">🗑️</button>
-            </div></td>
-          </tr>`;
-        }).join('') || '<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--muted)">لا توجد أقسام</td></tr>'}
-      </tbody>
-    </table>
-  </div>`;
+  return `<div style="margin-bottom:14px"><button class="btn-success" onclick="openCategoryModal()">➕ إضافة قسم</button></div>
+  <div class="adm-table-wrap"><table class="adm-table">
+    <thead><tr><th>القسم</th><th>الأيقونة</th><th>عدد المنتجات</th><th>إجراءات</th></tr></thead>
+    <tbody>
+      ${categories.map(c => {
+        const count = products.filter(p => p.cat === c.id && !p.hidden).length;
+        return `<tr>
+          <td><b>${esc(c.name)}</b></td>
+          <td style="font-size:1.3em">${esc(c.icon || '🏷️')}</td>
+          <td>${count}</td>
+          <td><div class="cell-actions">
+            <button class="btn-sm btn-ghost" onclick="openCategoryModal('${c.id}')">✏️</button>
+            <button class="btn-sm btn-outline" onclick="deleteCategory('${c.id}')">🗑️</button>
+          </div></td>
+        </tr>`;
+      }).join('') || '<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--muted)">لا توجد أقسام</td></tr>'}
+    </tbody>
+  </table></div>`;
 }
 function openCategoryModal(id){
   const c = id ? categories.find(x => x.id === id) : null;
@@ -1648,11 +1687,11 @@ function saveCategoryForm(){
   saveCategories();
   closeModal('categoryModal');
   renderAdmin(); renderShop();
-  toast('تم الحفظ ✅', 'success');
+  toast('✅ تم', 'success');
 }
 function deleteCategory(id){
   const used = products.filter(p => p.cat === id).length;
-  if(used){ toast('لا يمكن الحذف — القسم يحتوي ' + used + ' منتج', 'error'); return; }
+  if(used){ toast('القسم يحتوي ' + used + ' منتج', 'error'); return; }
   if(!confirm('حذف هذا القسم؟')) return;
   categories = categories.filter(c => c.id !== id);
   saveCategories();
@@ -1661,7 +1700,6 @@ function deleteCategory(id){
   toast('تم الحذف', 'success');
 }
 
-/* ---------- Logs ---------- */
 function logsAdminHTML(){
   if(!logs.length) return '<div class="empty-state"><span class="big">📝</span>لا توجد سجلات</div>';
   return logs.map(l => `<div class="log-item ${l.type}">
@@ -1670,28 +1708,20 @@ function logsAdminHTML(){
   </div>`).join('');
 }
 
-/* ---------- Settings ---------- */
 function settingsAdminHTML(){
   return `<div class="chart-box" style="max-width:560px">
     <h4>⚙️ إعدادات المتجر</h4>
-    <label>اسم المتجر</label>
-    <input id="st_store" value="${esc(settings.store)}">
-    <label>العملة</label>
-    <input id="st_currency" value="${esc(settings.currency)}">
-    <div class="row">
-      <div><label>تكلفة الشحن</label><input id="st_shipping" type="number" min="0" value="${settings.shipping}"></div>
-      <div><label>شحن مجاني بعد</label><input id="st_free" type="number" min="0" value="${settings.freeShip}"></div>
-    </div>
-    <label>كلمة مرور المدير</label>
-    <input id="st_pass" value="${esc(settings.adminPass)}">
-    <button class="btn-full btn-success" onclick="saveSettingsForm()">💾 حفظ الإعدادات</button>
+    <label>اسم المتجر</label><input id="st_store" value="${esc(settings.store)}">
+    <label>العملة</label><input id="st_currency" value="${esc(settings.currency)}">
+    <label>كلمة مرور المدير</label><input id="st_pass" value="${esc(settings.adminPass)}">
+    <button class="btn-full btn-success" onclick="saveSettingsForm()">💾 حفظ</button>
 
     <hr style="border:0;border-top:1px solid var(--border);margin:22px 0">
 
     <h4>💬 رقم واتساب المتجر</h4>
-    <div class="info-banner">
-      📞 أدخل رقم الواتساب بصيغة دولية (بدون + وبدون أصفار):<br>
-      🇪🇬 مصر: <b>201012345678</b> — 🇸🇦 السعودية: <b>966501234567</b>
+    <div class="info-banner" style="font-size:.8em">
+      📞 بصيغة دولية بدون + أو صفر:<br>
+      🇪🇬 مصر: <b>201012345678</b>
     </div>
     <label>رقم واتساب</label>
     <input id="st_whatsapp" value="${esc(settings.whatsapp || '')}" placeholder="201012345678" oninput="this.value=this.value.replace(/\D/g,'')">
@@ -1700,51 +1730,48 @@ function settingsAdminHTML(){
     <hr style="border:0;border-top:1px solid var(--border);margin:22px 0">
 
     <h4>🛡️ أمان حساب المدير</h4>
-    <div class="info-banner">🔑 سؤال الأمان يُستخدم لاستعادة كلمة مرور المدير.</div>
     <label>سؤال الأمان</label>
     <select id="st_admQ">
-      <option value="">-- بدون سؤال أمان --</option>
+      <option value="">-- بدون --</option>
       ${SECURITY_QUESTIONS.map(q => `<option ${settings.adminSecurityQuestion===q?'selected':''}>${esc(q)}</option>`).join('')}
     </select>
     <label>إجابة سؤال الأمان</label>
-    <input id="st_admA" value="${esc(settings.adminSecurityAnswer||'')}" placeholder="إجابتك">
-    <button class="btn-full btn-info" onclick="saveAdminSecurity()">🛡️ حفظ إعدادات الأمان</button>
+    <input id="st_admA" value="${esc(settings.adminSecurityAnswer||'')}">
+    <button class="btn-full btn-info" onclick="saveAdminSecurity()">🛡️ حفظ</button>
 
     <hr style="border:0;border-top:1px solid var(--border);margin:22px 0">
-    <button class="btn-full btn-outline" onclick="wipeData()">🗑️ مسح جميع البيانات</button>
+    <button class="btn-full btn-outline" onclick="wipeData()">🗑️ مسح كل البيانات</button>
   </div>`;
 }
 function saveSettingsForm(){
   settings.store = $('#st_store').value.trim() || 'SH STORE';
   settings.currency = $('#st_currency').value.trim() || 'ج.م';
-  settings.shipping = parseFloat($('#st_shipping').value) || 0;
-  settings.freeShip = parseFloat($('#st_free').value) || 0;
   settings.adminPass = $('#st_pass').value || 'admin123';
   saveSettings();
   addLog('warning', 'تحديث إعدادات المتجر');
   renderAdmin();
-  toast('تم حفظ الإعدادات ✅', 'success');
+  toast('✅ تم الحفظ', 'success');
 }
 function saveAdminSecurity(){
   const q = $('#st_admQ').value;
   const a = $('#st_admA').value.trim();
-  if(q && !a){ toast('أدخل إجابة سؤال الأمان', 'warning'); return; }
+  if(q && !a){ toast('أدخل الإجابة', 'warning'); return; }
   settings.adminSecurityQuestion = q;
   settings.adminSecurityAnswer = q ? a : '';
   saveSettings();
-  addLog('warning', 'تحديث سؤال أمان المدير');
-  toast('تم حفظ إعدادات الأمان ✅', 'success');
+  addLog('warning', 'تحديث أمان المدير');
+  toast('✅ تم', 'success');
   renderAdmin();
 }
 function wipeData(){
-  if(!confirm('سيتم حذف كل المنتجات والطلبات والعملاء. متأكد؟')) return;
-  ['products','categories','orders','users','logs','session'].forEach(k => localStorage.removeItem('sh_' + k));
+  if(!confirm('سيتم حذف كل البيانات. متأكد؟')) return;
+  ['products','categories','orders','users','cart','logs','session'].forEach(k => localStorage.removeItem('sh_' + k));
   localStorage.removeItem('sh_settings');
   location.reload();
 }
 
 /* ============================================================
-   MODALS
+   MODALS / INIT
 ============================================================ */
 function closeModal(id){ $('#' + id).classList.remove('show'); }
 document.addEventListener('click', e => {
@@ -1754,24 +1781,27 @@ document.addEventListener('keydown', e => {
   if(e.key === 'Escape') $$('.modal-overlay.show').forEach(m => m.classList.remove('show'));
 });
 
-/* ============================================================
-   INIT
-============================================================ */
 (function init(){
   const theme = DB.get('theme', 'light');
   document.documentElement.setAttribute('data-theme', theme);
   $('#themeBtn').textContent = theme === 'dark' ? '☀️' : '🌙';
-
   const lang = DB.get('lang', 'rtl');
   document.documentElement.setAttribute('dir', lang);
   document.documentElement.setAttribute('lang', lang === 'rtl' ? 'ar' : 'en');
   $('#langBtn').textContent = lang === 'rtl' ? 'EN' : 'AR';
-
   $('#year').textContent = new Date().getFullYear();
+
+  /* قائمة المحافظات */
+  const govSelect = $('#coGov');
+  if(govSelect){
+    govSelect.innerHTML = '<option value="">-- اختر المحافظة --</option>' +
+      EGYPT_GOVERNORATES.map(g => `<option value="${g}">${g}</option>`).join('');
+  }
 
   updateFloatingWA();
   renderHeader();
   renderShop();
+  renderCart();
   applyLang();
 
   const bar = $('#offlineBar');
