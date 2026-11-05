@@ -184,6 +184,16 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .info-banner.success{background:rgba(40,167,69,.1);border-color:rgba(40,167,69,.3);color:var(--success)}
 .info-banner.warning{background:rgba(243,156,18,.1);border-color:rgba(243,156,18,.3);color:var(--warning)}
 .info-banner.danger{background:rgba(231,76,60,.1);border-color:rgba(231,76,60,.3);color:var(--danger)}
+.track-step{display:flex;gap:14px;margin-bottom:18px;position:relative}
+.track-step:last-child{margin-bottom:0}
+.track-step .circle{width:46px;height:46px;border-radius:50%;background:var(--border);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3em;flex-shrink:0;transition:all .3s}
+.track-step.reached .circle{background:var(--success)}
+.track-step.active .circle{box-shadow:0 0 0 4px rgba(40,167,69,.2);animation:freeShipPulse 2s infinite}
+.track-step .txt{padding-top:6px;flex:1}
+.track-step .lbl{font-weight:bold;color:var(--muted);font-size:1em}
+.track-step.reached .lbl{color:var(--text)}
+.track-step .desc{font-size:.82em;color:var(--muted);margin-top:2px}
+.track-badge{margin-left:auto;background:var(--success);color:#fff;font-size:.7em;padding:3px 9px;border-radius:20px;align-self:flex-start;margin-top:8px;font-weight:bold;white-space:nowrap}
 @media(max-width:900px){
   .adm-sidebar{position:absolute;left:-100%;transition:left .3s;z-index:2001;height:100%}
   [dir="ltr"] .adm-sidebar{left:auto;right:-100%}
@@ -222,6 +232,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
       <div class="user-dropdown" id="userDropdown">
         <button onclick="openProfile()">👤 حسابي</button>
         <button onclick="openMyOrders()">📦 طلباتي</button>
+        <button onclick="openTracking()">🔍 تتبع طلبي</button>
         <button onclick="logout()" style="color:var(--danger)">🚪 خروج</button>
       </div>
     </div>
@@ -240,7 +251,10 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <button class="btn-sm" onclick="openAuth('user')">دخول / تسجيل</button>
   </div>
 
-  <!-- ================= SHOP ================= -->
+  <div style="text-align:center;margin-bottom:16px">
+    <button class="btn-ghost btn-sm" onclick="openTracking()">🔍 تتبع طلبك</button>
+  </div>
+
   <section id="shopSection">
     <h2 data-t="products">المنتجات</h2>
     <div id="categoryPills"></div>
@@ -256,7 +270,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <div class="products" id="productsGrid"></div>
   </section>
 
-  <!-- ================= CART ================= -->
   <section id="cartSection">
     <h2 data-t="cart">🛒 سلة المشتريات <span id="cartCount" style="display:none;background:var(--danger);color:#fff;border-radius:50%;padding:1px 8px;font-size:.75em;vertical-align:middle;margin-right:6px">0</span></h2>
     <div id="cartItems"></div>
@@ -283,7 +296,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 
 <div class="toast" id="toast"></div>
 
-<!-- ================= AUTH MODAL ================= -->
 <div class="modal-overlay" id="authModal">
   <div class="modal" style="max-width:440px">
     <div class="modal-header">
@@ -299,7 +311,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
-<!-- ================= INVOICE MODAL ================= -->
 <div class="modal-overlay" id="invoiceModal">
   <div class="modal" style="max-width:640px">
     <div class="modal-header no-print">
@@ -313,7 +324,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
-<!-- ================= LABEL MODAL ================= -->
 <div class="modal-overlay" id="labelModal">
   <div class="modal" style="max-width:460px">
     <div class="modal-header no-print">
@@ -327,7 +337,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
-<!-- ================= PRODUCT MODAL (ADMIN) ================= -->
 <div class="modal-overlay" id="productModal">
   <div class="modal" style="max-width:640px">
     <div class="modal-header">
@@ -363,7 +372,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
-<!-- ================= CATEGORY MODAL ================= -->
 <div class="modal-overlay" id="categoryModal">
   <div class="modal" style="max-width:420px">
     <div class="modal-header">
@@ -379,7 +387,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
-<!-- ================= PROFILE MODAL ================= -->
 <div class="modal-overlay" id="profileModal">
   <div class="modal" style="max-width:460px">
     <div class="modal-header">
@@ -398,7 +405,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
-<!-- ================= MY ORDERS MODAL ================= -->
 <div class="modal-overlay" id="myOrdersModal">
   <div class="modal" style="max-width:700px">
     <div class="modal-header">
@@ -409,7 +415,16 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
-<!-- ================= ADMIN DASHBOARD ================= -->
+<div class="modal-overlay" id="trackingModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <h3>🔍 تتبع الطلب</h3>
+      <button class="close-btn" onclick="closeModal('trackingModal')">✕</button>
+    </div>
+    <div id="trackingBody"></div>
+  </div>
+</div>
+
 <div id="adminDash">
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
   <aside class="adm-sidebar" id="admSidebar">
@@ -483,8 +498,9 @@ let authMode = 'user';
 let authTab = 'login';
 let forgotStep = 1;
 let forgotUser = null;
+let adminForgotStep = 1;
+let pendingImg = null;
 
-/* ---------- SEED ---------- */
 (function seed(){
   if(!categories){
     categories = [
@@ -512,12 +528,16 @@ let forgotUser = null;
     DB.set('products', products);
   }
   if(!settings){
-    settings = {store:'SH STORE', currency:'ج.م', shipping:30, freeShip:500, adminPass:'admin123'};
+    settings = {store:'SH STORE', currency:'ج.م', shipping:30, freeShip:500, adminPass:'admin123', adminSecurityQuestion:'', adminSecurityAnswer:''};
+    DB.set('settings', settings);
+  }
+  if(settings.adminSecurityQuestion === undefined){
+    settings.adminSecurityQuestion = '';
+    settings.adminSecurityAnswer = '';
     DB.set('settings', settings);
   }
 })();
 
-/* ---------- SAVE ---------- */
 const saveProducts   = () => DB.set('products', products);
 const saveCategories = () => DB.set('categories', categories);
 const saveOrders     = () => DB.set('orders', orders);
@@ -532,7 +552,6 @@ function addLog(type, msg){
   DB.set('logs', logs);
 }
 
-/* ---------- HELPERS ---------- */
 const money = n => (Number(n) || 0).toLocaleString('en-US') + ' ' + settings.currency;
 const currentUser = () => (session && session.role === 'user') ? (users.find(u => u.id === session.id) || null) : null;
 const isAdmin = () => !!(session && session.role === 'admin');
@@ -742,10 +761,20 @@ function checkout(){
   if(!name || !phone || !address){ toast('أكمل بيانات الشحن أولاً', 'warning'); return; }
   if(phone.replace(/\D/g,'').length < 8){ toast('رقم هاتف غير صالح', 'warning'); return; }
 
+  /* 🛡️ إصلاح: التحقق من وجود المنتجات (قد تكون محذوفة من تبويب آخر) */
   const items = cart.map(i => {
     const p = products.find(x => x.id === i.pid);
+    if(!p || p.hidden) return null;
     return {id: p.id, name: p.name, price: p.price, qty: i.qty};
-  });
+  }).filter(Boolean);
+
+  if(!items.length){
+    toast('المنتجات في السلة لم تعد متوفرة', 'error');
+    cart = [];
+    saveCart(); renderHeader(); renderCart();
+    return;
+  }
+
   const sub  = cartSubtotal();
   const ship = shipCost(sub);
 
@@ -828,7 +857,85 @@ function showInvoice(o){ $('#invoiceBody').innerHTML = invoiceHTML(o); $('#invoi
 function showLabel(o){ $('#labelBody').innerHTML = labelHTML(o); $('#labelModal').classList.add('show'); }
 
 /* ============================================================
-   AUTH  (with password recovery)
+   ORDER TRACKING
+============================================================ */
+function openTracking(orderId = null){
+  $('#trackingModal').classList.add('show');
+  if(orderId){
+    renderTracking(orderId);
+  } else {
+    $('#trackingBody').innerHTML = `
+      <div class="info-banner">
+        📦 أدخل رقم الطلب لعرض حالة الشحن والتوصيل
+      </div>
+      <label>رقم الطلب</label>
+      <input id="trackOrderId" placeholder="مثال: ORD-1001">
+      <button class="btn-full" onclick="renderTracking($('#trackOrderId').value.trim())">🔍 تتبع الطلب</button>`;
+    setTimeout(() => $('#trackOrderId')?.focus(), 100);
+  }
+}
+
+function renderTracking(orderId){
+  if(!orderId){ toast('أدخل رقم الطلب', 'warning'); return; }
+  const o = orders.find(x => x.id.toUpperCase() === orderId.toUpperCase());
+  if(!o){ toast('لا يوجد طلب بهذا الرقم', 'error'); return; }
+
+  const isReturn = o.status === 'returns';
+  const steps = [
+    {key:'pending', label:'قيد الانتظار', icon:'⏳', desc:'تم استلام طلبك وجاري التحضير'},
+    {key:'shipped', label:'تم الشحن',     icon:'🚚', desc:'طلبك في الطريق إليك'},
+    {key:'done',    label:'تم التوصيل',   icon:'✅', desc:'تم تسليم الطلب بنجاح'}
+  ];
+  const currentIdx = steps.findIndex(s => s.key === o.status);
+
+  let timelineHTML = '';
+  if(isReturn){
+    timelineHTML = `<div class="info-banner danger" style="text-align:center">
+      <div style="font-size:2em;margin-bottom:6px">↩️</div>
+      <b>هذا الطلب مرتجع</b><br>
+      <span style="font-size:.85em">تواصل مع خدمة العملاء لمزيد من التفاصيل</span>
+    </div>`;
+  } else {
+    timelineHTML = `<div style="background:var(--bg);border-radius:10px;padding:20px">
+      ${steps.map((s, i) => {
+        const reached = i <= currentIdx;
+        const active = i === currentIdx;
+        return `<div class="track-step ${reached ? 'reached' : ''} ${active ? 'active' : ''}">
+          <div class="circle">${s.icon}</div>
+          <div class="txt">
+            <div class="lbl">${s.label}</div>
+            <div class="desc">${reached ? s.desc : '—'}</div>
+          </div>
+          ${active ? '<span class="track-badge">الحالة الحالية</span>' : ''}
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  const orderJSON = JSON.stringify(o).replace(/'/g, "&#39;");
+  $('#trackingBody').innerHTML = `
+    <div class="info-banner success" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <div><b>رقم الطلب:</b> ${o.id}</div>
+      <div style="font-size:.82em">${new Date(o.date).toLocaleString('ar-EG')}</div>
+    </div>
+    ${timelineHTML}
+    <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:14px;font-size:.88em;line-height:1.9">
+      <div><b>المستلم:</b> ${esc(o.name)}</div>
+      <div><b>الهاتف:</b> ${esc(o.phone)}</div>
+      <div><b>العنوان:</b> ${esc(o.address)}</div>
+      <div style="border-top:1px dashed var(--border);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between">
+        <span><b>عدد المنتجات:</b> ${o.items.length}</span>
+        <span style="color:var(--primary);font-weight:bold">${money(o.total)}</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn-full btn-ghost" onclick='showInvoice(${orderJSON});closeModal("trackingModal")'>🧾 الفاتورة</button>
+      <button class="btn-full" onclick="closeModal('trackingModal')">إغلاق</button>
+    </div>`;
+}
+
+/* ============================================================
+   AUTH
 ============================================================ */
 const SECURITY_QUESTIONS = [
   'ما هو اسم أول حيوان أليف لديك؟',
@@ -844,6 +951,7 @@ function openAuth(mode = 'user'){
   authTab = 'login';
   forgotStep = 1;
   forgotUser = null;
+  adminForgotStep = 1;
   $('#authModal').classList.add('show');
   renderAuthForm();
 }
@@ -870,7 +978,9 @@ function renderAuthForm(){
       <label>كلمة مرور المدير</label>
       <input type="password" id="admPass" placeholder="••••••••">
       <button class="btn-full" onclick="doAdminLogin()">🔐 دخول</button>
-      <div style="text-align:center;margin-top:10px;font-size:.78em;color:var(--muted)">الافتراضية: admin123</div>`;
+      <div style="text-align:center;margin-top:14px">
+        <a href="#" onclick="adminForgotStep=1;renderAdminForgot();return false" style="color:var(--primary);font-size:.85em;text-decoration:none">🔑 نسيت كلمة المرور؟</a>
+      </div>`;
   } else if(authTab === 'login'){
     f.innerHTML = `
       <label>رقم الهاتف</label>
@@ -996,6 +1106,80 @@ function resetPassword(){
   switchAuthTab('login');
 }
 
+/* ============================================================
+   ADMIN PASSWORD RECOVERY
+============================================================ */
+function renderAdminForgot(){
+  const f = $('#authForm');
+  $('#authTitle').textContent = 'استعادة كلمة مرور المدير';
+  $('#authTabs').style.display = 'none';
+  $('#authAdminMode').style.display = 'block';
+
+  if(adminForgotStep === 1){
+    if(!settings.adminSecurityQuestion){
+      f.innerHTML = `
+        <div style="text-align:center;padding:16px 0">
+          <div style="font-size:2.8em;margin-bottom:12px">🔒</div>
+          <div style="font-weight:bold;margin-bottom:10px;font-size:1.05em">لا يمكن استعادة كلمة المرور</div>
+          <div style="color:var(--muted);font-size:.87em;line-height:1.8;margin-bottom:18px">
+            لم يتم إعداد <b>سؤال أمان</b> لحساب المدير.<br>
+            تواصل مع مطوّر/مسؤول النظام لإعادة تعيين كلمة المرور.
+          </div>
+          <div class="info-banner warning" style="text-align:right;font-size:.8em">
+            💡 <b>لتجنّب ذلك مستقبلاً:</b><br>
+            بعد الدخول، اذهب إلى <b>⚙️ الإعدادات → 🛡️ أمان حساب المدير</b><br>وأعد سؤال الأمان واحفظ إجابته في مكان آمن.
+          </div>
+          <button class="btn-full btn-ghost" style="margin-top:14px" onclick="renderAuthForm()">← رجوع للدخول</button>
+        </div>`;
+      return;
+    }
+    f.innerHTML = `
+      <div class="info-banner">
+        <b>سؤال الأمان:</b><br>${esc(settings.adminSecurityQuestion)}
+      </div>
+      <label>الإجابة</label>
+      <input id="admForgotAns" placeholder="أدخل إجابتك">
+      <button class="btn-full" onclick="verifyAdminSecurity()">تحقق ←</button>
+      <div style="text-align:center;margin-top:12px">
+        <a href="#" onclick="adminForgotStep=1;renderAuthForm();return false" style="color:var(--muted);font-size:.82em;text-decoration:none">← رجوع للدخول</a>
+      </div>`;
+  } else if(adminForgotStep === 2){
+    f.innerHTML = `
+      <div class="info-banner success">✅ تم التحقق بنجاح. اختر كلمة مرور جديدة.</div>
+      <label>كلمة المرور الجديدة</label>
+      <input type="password" id="admNewPass" placeholder="6 أحرف على الأقل">
+      <label>تأكيد كلمة المرور</label>
+      <input type="password" id="admNewPass2" placeholder="أعد إدخال كلمة المرور">
+      <button class="btn-full btn-success" onclick="resetAdminPassword()">💾 حفظ كلمة المرور الجديدة</button>`;
+  }
+}
+
+function verifyAdminSecurity(){
+  const ans = ($('#admForgotAns').value || '').trim().toLowerCase();
+  if(!ans){ toast('أدخل الإجابة', 'warning'); return; }
+  const correct = (settings.adminSecurityAnswer || '').trim().toLowerCase();
+  if(ans !== correct){ toast('الإجابة غير صحيحة', 'error'); return; }
+  adminForgotStep = 2;
+  renderAdminForgot();
+}
+
+function resetAdminPassword(){
+  const p1 = $('#admNewPass').value;
+  const p2 = $('#admNewPass2').value;
+  if(!p1 || p1.length < 6){ toast('كلمة المرور 6 أحرف على الأقل', 'warning'); return; }
+  if(p1 !== p2){ toast('كلمتا المرور غير متطابقتين', 'warning'); return; }
+  settings.adminPass = p1;
+  saveSettings();
+  addLog('warning', 'استعادة كلمة مرور المدير عبر سؤال الأمان');
+  toast('تم تغيير كلمة المرور ✅ يمكنك الدخول الآن', 'success');
+  adminForgotStep = 1;
+  authMode = 'admin';
+  renderAuthForm();
+}
+
+/* ============================================================
+   LOGIN / REGISTER
+============================================================ */
 function doAdminLogin(){
   const pass = $('#admPass').value;
   if(pass !== settings.adminPass){ toast('كلمة المرور غير صحيحة', 'error'); return; }
@@ -1111,7 +1295,10 @@ function renderMyOrders(){
         <span class="name">${o.id} <span class="status ${s[1]}">${s[0]}</span></span>
         <span class="unit">${new Date(o.date).toLocaleDateString('ar-EG')} — ${o.items.length} منتج — <b>${money(o.total)}</b></span>
       </div>
-      <button class="btn-sm btn-ghost" onclick='showInvoice(${JSON.stringify(o).replace(/'/g,"&#39;")})'>🧾 فاتورة</button>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn-sm btn-ghost" onclick='showInvoice(${JSON.stringify(o).replace(/'/g,"&#39;")})'>🧾</button>
+        <button class="btn-sm" onclick="closeModal('myOrdersModal');openTracking('${o.id}')">🔍 تتبع</button>
+      </div>
     </div>`;
   }).join('');
 }
@@ -1162,7 +1349,10 @@ function dashboardHTML(){
   const visible = products.length - hidden;
   const noSec = users.filter(u => !u.securityQuestion).length;
 
-  return `<div class="kpi-grid">
+  return `${!settings.adminSecurityQuestion ? `<div class="info-banner warning" style="margin-bottom:16px">
+    ⚠️ <b>حساب المدير بدون سؤال أمان!</b> يُنصح بإعداده من <b>⚙️ الإعدادات → 🛡️ أمان حساب المدير</b> لتمكين استعادة كلمة المرور.
+  </div>` : ''}
+  <div class="kpi-grid">
     <div class="kpi"><span class="k-ic">💰</span><span class="k-val">${money(revenue)}</span><span class="k-lbl">إجمالي الإيرادات</span></div>
     <div class="kpi success"><span class="k-ic">🧾</span><span class="k-val">${orders.length}</span><span class="k-lbl">إجمالي الطلبات</span></div>
     <div class="kpi warning"><span class="k-ic">⏳</span><span class="k-val">${pending}</span><span class="k-lbl">قيد الانتظار</span></div>
@@ -1319,7 +1509,8 @@ function bulkDeleteProducts(){
   if(!selProducts.size) return;
   if(!confirm('حذف ' + selProducts.size + ' منتج؟')) return;
   products = products.filter(p => !selProducts.has(p.id));
-  saveProducts(); selProducts.clear();
+  cart = cart.filter(i => !selProducts.has(i.pid));
+  saveProducts(); saveCart(); selProducts.clear();
   addLog('danger', 'حذف مجموعة منتجات');
   renderAdmin(); renderShop(); renderCart(); renderHeader();
   toast('تم الحذف', 'success');
@@ -1403,7 +1594,6 @@ function openProductModal(id){
   $('#productModal').classList.add('show');
 }
 
-let pendingImg = null;
 function handleImgUpload(input){
   const file = input.files && input.files[0];
   if(!file) return;
@@ -1478,6 +1668,7 @@ function ordersAdminHTML(){
       <tbody>
         ${list.map(o => {
           const s = ST_LABEL[o.status] || ['—',''];
+          const orderJSON = JSON.stringify(o).replace(/'/g, "&#39;");
           return `<tr>
             <td><b>${o.id}</b></td>
             <td>${esc(o.name)}</td>
@@ -1487,8 +1678,9 @@ function ordersAdminHTML(){
             <td style="font-size:.8em;color:var(--muted)">${new Date(o.date).toLocaleDateString('ar-EG')}</td>
             <td>
               <div class="cell-actions">
-                <button class="btn-sm btn-ghost" onclick='showInvoice(${JSON.stringify(o).replace(/'/g,"&#39;")})'>🧾</button>
-                <button class="btn-sm btn-info" onclick='showLabel(${JSON.stringify(o).replace(/'/g,"&#39;")})'>🏷️</button>
+                <button class="btn-sm btn-ghost" onclick='showInvoice(${orderJSON})' title="فاتورة">🧾</button>
+                <button class="btn-sm btn-info" onclick='showLabel(${orderJSON})' title="بوليصة">🏷️</button>
+                <button class="btn-sm btn-success" onclick="openTracking('${o.id}')" title="تتبع">🔍</button>
                 <select class="btn-sm" style="margin:0;padding:5px;width:auto" onchange="setOrderStatus('${o.id}',this.value)">
                   <option value="pending" ${o.status==='pending'?'selected':''}>قيد الانتظار</option>
                   <option value="shipped" ${o.status==='shipped'?'selected':''}>تم الشحن</option>
@@ -1660,7 +1852,23 @@ function settingsAdminHTML(){
     <label>كلمة مرور المدير</label>
     <input id="st_pass" value="${esc(settings.adminPass)}">
     <button class="btn-full btn-success" onclick="saveSettingsForm()">💾 حفظ الإعدادات</button>
-    <hr style="border:0;border-top:1px solid var(--border);margin:18px 0">
+
+    <hr style="border:0;border-top:1px solid var(--border);margin:22px 0">
+
+    <h4>🛡️ أمان حساب المدير</h4>
+    <div class="info-banner">
+      🔑 سؤال الأمان يُستخدم لاستعادة كلمة مرور المدير إذا نسيتها. احفظ الإجابة جيداً.
+    </div>
+    <label>سؤال الأمان</label>
+    <select id="st_admQ">
+      <option value="">-- بدون سؤال أمان --</option>
+      ${SECURITY_QUESTIONS.map(q => `<option ${settings.adminSecurityQuestion===q?'selected':''}>${esc(q)}</option>`).join('')}
+    </select>
+    <label>إجابة سؤال الأمان</label>
+    <input id="st_admA" value="${esc(settings.adminSecurityAnswer||'')}" placeholder="إجابتك (احفظها جيداً)">
+    <button class="btn-full btn-info" onclick="saveAdminSecurity()">🛡️ حفظ إعدادات الأمان</button>
+
+    <hr style="border:0;border-top:1px solid var(--border);margin:22px 0">
     <button class="btn-full btn-outline" onclick="wipeData()">🗑️ مسح جميع البيانات</button>
   </div>`;
 }
@@ -1675,6 +1883,18 @@ function saveSettingsForm(){
   addLog('warning', 'تحديث إعدادات المتجر');
   renderAdmin(); renderCart(); renderShop();
   toast('تم حفظ الإعدادات ✅', 'success');
+}
+
+function saveAdminSecurity(){
+  const q = $('#st_admQ').value;
+  const a = $('#st_admA').value.trim();
+  if(q && !a){ toast('أدخل إجابة سؤال الأمان', 'warning'); return; }
+  settings.adminSecurityQuestion = q;
+  settings.adminSecurityAnswer = q ? a : '';
+  saveSettings();
+  addLog('warning', 'تحديث سؤال أمان المدير');
+  toast('تم حفظ إعدادات الأمان ✅', 'success');
+  renderAdmin();
 }
 
 function wipeData(){
