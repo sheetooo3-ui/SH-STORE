@@ -41,9 +41,6 @@ label{font-weight:bold;font-size:.9em;display:block;margin-bottom:2px}
 .badge.new{background:var(--success)}
 .badge.free{position:absolute;bottom:8px;left:8px;top:auto;right:auto;background:linear-gradient(135deg,#ff9500 0%,#ff5000 100%);color:#fff;font-size:.6em;padding:4px 9px;border-radius:20px;font-weight:bold;z-index:3;display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 10px rgba(255,80,0,.5);animation:freeShipPulse 2.5s ease-in-out infinite;white-space:nowrap}
 @keyframes freeShipPulse{0%,100%{box-shadow:0 2px 10px rgba(255,80,0,.5);transform:scale(1)}50%{box-shadow:0 2px 16px rgba(255,80,0,.85);transform:scale(1.06)}}
-.card-cart-btn{position:absolute;top:8px;left:8px;z-index:5;background:#fff;color:var(--primary);border:0;width:38px;height:38px;border-radius:50%;font-size:1.15em;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;transition:all .2s}
-.card-cart-btn:hover{background:var(--primary);color:#fff;transform:scale(1.1)}
-.card-cart-btn.added{background:var(--success);color:#fff}
 .card-body{padding:12px;flex:1;display:flex;flex-direction:column}
 .card h3{margin:0 0 6px;font-size:.9em;line-height:1.3}
 .card .desc{margin:0 0 8px;font-size:.75em;color:var(--muted);flex:1;line-height:1.4}
@@ -190,18 +187,13 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .track-step.reached .lbl{color:var(--text)}
 .track-step .desc{font-size:.82em;color:var(--muted);margin-top:2px}
 .track-badge{margin-left:auto;background:var(--success);color:#fff;font-size:.7em;padding:3px 9px;border-radius:20px;align-self:flex-start;margin-top:8px;font-weight:bold}
-.btn-order-wa{background:linear-gradient(135deg,#25D366,#128C7E)!important;color:#fff!important;padding:13px 10px!important;font-size:.92em!important;font-weight:bold;border-radius:8px;width:100%;margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 10px rgba(37,211,102,.35);transition:all .2s;border:0;cursor:pointer;font-family:inherit}
-.btn-order-wa:hover:not(:disabled){background:linear-gradient(135deg,#128C7E,#075E54)!important;transform:translateY(-2px)}
-.btn-order-wa:disabled{opacity:.5;cursor:not-allowed;background:#999!important}
-.btn-wa{background:linear-gradient(135deg,#25D366,#128C7E)!important;color:#fff!important;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px!important;font-size:1.05em!important}
+/* WhatsApp */
+.btn-wa{background:linear-gradient(135deg,#25D366,#128C7E)!important;color:#fff!important;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px!important;font-size:1.05em!important;font-weight:bold;box-shadow:0 3px 10px rgba(37,211,102,.35)}
 .btn-wa:hover{background:linear-gradient(135deg,#128C7E,#075E54)!important}
-#floatingWA{position:fixed;bottom:20px;left:20px;width:58px;height:58px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7em;cursor:pointer;box-shadow:0 6px 20px rgba(37,211,102,.5);z-index:1500;text-decoration:none;transition:transform .2s;animation:waPulse 2.5s ease-in-out infinite;border:0}
-#floatingWA:hover{transform:scale(1.1)}
-#floatingWA.wa-hidden{display:none!important}
-@keyframes waPulse{0%,100%{box-shadow:0 6px 20px rgba(37,211,102,.5)}50%{box-shadow:0 6px 28px rgba(37,211,102,.9)}}
-#floatingCart{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#0a7cff,#0052b8);color:#fff;border:0;padding:14px 20px;border-radius:30px;font-size:1em;font-weight:bold;cursor:pointer;box-shadow:0 6px 20px rgba(10,124,255,.5);z-index:1500;display:none;align-items:center;gap:10px;font-family:inherit}
+#floatingCart{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#0a7cff,#0052b8);color:#fff;border:0;padding:14px 20px;border-radius:30px;font-size:1em;font-weight:bold;cursor:pointer;box-shadow:0 6px 20px rgba(10,124,255,.5);z-index:1500;display:none;align-items:center;gap:10px;font-family:inherit;animation:cartPulse 2s ease-in-out infinite}
 #floatingCart.show{display:flex}
 #floatingCart .count-badge{background:#fff;color:#0a7cff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.85em;font-weight:bold}
+@keyframes cartPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @media(max-width:900px){
   .adm-sidebar{position:absolute;left:-100%;transition:left .3s;z-index:2001;height:100%}
   [dir="ltr"] .adm-sidebar{left:auto;right:-100%}
@@ -218,8 +210,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   .card h3{font-size:.8em}
   .price{font-size:.95em}
   .badge.free{font-size:.55em;padding:3px 7px}
-  #floatingWA,#floatingCart{bottom:15px;width:auto;height:auto;padding:12px 16px;font-size:.9em}
-  #floatingWA{width:50px;height:50px;padding:0;font-size:1.4em}
+  #floatingCart{bottom:15px;right:15px;padding:12px 16px;font-size:.9em}
 }
 @media print{
   body *{visibility:hidden}
@@ -290,7 +281,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     </div>
 
     <div class="info-banner" style="font-size:.82em">
-      📝 املأ بياناتك ثم اضغط "إرسال الطلب على واتساب" — سيتم فتح واتساب برسالة تحتوي كل تفاصيل طلبك.
+      📝 املأ بياناتك ثم اضغط "اطلب الآن 💬" — سيتم فتح واتساب برسالة تحتوي كل تفاصيل الفاتورة.
     </div>
 
     <div class="row">
@@ -298,7 +289,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
       <div><label>رقم الهاتف <span style="color:var(--danger)">*</span></label><input id="coPhone" inputmode="tel" placeholder="01xxxxxxxxx"></div>
     </div>
     <div class="row">
-      <div><label>المحافظة <span style="color:var(--danger)">*</span></label><select id="coGov"><option value="">-- اختر المحافظة --</option></select></div>
+      <div><label>المحافظة <span style="color:var(--danger)">*</span></label><select id="coGov"><option value="">-- اختر --</option></select></div>
       <div><label>المدينة <span style="color:var(--danger)">*</span></label><input id="coCity" placeholder="مثال: مدينة نصر"></div>
     </div>
     <label>العنوان بالتفصيل <span style="color:var(--danger)">*</span></label>
@@ -306,18 +297,12 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <label>ملاحظات (اختياري)</label>
     <textarea id="coNotes" rows="2" placeholder="أي تفاصيل إضافية..."></textarea>
 
-    <button class="btn-full btn-wa" onclick="sendCartToWhatsApp()">📤 إرسال الطلب على واتساب</button>
+    <button class="btn-full btn-wa" id="checkoutBtn" onclick="sendCartToWhatsApp()">اطلب الآن 💬</button>
   </section>
 </div>
 
-<footer>
-  © <span id="year"></span> SH STORE — جميع الحقوق محفوظة
-  <div style="margin-top:8px">
-    <a href="#" onclick="openWhatsApp();return false" style="color:#25D366;text-decoration:none;font-weight:bold;font-size:.9em">💬 تواصل معنا عبر واتساب</a>
-  </div>
-</footer>
+<footer>© <span id="year"></span> SH STORE — جميع الحقوق محفوظة</footer>
 
-<a id="floatingWA" onclick="openWhatsApp()" title="تواصل معنا عبر واتساب">💬</a>
 <button id="floatingCart" onclick="scrollToCart()">🛒 السلة <span class="count-badge" id="floatingCount">0</span></button>
 
 <div class="toast" id="toast"></div>
@@ -664,11 +649,9 @@ function renderShop(){
     const cat = categories.find(c => c.id === p.cat);
     const out = p.stock <= 0;
     const hasDiscount = p.oldPrice > p.price;
-    const inCart = cart.some(i => i.pid === p.id);
     return `<div class="card">
       <div class="card-img">
         ${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.name)}">` : (p.icon || '📦')}
-        ${!out ? `<button class="card-cart-btn ${inCart?'added':''}" onclick="addToCart('${p.id}')" title="أضف للسلة">🛒</button>` : ''}
         ${p.isNew ? '<span class="badge new">جديد</span>' : (hasDiscount ? '<span class="badge">خصم</span>' : '')}
         ${p.freeShip ? '<span class="badge free">🚚 شحن مجاني</span>' : ''}
       </div>
@@ -677,10 +660,7 @@ function renderShop(){
         <h3>${esc(p.name)}</h3>
         <p class="desc">${esc(p.desc || '')}</p>
         <div class="price">${hasDiscount ? `<span class="old">${money(p.oldPrice)}</span>` : ''}${money(p.price)}</div>
-        ${out 
-          ? `<button class="btn-order-wa" disabled>❌ نفدت الكمية</button>`
-          : `<button class="btn-order-wa" onclick="orderViaWhatsApp('${p.id}')">اطلب الآن 💬</button>`
-        }
+        <button class="btn-full ${out ? '' : 'btn-success'}" ${out ? 'disabled' : ''} onclick="addToCart('${p.id}')">${out ? '❌ نفدت الكمية' : '🛒 أضف للسلة'}</button>
       </div>
     </div>`;
   }).join('');
@@ -700,9 +680,14 @@ function addToCart(pid){
   } else {
     cart.push({pid, qty: 1});
   }
-  saveCart(); renderHeader(); renderCart(); renderShop();
+  saveCart(); renderHeader(); renderCart();
   toast(`✅ تمت إضافة "${p.name}" إلى السلة`, 'success');
+  setTimeout(() => {
+    const cartEl = document.getElementById('cartSection');
+    if(cartEl) cartEl.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 350);
 }
+
 function changeQty(pid, d){
   const item = cart.find(i => i.pid === pid);
   if(!item) return;
@@ -712,13 +697,15 @@ function changeQty(pid, d){
   if(next <= 0){ removeFromCart(pid); return; }
   if(next > p.stock){ toast('الكمية المتاحة: ' + p.stock, 'warning'); return; }
   item.qty = next;
-  saveCart(); renderHeader(); renderCart(); renderShop();
+  saveCart(); renderHeader(); renderCart();
 }
+
 function removeFromCart(pid){
   cart = cart.filter(i => i.pid !== pid);
-  saveCart(); renderHeader(); renderCart(); renderShop();
+  saveCart(); renderHeader(); renderCart();
   toast('تم الحذف من السلة', '');
 }
+
 function renderCart(){
   const el = $('#cartItems');
   const before = cart.length;
@@ -739,8 +726,10 @@ function renderCart(){
     el.innerHTML = `<div class="empty"><span class="big">🛒</span>السلة فارغة — ابدأ بإضافة منتجات</div>`;
     $('#cartTotal').textContent = money(0);
     $('#cartTotalLbl').textContent = 'الإجمالي';
+    $('#checkoutBtn').disabled = true;
     return;
   }
+  $('#checkoutBtn').disabled = false;
 
   el.innerHTML = cart.map(i => {
     const p = products.find(x => x.id === i.pid);
@@ -769,62 +758,10 @@ function renderCart(){
 ============================================================ */
 function waNumber(){ return (settings.whatsapp || '').replace(/\D/g, ''); }
 
-function openWhatsApp(){
-  const num = waNumber();
-  if(!num){ toast('⚠️ لم يتم إعداد رقم واتساب المتجر', 'warning'); return; }
-  const msg = `مرحباً ${settings.store} 👋\nأرغب في الاستفسار عن المنتجات`;
-  window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-/* طلب منتج واحد مباشرة */
-function orderViaWhatsApp(pid){
-  const p = products.find(x => x.id === pid);
-  if(!p){ toast('المنتج غير موجود', 'error'); return; }
-  const num = waNumber();
-  if(!num){ toast('⚠️ لم يتم إعداد رقم واتساب المتجر', 'warning'); return; }
-
-  const visibleProducts = products.filter(x => !x.hidden);
-  const productNum = visibleProducts.findIndex(x => x.id === pid) + 1;
-
-  let qty = 1;
-  if(p.stock > 1){
-    const input = prompt(`كم عدد "${p.name}" الذي تريده؟\n\n📦 المتاح: ${p.stock}`, '1');
-    if(input === null) return;
-    qty = parseInt(input);
-    if(!qty || qty < 1) qty = 1;
-    if(qty > p.stock){ toast(`⚠️ المتاح فقط ${p.stock}`, 'warning'); qty = p.stock; }
-  }
-
-  const total = p.price * qty;
-  const msg = 
-    `🛒 *طلب منتج جديد*\n` +
-    `━━━━━━━━━━━━━━━━━━\n\n` +
-    `🔢 *رقم المنتج:* #${productNum}\n` +
-    `📦 *اسم المنتج:* ${p.name}\n` +
-    `📝 *الوصف:* ${p.desc || '—'}\n\n` +
-    `🔢 *العدد:* X${qty}\n` +
-    `💰 *سعر الوحدة:* ${money(p.price)}\n` +
-    `💵 *الإجمالي:* ${money(total)}\n` +
-    (p.oldPrice > p.price ? `🎁 *قبل الخصم:* ${money(p.oldPrice)}\n` : '') +
-    (p.freeShip ? `🚚 *شحن مجاني* 🎉\n` : '') +
-    `\n━━━━━━━━━━━━━━━━━━\n\n` +
-    `✍️ *يرجى إرسال بياناتك:*\n\n` +
-    `1. الاسم الكامل\n` +
-    `2. رقم الهاتف\n` +
-    `3. العنوان بالتفصيل (المحافظة، المدينة، الشارع)\n\n` +
-    `━━━━━━━━━━━━━━━━━━\n\n` +
-    `✅ سنؤكد طلبك فوراً`;
-
-  window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
-  addLog('info', `طلب واتساب لمنتج: ${p.name} × ${qty}`);
-  toast(`✅ تم فتح واتساب — العدد X${qty}`, 'success');
-}
-
-/* إرسال الطلب كاملاً من السلة */
 function sendCartToWhatsApp(){
-  if(!cart.length){ toast('السلة فارغة', 'error'); return; }
+  if(!cart.length){ toast('السلة فارغة — أضف منتجات أولاً', 'error'); return; }
   const num = waNumber();
-  if(!num){ toast('⚠️ لم يتم إعداد رقم واتساب المتجر', 'warning'); return; }
+  if(!num){ toast('⚠️ لم يتم إعداد رقم واتساب المتجر — تواصل مع الإدارة', 'warning'); return; }
 
   const name = ($('#coName')?.value || '').trim();
   const phone = ($('#coPhone')?.value || '').trim();
@@ -834,7 +771,7 @@ function sendCartToWhatsApp(){
   const notes = ($('#coNotes')?.value || '').trim();
 
   if(!name || !phone || !gov || !city || !addr){
-    toast('⚠️ أكمل بيانات الشحن أولاً (الاسم، الهاتف، المحافظة، المدينة، العنوان)', 'warning');
+    toast('⚠️ أكمل بيانات الشحن (الاسم، الهاتف، المحافظة، المدينة، العنوان)', 'warning');
     return;
   }
   if(phone.replace(/\D/g,'').length < 8){
@@ -842,7 +779,6 @@ function sendCartToWhatsApp(){
     return;
   }
 
-  /* بيانات الطلب */
   const items = cart.map(i => {
     const p = products.find(x => x.id === i.pid);
     return p ? {name: p.name, price: p.price, qty: i.qty, id: p.id} : null;
@@ -857,7 +793,6 @@ function sendCartToWhatsApp(){
   });
   const fullAddress = [gov, city, addr].join('، ');
 
-  /* قائمة المنتجات مع الترقيم */
   const itemsList = items.map((it, idx) => {
     const productNum = visibleProducts.findIndex(x => x.id === it.id) + 1;
     return `${idx + 1}. 📦 ${it.name}\n` +
@@ -866,7 +801,7 @@ function sendCartToWhatsApp(){
   }).join('\n\n');
 
   const msg =
-    `🛒 *طلب جديد*\n` +
+    `🛒 *فاتورة طلب جديد*\n` +
     `━━━━━━━━━━━━━━━━━━\n\n` +
     `📋 *Order No:* ${orderId}\n` +
     `📅 *Date:* ${dateStr}\n\n` +
@@ -886,7 +821,6 @@ function sendCartToWhatsApp(){
 
   window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
 
-  /* حفظ الطلب في السجل الداخلي للتتبع */
   const order = {
     id: orderId,
     userId: currentUser() ? session.id : null,
@@ -902,7 +836,6 @@ function sendCartToWhatsApp(){
   saveOrders();
   addLog('info', `طلب واتساب ${orderId} — ${money(subtotal)}`);
 
-  /* تفريغ السلة */
   cart = [];
   saveCart();
   ['coName','coPhone','coCity','coAddress','coNotes'].forEach(id => {
@@ -914,11 +847,6 @@ function sendCartToWhatsApp(){
   toast(`✅ تم فتح واتساب — رقم الطلب: ${orderId}`, 'success');
 }
 
-function updateFloatingWA(){
-  const wa = $('#floatingWA');
-  if(!wa) return;
-  wa.classList.toggle('wa-hidden', !waNumber());
-}
 function saveWhatsApp(){
   const num = ($('#st_whatsapp').value || '').replace(/\D/g, '');
   if(num && num.length < 10){ toast('رقم غير صالح — استخدم الصيغة الدولية (201012345678)', 'warning'); return; }
@@ -926,7 +854,6 @@ function saveWhatsApp(){
   saveSettings();
   addLog('warning', 'تحديث رقم واتساب المتجر: ' + (num || 'محذوف'));
   toast(num ? '✅ تم حفظ رقم الواتساب' : 'تم حذف رقم الواتساب', 'success');
-  updateFloatingWA();
   renderAdmin();
 }
 
@@ -1791,14 +1718,12 @@ document.addEventListener('keydown', e => {
   $('#langBtn').textContent = lang === 'rtl' ? 'EN' : 'AR';
   $('#year').textContent = new Date().getFullYear();
 
-  /* قائمة المحافظات */
   const govSelect = $('#coGov');
   if(govSelect){
     govSelect.innerHTML = '<option value="">-- اختر المحافظة --</option>' +
       EGYPT_GOVERNORATES.map(g => `<option value="${g}">${g}</option>`).join('');
   }
 
-  updateFloatingWA();
   renderHeader();
   renderShop();
   renderCart();
