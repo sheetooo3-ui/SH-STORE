@@ -35,12 +35,14 @@ label{font-weight:bold;font-size:.9em;display:block;margin-bottom:2px}
 .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
 .card-img{height:150px;background:linear-gradient(135deg,#dfe9f5,#c6d9f0);display:flex;align-items:center;justify-content:center;font-size:2.4em;position:relative;overflow:hidden}
-.card-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.card-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;cursor:pointer;transition:transform .3s}
+.card-img img:hover{transform:scale(1.08)}
 [data-theme="dark"] .card-img{background:linear-gradient(135deg,#233042,#2c3a4f)}
 .badge{position:absolute;top:8px;right:8px;background:var(--danger);color:#fff;font-size:.7em;padding:3px 8px;border-radius:20px;font-weight:bold;z-index:2}
 .badge.new{background:var(--success)}
 .badge.free{position:absolute;bottom:8px;left:8px;top:auto;right:auto;background:linear-gradient(135deg,#ff9500 0%,#ff5000 100%);color:#fff;font-size:.6em;padding:4px 9px;border-radius:20px;font-weight:bold;z-index:3;display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 10px rgba(255,80,0,.5);animation:freeShipPulse 2.5s ease-in-out infinite;white-space:nowrap}
 @keyframes freeShipPulse{0%,100%{box-shadow:0 2px 10px rgba(255,80,0,.5);transform:scale(1)}50%{box-shadow:0 2px 16px rgba(255,80,0,.85);transform:scale(1.06)}}
+.gallery-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.75);color:#fff;font-size:.65em;padding:4px 9px;border-radius:20px;font-weight:bold;z-index:4;display:inline-flex;align-items:center;gap:3px}
 .card-body{padding:12px;flex:1;display:flex;flex-direction:column}
 .card h3{margin:0 0 6px;font-size:.9em;line-height:1.3}
 .card .desc{margin:0 0 8px;font-size:.75em;color:var(--muted);flex:1;line-height:1.4}
@@ -95,10 +97,22 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .tab{padding:10px 14px;border:0;background:transparent;color:var(--muted);font-weight:bold;font-size:.9em;border-bottom:3px solid transparent;border-radius:0;white-space:nowrap;cursor:pointer}
 .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
 .tab:hover{background:var(--bg);color:var(--text)}
-.img-up{position:relative;width:100%;height:150px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;background:var(--bg);margin-bottom:12px}
-.img-up:hover{border-color:var(--primary)}
-.img-up .ph{text-align:center;color:var(--muted);font-size:.85em}
-.img-up .ph .big{font-size:2em;display:block;margin-bottom:5px}
+/* Multi-Image Upload */
+.img-up-multi{width:100%;min-height:150px;border:2px dashed var(--border);border-radius:10px;background:var(--bg);margin-bottom:12px;padding:10px;display:flex;flex-direction:column;gap:10px}
+.img-up-multi:hover{border-color:var(--primary)}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(85px,1fr));gap:8px;width:100%}
+.img-thumb{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--bg)}
+.img-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer}
+.img-thumb .del{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.7);color:#fff;border:0;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:.72em;padding:0;display:flex;align-items:center;justify-content:center}
+.img-thumb .del:hover{background:var(--danger)}
+.img-thumb .main-badge{position:absolute;bottom:3px;left:3px;background:var(--success);color:#fff;font-size:.6em;padding:2px 6px;border-radius:10px;font-weight:bold}
+.img-add-btn{width:100%;padding:12px;background:transparent;color:var(--primary);border:1.5px dashed var(--primary);border-radius:8px;cursor:pointer;font-weight:bold;font-size:.9em;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
+.img-add-btn:hover{background:rgba(10,124,255,.08)}
+.img-empty{text-align:center;color:var(--muted);padding:20px;font-size:.85em}
+.img-empty .big{font-size:2em;display:block;margin-bottom:6px}
+.gallery-view{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.gallery-view img{width:100%;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:transform .2s;aspect-ratio:1;object-fit:cover}
+.gallery-view img:hover{transform:scale(1.03);box-shadow:0 4px 16px rgba(0,0,0,.15)}
 .invoice{background:#fff;color:#222;padding:25px;border-radius:10px}
 .invoice h1{text-align:center;color:#0a7cff;margin:0 0 5px;font-size:1.4em}
 .invoice .sub{text-align:center;color:#666;margin-bottom:18px;font-size:.9em}
@@ -187,7 +201,6 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .track-step.reached .lbl{color:var(--text)}
 .track-step .desc{font-size:.82em;color:var(--muted);margin-top:2px}
 .track-badge{margin-left:auto;background:var(--success);color:#fff;font-size:.7em;padding:3px 9px;border-radius:20px;align-self:flex-start;margin-top:8px;font-weight:bold}
-/* WhatsApp */
 .btn-wa{background:linear-gradient(135deg,#25D366,#128C7E)!important;color:#fff!important;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px!important;font-size:1.05em!important;font-weight:bold;box-shadow:0 3px 10px rgba(37,211,102,.35)}
 .btn-wa:hover{background:linear-gradient(135deg,#128C7E,#075E54)!important}
 #floatingCart{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#0a7cff,#0052b8);color:#fff;border:0;padding:14px 20px;border-radius:30px;font-size:1em;font-weight:bold;cursor:pointer;box-shadow:0 6px 20px rgba(10,124,255,.5);z-index:1500;display:none;align-items:center;gap:10px;font-family:inherit;animation:cartPulse 2s ease-in-out infinite}
@@ -211,6 +224,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   .price{font-size:.95em}
   .badge.free{font-size:.55em;padding:3px 7px}
   #floatingCart{bottom:15px;right:15px;padding:12px 16px;font-size:.9em}
+  .img-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}
 }
 @media print{
   body *{visibility:hidden}
@@ -355,10 +369,12 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
       <button class="close-btn" onclick="closeModal('productModal')">✕</button>
     </div>
     <input type="hidden" id="pf_id">
-    <div class="img-up" onclick="document.getElementById('pf_img').click()">
-      <div class="ph" id="pf_preview"><span class="big">🖼️</span>اضغط لاختيار صورة</div>
+    <label>صور المنتج <span style="color:var(--muted);font-weight:normal;font-size:.82em">(يمكنك إضافة أكثر من صورة)</span></label>
+    <div class="img-up-multi">
+      <div class="img-grid" id="pf_imgs_preview"></div>
+      <button type="button" class="img-add-btn" onclick="document.getElementById('pf_img').click()">📷 إضافة صور للمنتج</button>
     </div>
-    <input type="file" id="pf_img" accept="image/*" style="display:none" onchange="handleImgUpload(this)">
+    <input type="file" id="pf_img" accept="image/*" multiple style="display:none" onchange="handleImgUpload(this)">
     <label>اسم المنتج</label>
     <input id="pf_name" placeholder="مثال: هاتف ذكي Pro">
     <label>الوصف</label>
@@ -380,6 +396,16 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
       </div>
     </div>
     <button class="btn-full" onclick="saveProductForm()">💾 حفظ</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="galleryModal">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-header">
+      <h3 id="galleryTitle">صور المنتج</h3>
+      <button class="close-btn" onclick="closeModal('galleryModal')">✕</button>
+    </div>
+    <div id="galleryBody"></div>
   </div>
 </div>
 
@@ -494,7 +520,7 @@ let authTab = 'login';
 let forgotStep = 1;
 let forgotUser = null;
 let adminForgotStep = 1;
-let pendingImg = null;
+let pendingImgs = [];
 
 const EGYPT_GOVERNORATES = [
   'القاهرة','الجيزة','الإسكندرية','الدقهلية','الشرقية','القليوبية',
@@ -517,17 +543,26 @@ const EGYPT_GOVERNORATES = [
   }
   if(!products){
     products = [
-      {id:'p1', name:'هاتف ذكي Pro Max', desc:'شاشة 6.7" • 256GB • كاميرا 108MP', price:2999, oldPrice:3499, cat:'c1', img:'', icon:'📱', stock:15, isNew:true, freeShip:true, hidden:false},
-      {id:'p2', name:'لابتوب ألترا بوك',  desc:'معالج i7 • رام 16GB • SSD 512GB', price:8450, oldPrice:0, cat:'c1', img:'', icon:'💻', stock:6, isNew:true, freeShip:true, hidden:false},
-      {id:'p3', name:'سماعات لاسلكية',    desc:'عزل ضوضاء • بطارية 30 ساعة', price:499, oldPrice:699, cat:'c1', img:'', icon:'🎧', stock:25, isNew:false, freeShip:false, hidden:false},
-      {id:'p4', name:'تيشيرت قطن أصلي',    desc:'قطن 100% • مقاسات M/L/XL', price:199, oldPrice:0, cat:'c2', img:'', icon:'👕', stock:40, isNew:false, freeShip:false, hidden:false},
-      {id:'p5', name:'جاكيت شتوي',         desc:'عازل للماء • مبطن', price:649, oldPrice:899, cat:'c2', img:'', icon:'🧥', stock:12, isNew:true, freeShip:false, hidden:false},
-      {id:'p6', name:'طقم أواني طهي',      desc:'5 قطع • ستانلس ستيل', price:1199, oldPrice:0, cat:'c3', img:'', icon:'🍳', stock:9, isNew:false, freeShip:true, hidden:false},
-      {id:'p7', name:'مصباح LED ذكي',      desc:'إضاءة متعددة • تحكم بالتطبيق', price:249, oldPrice:0, cat:'c3', img:'', icon:'💡', stock:33, isNew:false, freeShip:false, hidden:false},
-      {id:'p8', name:'دمبل 10 كجم',        desc:'مطاطي • مقبض مانع للانزلاق', price:349, oldPrice:0, cat:'c4', img:'', icon:'🏋️', stock:18, isNew:false, freeShip:false, hidden:false},
-      {id:'p9', name:'حزمة عناية بالبشرة', desc:'غسول + مرطب + واقي شمس', price:459, oldPrice:599, cat:'c5', img:'', icon:'🧴', stock:22, isNew:true, freeShip:false, hidden:false},
-      {id:'p10',name:'ساعة رياضية ذكية',   desc:'قياس نبض • GPS • مقاومة للماء', price:899, oldPrice:0, cat:'c4', img:'', icon:'⌚', stock:3, isNew:false, freeShip:false, hidden:false}
+      {id:'p1', name:'هاتف ذكي Pro Max', desc:'شاشة 6.7" • 256GB • كاميرا 108MP', price:2999, oldPrice:3499, cat:'c1', imgs:[], img:'', icon:'📱', stock:15, isNew:true, freeShip:true, hidden:false},
+      {id:'p2', name:'لابتوب ألترا بوك',  desc:'معالج i7 • رام 16GB • SSD 512GB', price:8450, oldPrice:0, cat:'c1', imgs:[], img:'', icon:'💻', stock:6, isNew:true, freeShip:true, hidden:false},
+      {id:'p3', name:'سماعات لاسلكية',    desc:'عزل ضوضاء • بطارية 30 ساعة', price:499, oldPrice:699, cat:'c1', imgs:[], img:'', icon:'🎧', stock:25, isNew:false, freeShip:false, hidden:false},
+      {id:'p4', name:'تيشيرت قطن أصلي',    desc:'قطن 100% • مقاسات M/L/XL', price:199, oldPrice:0, cat:'c2', imgs:[], img:'', icon:'👕', stock:40, isNew:false, freeShip:false, hidden:false},
+      {id:'p5', name:'جاكيت شتوي',         desc:'عازل للماء • مبطن', price:649, oldPrice:899, cat:'c2', imgs:[], img:'', icon:'🧥', stock:12, isNew:true, freeShip:false, hidden:false},
+      {id:'p6', name:'طقم أواني طهي',      desc:'5 قطع • ستانلس ستيل', price:1199, oldPrice:0, cat:'c3', imgs:[], img:'', icon:'🍳', stock:9, isNew:false, freeShip:true, hidden:false},
+      {id:'p7', name:'مصباح LED ذكي',      desc:'إضاءة متعددة • تحكم بالتطبيق', price:249, oldPrice:0, cat:'c3', imgs:[], img:'', icon:'💡', stock:33, isNew:false, freeShip:false, hidden:false},
+      {id:'p8', name:'دمبل 10 كجم',        desc:'مطاطي • مقبض مانع للانزلاق', price:349, oldPrice:0, cat:'c4', imgs:[], img:'', icon:'🏋️', stock:18, isNew:false, freeShip:false, hidden:false},
+      {id:'p9', name:'حزمة عناية بالبشرة', desc:'غسول + مرطب + واقي شمس', price:459, oldPrice:599, cat:'c5', imgs:[], img:'', icon:'🧴', stock:22, isNew:true, freeShip:false, hidden:false},
+      {id:'p10',name:'ساعة رياضية ذكية',   desc:'قياس نبض • GPS • مقاومة للماء', price:899, oldPrice:0, cat:'c4', imgs:[], img:'', icon:'⌚', stock:3, isNew:false, freeShip:false, hidden:false}
     ];
+    DB.set('products', products);
+  }
+  /* Migration: إضافة imgs للمنتجات القديمة */
+  if(products && products.length && products.some(p => p.imgs === undefined)){
+    products.forEach(p => {
+      if(p.imgs === undefined){
+        p.imgs = p.img ? [p.img] : [];
+      }
+    });
     DB.set('products', products);
   }
   if(!settings){
@@ -563,6 +598,14 @@ const money = n => (Number(n) || 0).toLocaleString('en-US') + ' ' + settings.cur
 const currentUser = () => (session && session.role === 'user') ? (users.find(u => u.id === session.id) || null) : null;
 const isAdmin = () => !!(session && session.role === 'admin');
 const cartSubtotal = () => cart.reduce((s,i) => { const p = products.find(x => x.id === i.pid); return s + (p ? p.price * i.qty : 0); }, 0);
+
+/* Helper: استخراج الصور من المنتج (يدعم القديم والجديد) */
+function getProductImages(p){
+  if(!p) return [];
+  if(p.imgs && p.imgs.length) return p.imgs;
+  if(p.img) return [p.img];
+  return [];
+}
 
 function renderHeader(){
   const u = currentUser();
@@ -649,9 +692,13 @@ function renderShop(){
     const cat = categories.find(c => c.id === p.cat);
     const out = p.stock <= 0;
     const hasDiscount = p.oldPrice > p.price;
+    const imgs = getProductImages(p);
+    const mainImg = imgs[0];
+    const imgCount = imgs.length;
     return `<div class="card">
       <div class="card-img">
-        ${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.name)}">` : (p.icon || '📦')}
+        ${mainImg ? `<img src="${esc(mainImg)}" alt="${esc(p.name)}" onclick="openGallery('${p.id}')">` : (p.icon || '📦')}
+        ${imgCount > 1 ? `<span class="gallery-badge">📷 ${imgCount}</span>` : ''}
         ${p.isNew ? '<span class="badge new">جديد</span>' : (hasDiscount ? '<span class="badge">خصم</span>' : '')}
         ${p.freeShip ? '<span class="badge free">🚚 شحن مجاني</span>' : ''}
       </div>
@@ -664,6 +711,21 @@ function renderShop(){
       </div>
     </div>`;
   }).join('');
+}
+
+/* ============================================================
+   GALLERY
+============================================================ */
+function openGallery(pid){
+  const p = products.find(x => x.id === pid);
+  if(!p) return;
+  const imgs = getProductImages(p);
+  if(!imgs.length){ toast('لا توجد صور لهذا المنتج', 'warning'); return; }
+  $('#galleryTitle').textContent = '📷 ' + p.name + ' (' + imgs.length + ' صورة)';
+  $('#galleryBody').innerHTML = `<div class="gallery-view">
+    ${imgs.map((src, i) => `<img src="${esc(src)}" onclick="window.open(this.src,'_blank')" title="اضغط للعرض الكامل">`).join('')}
+  </div>`;
+  $('#galleryModal').classList.add('show');
 }
 
 /* ============================================================
@@ -1344,22 +1406,25 @@ function productsAdminHTML(){
   <div class="adm-table-wrap"><table class="adm-table">
     <thead><tr>
       <th><input type="checkbox" onchange="toggleAllProducts(this.checked)"></th>
-      <th>المنتج</th><th>القسم</th><th>السعر</th><th>المخزون</th><th>الظهور</th><th>إجراءات</th>
+      <th>المنتج</th><th>القسم</th><th>السعر</th><th>المخزون</th><th>الصور</th><th>الظهور</th><th>إجراءات</th>
     </tr></thead>
     <tbody>
       ${list.map(p => {
         const cat = categories.find(c => c.id === p.cat);
         const stockBadge = p.stock <= 0 ? '<span class="status returns">نفد</span>' : (p.stock <= 3 ? `<span class="status">${p.stock}</span>` : `<span class="status done">${p.stock}</span>`);
         const visBadge = p.hidden ? '<span class="status hidden-status">🙈 مخفي</span>' : '<span class="status done">👁️ مرئي</span>';
+        const imgs = getProductImages(p);
+        const thumbImg = imgs[0];
         return `<tr class="${selProducts.has(p.id) ? 'selected' : ''} ${p.hidden ? 'row-hidden' : ''}">
           <td><input type="checkbox" ${selProducts.has(p.id) ? 'checked' : ''} onchange="toggleSelProduct('${p.id}',this.checked)"></td>
           <td><div class="cell-flex">
-            <div class="avatar">${p.img ? `<img src="${esc(p.img)}" style="width:100%;height:100%;object-fit:cover">` : (p.icon || '📦')}</div>
+            <div class="avatar">${thumbImg ? `<img src="${esc(thumbImg)}" style="width:100%;height:100%;object-fit:cover">` : (p.icon || '📦')}</div>
             <div><b>${esc(p.name)}</b><div style="color:var(--muted);font-size:.8em">${esc((p.desc || '').slice(0, 40))}</div></div>
           </div></td>
           <td>${cat ? esc(cat.name) : '—'}</td>
           <td class="money">${money(p.price)}</td>
           <td>${stockBadge}</td>
+          <td><button class="btn-sm btn-ghost" onclick="openGallery('${p.id}')" title="عرض الصور">📷 ${imgs.length}</button></td>
           <td>${visBadge}</td>
           <td><div class="cell-actions">
             <button class="btn-sm ${p.hidden?'btn-warning':'btn-ghost'}" onclick="toggleHideProduct('${p.id}')">${p.hidden?'👁️':'🙈'}</button>
@@ -1367,7 +1432,7 @@ function productsAdminHTML(){
             <button class="btn-sm btn-outline" onclick="deleteProduct('${p.id}')">🗑️</button>
           </div></td>
         </tr>`;
-      }).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">لا توجد منتجات</td></tr>'}
+      }).join('') || '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)">لا توجد منتجات</td></tr>'}
     </tbody>
   </table></div>`;
 }
@@ -1445,46 +1510,84 @@ function openProductModal(id){
   $('#pf_free').checked = p ? !!p.freeShip : false;
   $('#pf_hidden').checked = p ? !!p.hidden : false;
   $('#pf_cat').innerHTML = categories.map(c => `<option value="${c.id}" ${p && p.cat === c.id ? 'selected' : ''}>${esc(c.icon)} ${esc(c.name)}</option>`).join('');
-  $('#pf_preview').innerHTML = (p && p.img) ? `<img src="${esc(p.img)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">` : '<span class="big">🖼️</span>اضغط لاختيار صورة';
+
+  /* تحميل الصور من المنتج */
+  pendingImgs = p ? [...getProductImages(p)] : [];
+  renderImgPreviews();
+
   $('#pf_img').value = '';
-  pendingImg = null;
   $('#productModal').classList.add('show');
 }
+
 function handleImgUpload(input){
-  const file = input.files && input.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    pendingImg = e.target.result;
-    $('#pf_preview').innerHTML = `<img src="${pendingImg}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`;
-  };
-  reader.readAsDataURL(file);
+  const files = Array.from(input.files || []);
+  if(!files.length) return;
+  let loaded = 0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      pendingImgs.push(e.target.result);
+      loaded++;
+      if(loaded === files.length) renderImgPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
 }
+
+function renderImgPreviews(){
+  const c = $('#pf_imgs_preview');
+  if(!c) return;
+  if(!pendingImgs.length){
+    c.innerHTML = `<div class="img-empty" style="grid-column:1/-1"><span class="big">🖼️</span>لم تُضف صور بعد — اضغط الزر بالأسفل</div>`;
+    return;
+  }
+  c.innerHTML = pendingImgs.map((src, i) => `
+    <div class="img-thumb">
+      <img src="${src}" onclick="window.open(this.src,'_blank')" style="cursor:pointer">
+      <button type="button" class="del" onclick="removePendingImg(${i})" title="حذف">✕</button>
+      ${i === 0 ? '<span class="main-badge">رئيسية</span>' : ''}
+    </div>
+  `).join('');
+}
+function removePendingImg(i){
+  pendingImgs.splice(i, 1);
+  renderImgPreviews();
+}
+
 function saveProductForm(){
   const id = $('#pf_id').value;
   const name = $('#pf_name').value.trim();
   const price = parseFloat($('#pf_price').value);
   if(!name){ toast('اسم المنتج مطلوب', 'warning'); return; }
   if(!(price >= 0)){ toast('سعر غير صالح', 'warning'); return; }
+
   const data = {
-    name, desc: $('#pf_desc').value.trim(), price,
+    name,
+    desc: $('#pf_desc').value.trim(),
+    price,
     oldPrice: parseFloat($('#pf_old').value) || 0,
     cat: $('#pf_cat').value,
     stock: parseInt($('#pf_stock').value) || 0,
     icon: $('#pf_icon').value.trim() || '📦',
-    isNew: $('#pf_new').checked, freeShip: $('#pf_free').checked, hidden: $('#pf_hidden').checked
+    isNew: $('#pf_new').checked,
+    freeShip: $('#pf_free').checked,
+    hidden: $('#pf_hidden').checked,
+    imgs: [...pendingImgs],
+    img: pendingImgs[0] || ''
   };
+
   if(id){
     const p = products.find(x => x.id === id);
     Object.assign(p, data);
-    if(pendingImg) p.img = pendingImg;
     if(p.hidden) cart = cart.filter(i => i.pid !== id);
     addLog('warning', 'تعديل منتج: ' + name);
   } else {
-    products.unshift(Object.assign({id: uid('p'), img: pendingImg || ''}, data));
+    products.unshift(Object.assign({id: uid('p')}, data));
     addLog('success', 'إضافة منتج: ' + name);
   }
-  pendingImg = null;
+
+  pendingImgs = [];
   saveProducts(); saveCart();
   closeModal('productModal');
   renderAdmin(); renderShop(); renderCart();
