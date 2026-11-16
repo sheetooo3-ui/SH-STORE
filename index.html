@@ -33,15 +33,25 @@ label{font-weight:bold;font-size:.9em;display:block;margin-bottom:2px}
 .cat-pill .count{background:rgba(0,0,0,.1);padding:1px 7px;border-radius:10px;font-size:.85em}
 .cat-pill.active .count{background:rgba(255,255,255,.25)}
 .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
 .card-img{height:150px;background:linear-gradient(135deg,#dfe9f5,#c6d9f0);display:flex;align-items:center;justify-content:center;font-size:2.4em;position:relative;overflow:hidden}
-.card-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;cursor:pointer;transition:transform .3s}
-.card-img img:hover{transform:scale(1.08)}
+.card-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;transition:transform .3s}
+.card:hover .card-img img{transform:scale(1.06)}
 [data-theme="dark"] .card-img{background:linear-gradient(135deg,#233042,#2c3a4f)}
 .badge{position:absolute;top:8px;right:8px;background:var(--danger);color:#fff;font-size:.7em;padding:3px 8px;border-radius:20px;font-weight:bold;z-index:2}
 .badge.new{background:var(--success)}
-.badge.free{position:absolute;bottom:8px;left:8px;top:auto;right:auto;background:linear-gradient(135deg,#ff9500 0%,#ff5000 100%);color:#fff;font-size:.6em;padding:4px 9px;border-radius:20px;font-weight:bold;z-index:3;display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 10px rgba(255,80,0,.5);animation:freeShipPulse 2.5s ease-in-out infinite;white-space:nowrap}
-@keyframes freeShipPulse{0%,100%{box-shadow:0 2px 10px rgba(255,80,0,.5);transform:scale(1)}50%{box-shadow:0 2px 16px rgba(255,80,0,.85);transform:scale(1.06)}}
+/* ⚡ الشحن المجاني: أصغر + أصفر + نص أزرق */
+.badge.free{
+  position:absolute;bottom:8px;left:8px;top:auto;right:auto;
+  background:linear-gradient(135deg,#FFE600 0%,#FFC107 100%);
+  color:#0047b3;
+  font-size:.52em;padding:3px 8px;border-radius:20px;
+  font-weight:900;z-index:3;display:inline-flex;align-items:center;gap:2px;
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 1px 4px rgba(255,193,7,.45);
+  white-space:nowrap;letter-spacing:.2px
+}
 .gallery-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.75);color:#fff;font-size:.65em;padding:4px 9px;border-radius:20px;font-weight:bold;z-index:4;display:inline-flex;align-items:center;gap:3px}
 .card-body{padding:12px;flex:1;display:flex;flex-direction:column}
 .card h3{margin:0 0 6px;font-size:.9em;line-height:1.3}
@@ -97,6 +107,48 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 .tab{padding:10px 14px;border:0;background:transparent;color:var(--muted);font-weight:bold;font-size:.9em;border-bottom:3px solid transparent;border-radius:0;white-space:nowrap;cursor:pointer}
 .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
 .tab:hover{background:var(--bg);color:var(--text)}
+
+/* ============ Product Detail Modal ============ */
+.pd-gallery{margin-bottom:14px}
+.pd-main-img{width:100%;max-height:340px;object-fit:contain;border-radius:10px;background:var(--bg);cursor:zoom-in;display:block}
+.pd-thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:6px}
+.pd-thumbs img{width:64px;height:64px;object-fit:cover;border-radius:8px;border:2px solid transparent;cursor:pointer;flex-shrink:0;transition:border-color .2s}
+.pd-thumbs img.active,.pd-thumbs img:hover{border-color:var(--primary)}
+.pd-no-img{height:220px;display:flex;align-items:center;justify-content:center;font-size:5em;background:var(--bg);border-radius:10px}
+.pd-info{margin:8px 0 16px}
+.pd-info h2{font-size:1.35em;margin:10px 0 8px;line-height:1.3;border:0;padding:0}
+.pd-desc{color:var(--muted);line-height:1.7;margin:10px 0 14px;font-size:.92em}
+.pd-price-row{display:flex;align-items:center;gap:12px;margin:12px 0;flex-wrap:wrap}
+.pd-old{color:var(--muted);text-decoration:line-through;font-size:1.05em}
+.pd-price{font-size:1.9em;font-weight:bold;color:var(--primary)}
+.pd-stock{padding:9px 14px;border-radius:8px;font-weight:bold;font-size:.88em;display:inline-block;margin:4px 0 12px}
+.pd-stock.ok{background:rgba(40,167,69,.12);color:var(--success)}
+.pd-stock.out{background:rgba(231,76,60,.12);color:var(--danger)}
+.pd-video-section{margin:20px 0;padding-top:16px;border-top:1px solid var(--border)}
+.pd-video-section h4{margin:0 0 12px;font-size:.98em;display:flex;align-items:center;gap:8px}
+.pd-video-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:10px;overflow:hidden;background:#000}
+.pd-video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.discount-details{background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,193,7,.06));border:1.5px solid #FFC107;border-radius:10px;margin:12px 0;overflow:hidden}
+.discount-details summary{padding:12px 16px;cursor:pointer;font-weight:bold;color:#8a6d00;font-size:.9em;list-style:none;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.discount-details summary::-webkit-details-marker{display:none}
+.discount-details summary::after{content:'▾';font-size:1em;transition:transform .2s;color:#8a6d00}
+.discount-details[open] summary::after{transform:rotate(180deg)}
+.discount-box{padding:14px 16px;background:rgba(255,255,255,.7);border-top:1px solid rgba(255,193,7,.3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+[data-theme="dark"] .discount-box{background:rgba(0,0,0,.25)}
+.discount-lbl{font-weight:bold;font-size:.88em;color:var(--text)}
+.discount-val{font-size:1.4em;font-weight:bold;color:var(--success)}
+.discount-save{background:var(--success);color:#fff;padding:4px 12px;border-radius:20px;font-size:.78em;font-weight:bold}
+.pd-free-tag{display:inline-block;background:linear-gradient(135deg,#FFE600,#FFC107);color:#0047b3;padding:3px 9px;border-radius:20px;font-size:.78em;font-weight:900;margin-right:8px}
+
+/* ============ Cloud Tools ============ */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:16px}
+.tool-item{display:flex;align-items:center;gap:12px;padding:13px 15px;background:var(--card);border:1px solid var(--border);border-radius:10px;cursor:pointer;font-weight:normal;margin:0;transition:all .2s}
+.tool-item:hover{border-color:var(--primary);background:rgba(10,124,255,.04)}
+.tool-item input[type=checkbox]{width:auto;margin:0;transform:scale(1.15);cursor:pointer}
+.tool-icon{font-size:1.35em;line-height:1}
+.tool-label{flex:1;font-size:.9em;font-weight:500}
+.ui-hidden{display:none !important}
+
 /* Multi-Image Upload */
 .img-up-multi{width:100%;min-height:150px;border:2px dashed var(--border);border-radius:10px;background:var(--bg);margin-bottom:12px;padding:10px;display:flex;flex-direction:column;gap:10px}
 .img-up-multi:hover{border-color:var(--primary)}
@@ -222,7 +274,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   .card-body{padding:9px}
   .card h3{font-size:.8em}
   .price{font-size:.95em}
-  .badge.free{font-size:.55em;padding:3px 7px}
+  .badge.free{font-size:.48em;padding:2px 6px}
   #floatingCart{bottom:15px;right:15px;padding:12px 16px;font-size:.9em}
   .img-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}
 }
@@ -238,43 +290,43 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
 </head>
 <body>
 
-<div id="offlineBar" style="position:fixed;top:0;left:0;right:0;background:var(--warning);color:#fff;text-align:center;padding:6px;font-size:.85em;z-index:9999;display:none">📴 غير متصل</div>
+<div id="offlineBar" style="position:fixed;top:0;left:0;right:0;background:var(--warning);color:#fff;text-align:center;padding:6px;font-size:.85em;z-index:9999;display:none">غير متصل بالإنترنت</div>
 
 <header>
   <div class="header-btns">
     <div class="user-menu" id="userWrap" style="display:none">
       <button class="user-btn" onclick="toggleUserMenu()"><span class="user-avatar" id="userAvatar">؟</span><span id="userName">—</span></button>
       <div class="user-dropdown" id="userDropdown">
-        <button onclick="openProfile()">👤 حسابي</button>
-        <button onclick="openMyOrders()">📦 طلباتي</button>
-        <button onclick="openTracking()">🔍 تتبع طلبي</button>
-        <button onclick="logout()" style="color:var(--danger)">🚪 خروج</button>
+        <button onclick="openProfile()">حسابي</button>
+        <button onclick="openMyOrders()">طلباتي</button>
+        <button onclick="openTracking()">تتبع طلبي</button>
+        <button onclick="logout()" style="color:var(--danger)">خروج</button>
       </div>
     </div>
-    <button class="user-btn" id="loginBtn" onclick="openAuth()" style="display:flex">👤 دخول</button>
-    <button class="icon-btn" onclick="toggleLang()" id="langBtn">EN</button>
-    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-    <button class="icon-btn" onclick="openAdmin()">⚙️</button>
+    <button class="user-btn" id="loginBtn" onclick="openAuth()" style="display:flex">دخول</button>
+    <button class="icon-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+    <button class="icon-btn" id="adminBtn" onclick="openAdmin()">⚙️</button>
   </div>
-  <h1>🛒 SH STORE</h1>
+  <h1>SH STORE</h1>
   <p>اطلب الآن واستلم على باب البيت</p>
 </header>
 
 <div class="container">
   <div id="guestBanner" style="background:rgba(10,124,255,.08);border:1px solid rgba(10,124,255,.2);border-radius:10px;padding:12px;margin-bottom:16px;font-size:.88em;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-    <span>👋 أهلاً بك! سجّل دخولك لحفظ طلباتك وتجربة أفضل</span>
+    <span>أهلاً بك! سجّل دخولك لحفظ طلباتك وتجربة أفضل</span>
     <button class="btn-sm" onclick="openAuth('user')">دخول / تسجيل</button>
   </div>
 
   <div style="text-align:center;margin-bottom:16px">
-    <button class="btn-ghost btn-sm" onclick="openTracking()">🔍 تتبع طلبك</button>
+    <button class="btn-ghost btn-sm" id="trackBtn" onclick="openTracking()">تتبع طلبك</button>
   </div>
 
   <section id="shopSection">
     <h2 data-t="products">المنتجات</h2>
     <div id="categoryPills"></div>
     <div class="filters">
-      <input id="searchInput" placeholder="🔍 ابحث عن منتج..." oninput="renderShop()" style="flex:2;min-width:180px">
+      <input id="searchInput" placeholder="ابحث عن منتج..." oninput="renderShop()" style="flex:2;min-width:180px">
       <select id="sortSelect" onchange="renderShop()" style="flex:1;min-width:130px">
         <option value="new">الأحدث</option>
         <option value="priceAsc">الأرخص أولاً</option>
@@ -286,7 +338,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </section>
 
   <section id="cartSection">
-    <h2 data-t="cart">🛒 سلة المشتريات <span id="cartCount" style="display:none;background:var(--danger);color:#fff;border-radius:50%;padding:1px 8px;font-size:.75em;vertical-align:middle;margin-right:6px">0</span></h2>
+    <h2 data-t="cart">سلة المشتريات <span id="cartCount" style="display:none;background:var(--danger);color:#fff;border-radius:50%;padding:1px 8px;font-size:.75em;vertical-align:middle;margin-right:6px">0</span></h2>
     <div id="cartItems"></div>
 
     <div class="total-box">
@@ -295,7 +347,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     </div>
 
     <div class="info-banner" style="font-size:.82em">
-      📝 املأ بياناتك ثم اضغط "اطلب الآن 💬" — سيتم فتح واتساب برسالة تحتوي كل تفاصيل الفاتورة.
+      املأ بياناتك ثم اضغط "اطلب الآن" — سيتم فتح واتساب برسالة تحتوي كل تفاصيل الفاتورة.
     </div>
 
     <div class="row">
@@ -311,16 +363,17 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <label>ملاحظات (اختياري)</label>
     <textarea id="coNotes" rows="2" placeholder="أي تفاصيل إضافية..."></textarea>
 
-    <button class="btn-full btn-wa" id="checkoutBtn" onclick="sendCartToWhatsApp()">اطلب الآن 💬</button>
+    <button class="btn-full btn-wa" id="checkoutBtn" onclick="sendCartToWhatsApp()">اطلب الآن</button>
   </section>
 </div>
 
 <footer>© <span id="year"></span> SH STORE — جميع الحقوق محفوظة</footer>
 
-<button id="floatingCart" onclick="scrollToCart()">🛒 السلة <span class="count-badge" id="floatingCount">0</span></button>
+<button id="floatingCart" onclick="scrollToCart()">السلة <span class="count-badge" id="floatingCount">0</span></button>
 
 <div class="toast" id="toast"></div>
 
+<!-- Auth Modal -->
 <div class="modal-overlay" id="authModal">
   <div class="modal" style="max-width:440px">
     <div class="modal-header">
@@ -331,17 +384,18 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
       <button class="tab active" data-tab="login" onclick="switchAuthTab('login')">دخول</button>
       <button class="tab" data-tab="register" onclick="switchAuthTab('register')">حساب جديد</button>
     </div>
-    <div id="authAdminMode" style="display:none;text-align:center;margin-bottom:12px;color:var(--muted);font-size:.85em">🔐 لوحة تحكم المدير</div>
+    <div id="authAdminMode" style="display:none;text-align:center;margin-bottom:12px;color:var(--muted);font-size:.85em">لوحة تحكم المدير</div>
     <div id="authForm"></div>
   </div>
 </div>
 
+<!-- Invoice Modal -->
 <div class="modal-overlay" id="invoiceModal">
   <div class="modal" style="max-width:640px">
     <div class="modal-header no-print">
-      <h3>🧾 الفاتورة</h3>
+      <h3>الفاتورة</h3>
       <div style="display:flex;gap:6px">
-        <button class="btn-sm btn-info" onclick="window.print()">🖨️ طباعة</button>
+        <button class="btn-sm btn-info" onclick="window.print()">طباعة</button>
         <button class="close-btn" onclick="closeModal('invoiceModal')">✕</button>
       </div>
     </div>
@@ -349,12 +403,13 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
+<!-- Label Modal -->
 <div class="modal-overlay" id="labelModal">
   <div class="modal" style="max-width:460px">
     <div class="modal-header no-print">
-      <h3>🏷️ بوليصة الشحن</h3>
+      <h3>بوليصة الشحن</h3>
       <div style="display:flex;gap:6px">
-        <button class="btn-sm btn-info" onclick="window.print()">🖨️ طباعة</button>
+        <button class="btn-sm btn-info" onclick="window.print()">طباعة</button>
         <button class="close-btn" onclick="closeModal('labelModal')">✕</button>
       </div>
     </div>
@@ -362,6 +417,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
+<!-- Product Form Modal (Admin) -->
 <div class="modal-overlay" id="productModal">
   <div class="modal" style="max-width:640px">
     <div class="modal-header">
@@ -372,13 +428,15 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <label>صور المنتج <span style="color:var(--muted);font-weight:normal;font-size:.82em">(يمكنك إضافة أكثر من صورة)</span></label>
     <div class="img-up-multi">
       <div class="img-grid" id="pf_imgs_preview"></div>
-      <button type="button" class="img-add-btn" onclick="document.getElementById('pf_img').click()">📷 إضافة صور للمنتج</button>
+      <button type="button" class="img-add-btn" onclick="document.getElementById('pf_img').click()">إضافة صور للمنتج</button>
     </div>
     <input type="file" id="pf_img" accept="image/*" multiple style="display:none" onchange="handleImgUpload(this)">
     <label>اسم المنتج</label>
     <input id="pf_name" placeholder="مثال: هاتف ذكي Pro">
     <label>الوصف</label>
     <textarea id="pf_desc" rows="2"></textarea>
+    <label>رابط الفيديو (اختياري)</label>
+    <input id="pf_video" placeholder="https://youtube.com/watch?v=... أو https://youtu.be/...">
     <div class="row">
       <div><label>السعر</label><input id="pf_price" type="number" min="0" step="0.01"></div>
       <div><label>السعر قبل الخصم</label><input id="pf_old" type="number" min="0" step="0.01"></div>
@@ -395,10 +453,22 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
         <label style="display:flex;align-items:center;gap:8px;font-weight:normal"><input type="checkbox" id="pf_hidden" style="width:auto;margin:0"> إخفاء</label>
       </div>
     </div>
-    <button class="btn-full" onclick="saveProductForm()">💾 حفظ</button>
+    <button class="btn-full" onclick="saveProductForm()">حفظ</button>
   </div>
 </div>
 
+<!-- Product Detail Modal (Customer) -->
+<div class="modal-overlay" id="productDetailModal">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-header">
+      <h3 id="pdTitle">اسم المنتج</h3>
+      <button class="close-btn" onclick="closeModal('productDetailModal')">✕</button>
+    </div>
+    <div id="pdBody"></div>
+  </div>
+</div>
+
+<!-- Gallery Modal -->
 <div class="modal-overlay" id="galleryModal">
   <div class="modal" style="max-width:720px">
     <div class="modal-header">
@@ -409,6 +479,7 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
   </div>
 </div>
 
+<!-- Category Modal -->
 <div class="modal-overlay" id="categoryModal">
   <div class="modal" style="max-width:420px">
     <div class="modal-header">
@@ -420,35 +491,39 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
     <input id="cf_name">
     <label>الأيقونة</label>
     <input id="cf_icon" maxlength="4">
-    <button class="btn-full" onclick="saveCategoryForm()">💾 حفظ</button>
+    <button class="btn-full" onclick="saveCategoryForm()">حفظ</button>
   </div>
 </div>
 
+<!-- Profile Modal -->
 <div class="modal-overlay" id="profileModal">
   <div class="modal" style="max-width:460px">
-    <div class="modal-header"><h3>👤 حسابي</h3><button class="close-btn" onclick="closeModal('profileModal')">✕</button></div>
+    <div class="modal-header"><h3>حسابي</h3><button class="close-btn" onclick="closeModal('profileModal')">✕</button></div>
     <label>الاسم</label><input id="pr_name">
     <label>رقم الهاتف</label><input id="pr_phone">
     <label>العنوان</label><input id="pr_address">
     <label>كلمة مرور جديدة</label><input type="password" id="pr_pass" placeholder="اتركها فارغة للإبقاء">
-    <button class="btn-full btn-success" onclick="saveProfile()">💾 حفظ</button>
+    <button class="btn-full btn-success" onclick="saveProfile()">حفظ</button>
   </div>
 </div>
 
+<!-- My Orders Modal -->
 <div class="modal-overlay" id="myOrdersModal">
   <div class="modal" style="max-width:700px">
-    <div class="modal-header"><h3>📦 طلباتي</h3><button class="close-btn" onclick="closeModal('myOrdersModal')">✕</button></div>
+    <div class="modal-header"><h3>طلباتي</h3><button class="close-btn" onclick="closeModal('myOrdersModal')">✕</button></div>
     <div id="myOrdersBody"></div>
   </div>
 </div>
 
+<!-- Tracking Modal -->
 <div class="modal-overlay" id="trackingModal">
   <div class="modal" style="max-width:560px">
-    <div class="modal-header"><h3>🔍 تتبع الطلب</h3><button class="close-btn" onclick="closeModal('trackingModal')">✕</button></div>
+    <div class="modal-header"><h3>تتبع الطلب</h3><button class="close-btn" onclick="closeModal('trackingModal')">✕</button></div>
     <div id="trackingBody"></div>
   </div>
 </div>
 
+<!-- Admin Dashboard -->
 <div id="adminDash">
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
   <aside class="adm-sidebar" id="admSidebar">
@@ -459,10 +534,11 @@ footer{text-align:center;padding:25px 15px;color:var(--muted);font-size:.85em}
       <button data-tab="orders" onclick="setAdmTab('orders')"><span class="ic">🧾</span> الطلبات <span class="badge-count" id="ordersBadge">0</span></button>
       <button data-tab="customers" onclick="setAdmTab('customers')"><span class="ic">👥</span> العملاء</button>
       <button data-tab="categories" onclick="setAdmTab('categories')"><span class="ic">🏷️</span> الأقسام</button>
+      <button data-tab="cloudtools" onclick="setAdmTab('cloudtools')"><span class="ic">🪄</span> الأدوات السحرية</button>
       <button data-tab="logs" onclick="setAdmTab('logs')"><span class="ic">📝</span> السجل</button>
       <button data-tab="settings" onclick="setAdmTab('settings')"><span class="ic">⚙️</span> الإعدادات</button>
     </nav>
-    <div class="adm-sidebar-foot"><button class="btn-ghost btn-sm" style="flex:1" onclick="closeAdmin()">⬅ خروج</button></div>
+    <div class="adm-sidebar-foot"><button class="btn-danger btn-sm" style="flex:1" onclick="closeAdmin()">🚪 خروج من الإدارة</button></div>
   </aside>
   <main class="adm-main">
     <div class="adm-topbar">
@@ -510,6 +586,13 @@ let logs       = DB.get('logs', []);
 let session    = DB.get('session', null);
 let settings   = DB.get('settings', null);
 
+const DEFAULT_UI = {
+  guestBanner: true, trackBtn: true, searchBox: true, sortSelect: true,
+  categoryPills: true, cartSection: true, floatingCart: true,
+  loginBtn: true, langBtn: true, themeBtn: true, adminBtn: true
+};
+let uiToggles = Object.assign({}, DEFAULT_UI, DB.get('uiToggles', {}));
+
 let activeCat = 'all';
 let selProducts = new Set();
 let admTab = 'dashboard';
@@ -543,41 +626,34 @@ const EGYPT_GOVERNORATES = [
   }
   if(!products){
     products = [
-      {id:'p1', name:'هاتف ذكي Pro Max', desc:'شاشة 6.7" • 256GB • كاميرا 108MP', price:2999, oldPrice:3499, cat:'c1', imgs:[], img:'', icon:'📱', stock:15, isNew:true, freeShip:true, hidden:false},
-      {id:'p2', name:'لابتوب ألترا بوك',  desc:'معالج i7 • رام 16GB • SSD 512GB', price:8450, oldPrice:0, cat:'c1', imgs:[], img:'', icon:'💻', stock:6, isNew:true, freeShip:true, hidden:false},
-      {id:'p3', name:'سماعات لاسلكية',    desc:'عزل ضوضاء • بطارية 30 ساعة', price:499, oldPrice:699, cat:'c1', imgs:[], img:'', icon:'🎧', stock:25, isNew:false, freeShip:false, hidden:false},
-      {id:'p4', name:'تيشيرت قطن أصلي',    desc:'قطن 100% • مقاسات M/L/XL', price:199, oldPrice:0, cat:'c2', imgs:[], img:'', icon:'👕', stock:40, isNew:false, freeShip:false, hidden:false},
-      {id:'p5', name:'جاكيت شتوي',         desc:'عازل للماء • مبطن', price:649, oldPrice:899, cat:'c2', imgs:[], img:'', icon:'🧥', stock:12, isNew:true, freeShip:false, hidden:false},
-      {id:'p6', name:'طقم أواني طهي',      desc:'5 قطع • ستانلس ستيل', price:1199, oldPrice:0, cat:'c3', imgs:[], img:'', icon:'🍳', stock:9, isNew:false, freeShip:true, hidden:false},
-      {id:'p7', name:'مصباح LED ذكي',      desc:'إضاءة متعددة • تحكم بالتطبيق', price:249, oldPrice:0, cat:'c3', imgs:[], img:'', icon:'💡', stock:33, isNew:false, freeShip:false, hidden:false},
-      {id:'p8', name:'دمبل 10 كجم',        desc:'مطاطي • مقبض مانع للانزلاق', price:349, oldPrice:0, cat:'c4', imgs:[], img:'', icon:'🏋️', stock:18, isNew:false, freeShip:false, hidden:false},
-      {id:'p9', name:'حزمة عناية بالبشرة', desc:'غسول + مرطب + واقي شمس', price:459, oldPrice:599, cat:'c5', imgs:[], img:'', icon:'🧴', stock:22, isNew:true, freeShip:false, hidden:false},
-      {id:'p10',name:'ساعة رياضية ذكية',   desc:'قياس نبض • GPS • مقاومة للماء', price:899, oldPrice:0, cat:'c4', imgs:[], img:'', icon:'⌚', stock:3, isNew:false, freeShip:false, hidden:false}
+      {id:'p1', name:'هاتف ذكي Pro Max', desc:'شاشة 6.7 بوصة — 256GB — كاميرا 108MP', price:2999, oldPrice:3499, cat:'c1', imgs:[], img:'', video:'', icon:'📱', stock:15, isNew:true, freeShip:true, hidden:false},
+      {id:'p2', name:'لابتوب ألترا بوك',  desc:'معالج i7 — رام 16GB — SSD 512GB', price:8450, oldPrice:0, cat:'c1', imgs:[], img:'', video:'', icon:'💻', stock:6, isNew:true, freeShip:true, hidden:false},
+      {id:'p3', name:'سماعات لاسلكية',    desc:'عزل ضوضاء — بطارية 30 ساعة', price:499, oldPrice:699, cat:'c1', imgs:[], img:'', video:'', icon:'🎧', stock:25, isNew:false, freeShip:false, hidden:false},
+      {id:'p4', name:'تيشيرت قطن أصلي',   desc:'قطن 100% — مقاسات M/L/XL', price:199, oldPrice:0, cat:'c2', imgs:[], img:'', video:'', icon:'👕', stock:40, isNew:false, freeShip:false, hidden:false},
+      {id:'p5', name:'جاكيت شتوي',        desc:'عازل للماء — مبطن', price:649, oldPrice:899, cat:'c2', imgs:[], img:'', video:'', icon:'🧥', stock:12, isNew:true, freeShip:false, hidden:false},
+      {id:'p6', name:'طقم أواني طهي',     desc:'5 قطع — ستانلس ستيل', price:1199, oldPrice:0, cat:'c3', imgs:[], img:'', video:'', icon:'🍳', stock:9, isNew:false, freeShip:true, hidden:false},
+      {id:'p7', name:'مصباح LED ذكي',     desc:'إضاءة متعددة — تحكم بالتطبيق', price:249, oldPrice:0, cat:'c3', imgs:[], img:'', video:'', icon:'💡', stock:33, isNew:false, freeShip:false, hidden:false},
+      {id:'p8', name:'دمبل 10 كجم',       desc:'مطاطي — مقبض مانع للانزلاق', price:349, oldPrice:0, cat:'c4', imgs:[], img:'', video:'', icon:'🏋️', stock:18, isNew:false, freeShip:false, hidden:false},
+      {id:'p9', name:'حزمة عناية بالبشرة',desc:'غسول + مرطب + واقي شمس', price:459, oldPrice:599, cat:'c5', imgs:[], img:'', video:'', icon:'🧴', stock:22, isNew:true, freeShip:false, hidden:false},
+      {id:'p10',name:'ساعة رياضية ذكية',  desc:'قياس نبض — GPS — مقاومة للماء', price:899, oldPrice:0, cat:'c4', imgs:[], img:'', video:'', icon:'⌚', stock:3, isNew:false, freeShip:false, hidden:false}
     ];
     DB.set('products', products);
   }
-  /* Migration: إضافة imgs للمنتجات القديمة */
-  if(products && products.length && products.some(p => p.imgs === undefined)){
-    products.forEach(p => {
-      if(p.imgs === undefined){
-        p.imgs = p.img ? [p.img] : [];
-      }
-    });
-    DB.set('products', products);
-  }
+  /* Migration */
+  let changed = false;
+  products.forEach(p => {
+    if(p.imgs === undefined){ p.imgs = p.img ? [p.img] : []; changed = true; }
+    if(p.video === undefined){ p.video = ''; changed = true; }
+  });
+  if(changed) DB.set('products', products);
+
   if(!settings){
     settings = {store:'SH STORE', currency:'ج.م', shipping:30, freeShip:500, adminPass:'admin123', adminSecurityQuestion:'', adminSecurityAnswer:'', whatsapp:''};
     DB.set('settings', settings);
   }
-  if(settings.adminSecurityQuestion === undefined){
-    settings.adminSecurityQuestion = '';
-    settings.adminSecurityAnswer = '';
-    DB.set('settings', settings);
-  }
-  if(settings.whatsapp === undefined){
-    settings.whatsapp = '';
-    DB.set('settings', settings);
-  }
+  if(settings.adminSecurityQuestion === undefined){ settings.adminSecurityQuestion = ''; DB.set('settings', settings); }
+  if(settings.adminSecurityAnswer === undefined){ settings.adminSecurityAnswer = ''; DB.set('settings', settings); }
+  if(settings.whatsapp === undefined){ settings.whatsapp = ''; DB.set('settings', settings); }
 })();
 
 const saveProducts   = () => DB.set('products', products);
@@ -587,6 +663,7 @@ const saveUsers      = () => DB.set('users', users);
 const saveCart       = () => DB.set('cart', cart);
 const saveSettings   = () => DB.set('settings', settings);
 const saveSession    = () => DB.set('session', session);
+const saveUI         = () => DB.set('uiToggles', uiToggles);
 
 function addLog(type, msg){
   logs.unshift({time: new Date().toISOString(), type, msg});
@@ -599,12 +676,27 @@ const currentUser = () => (session && session.role === 'user') ? (users.find(u =
 const isAdmin = () => !!(session && session.role === 'admin');
 const cartSubtotal = () => cart.reduce((s,i) => { const p = products.find(x => x.id === i.pid); return s + (p ? p.price * i.qty : 0); }, 0);
 
-/* Helper: استخراج الصور من المنتج (يدعم القديم والجديد) */
 function getProductImages(p){
   if(!p) return [];
   if(p.imgs && p.imgs.length) return p.imgs;
   if(p.img) return [p.img];
   return [];
+}
+
+function getVideoEmbedHTML(url){
+  if(!url) return '';
+  let embedUrl = url;
+  if(/youtube\.com\/watch/.test(url)){
+    const m = url.match(/[?&]v=([^&]+)/);
+    if(m) embedUrl = 'https://www.youtube.com/embed/' + m[1];
+  } else if(/youtu\.be\//.test(url)){
+    const id = url.split('youtu.be/')[1].split(/[?&]/)[0];
+    embedUrl = 'https://www.youtube.com/embed/' + id;
+  } else if(/vimeo\.com\//.test(url)){
+    const id = url.split('vimeo.com/')[1].split(/[?&]/)[0];
+    embedUrl = 'https://player.vimeo.com/video/' + id;
+  }
+  return `<iframe src="${esc(embedUrl)}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>`;
 }
 
 function renderHeader(){
@@ -636,7 +728,7 @@ function toggleTheme(){
   $('#themeBtn').textContent = cur === 'dark' ? '☀️' : '🌙';
 }
 
-const T = {ar:{products:'المنتجات',cart:'🛒 سلة المشتريات'},en:{products:'Products',cart:'🛒 Shopping Cart'}};
+const T = {ar:{products:'المنتجات',cart:'سلة المشتريات'},en:{products:'Products',cart:'Shopping Cart'}};
 function toggleLang(){
   const cur = document.documentElement.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
   document.documentElement.setAttribute('dir', cur);
@@ -657,6 +749,43 @@ function scrollToCart(){
 }
 
 /* ============================================================
+   UI TOGGLES (Cloud Tools)
+============================================================ */
+function applyUIToggles(){
+  const map = {
+    guestBanner: '#guestBanner', trackBtn: '#trackBtn', searchBox: '#searchInput',
+    sortSelect: '#sortSelect', categoryPills: '#categoryPills', cartSection: '#cartSection',
+    floatingCart: '#floatingCart', loginBtn: '#loginBtn', langBtn: '#langBtn',
+    themeBtn: '#themeBtn', adminBtn: '#adminBtn'
+  };
+  Object.entries(map).forEach(([key, sel]) => {
+    const el = document.querySelector(sel);
+    if(!el) return;
+    el.classList.toggle('ui-hidden', uiToggles[key] === false);
+  });
+}
+function toggleUI(key, val){
+  uiToggles[key] = val;
+  saveUI();
+  applyUIToggles();
+  toast(val ? 'تم الإظهار' : 'تم الإخفاء', 'success');
+}
+function resetUIToggles(){
+  uiToggles = Object.assign({}, DEFAULT_UI);
+  saveUI();
+  applyUIToggles();
+  toast('تم إظهار كل العناصر', 'success');
+  renderAdmin();
+}
+function hideAllUI(){
+  Object.keys(uiToggles).forEach(k => uiToggles[k] = false);
+  saveUI();
+  applyUIToggles();
+  toast('تم إخفاء كل العناصر', 'warning');
+  renderAdmin();
+}
+
+/* ============================================================
    SHOP
 ============================================================ */
 function setCat(id){ activeCat = id; renderShop(); }
@@ -665,7 +794,7 @@ function renderShop(){
   const counts = {};
   products.forEach(p => { if(!p.hidden) counts[p.cat] = (counts[p.cat] || 0) + 1; });
   const visibleTotal = products.filter(p => !p.hidden).length;
-  let pills = `<button class="cat-pill ${activeCat==='all'?'active':''}" onclick="setCat('all')">🛍️ الكل <span class="count">${visibleTotal}</span></button>`;
+  let pills = `<button class="cat-pill ${activeCat==='all'?'active':''}" onclick="setCat('all')">الكل <span class="count">${visibleTotal}</span></button>`;
   categories.forEach(c => {
     pills += `<button class="cat-pill ${activeCat===c.id?'active':''}" onclick="setCat('${c.id}')">${esc(c.icon||'🏷️')} ${esc(c.name)} <span class="count">${counts[c.id]||0}</span></button>`;
   });
@@ -695,35 +824,98 @@ function renderShop(){
     const imgs = getProductImages(p);
     const mainImg = imgs[0];
     const imgCount = imgs.length;
-    return `<div class="card">
+    return `<div class="card" onclick="openProductDetail('${p.id}', event)">
       <div class="card-img">
-        ${mainImg ? `<img src="${esc(mainImg)}" alt="${esc(p.name)}" onclick="openGallery('${p.id}')">` : (p.icon || '📦')}
-        ${imgCount > 1 ? `<span class="gallery-badge">📷 ${imgCount}</span>` : ''}
+        ${mainImg ? `<img src="${esc(mainImg)}" alt="${esc(p.name)}">` : (p.icon || '📦')}
+        ${imgCount > 1 ? `<span class="gallery-badge">${imgCount} صورة</span>` : ''}
         ${p.isNew ? '<span class="badge new">جديد</span>' : (hasDiscount ? '<span class="badge">خصم</span>' : '')}
-        ${p.freeShip ? '<span class="badge free">🚚 شحن مجاني</span>' : ''}
+        ${p.freeShip ? '<span class="badge free">شحن مجاني</span>' : ''}
       </div>
       <div class="card-body">
         <span class="cat">${cat ? esc(cat.name) : '—'}</span>
         <h3>${esc(p.name)}</h3>
         <p class="desc">${esc(p.desc || '')}</p>
         <div class="price">${hasDiscount ? `<span class="old">${money(p.oldPrice)}</span>` : ''}${money(p.price)}</div>
-        <button class="btn-full ${out ? '' : 'btn-success'}" ${out ? 'disabled' : ''} onclick="addToCart('${p.id}')">${out ? '❌ نفدت الكمية' : '🛒 أضف للسلة'}</button>
+        <button class="btn-full ${out ? '' : 'btn-success'}" ${out ? 'disabled' : ''} onclick="event.stopPropagation();addToCart('${p.id}')">${out ? 'نفدت الكمية' : 'أضف للسلة'}</button>
       </div>
     </div>`;
   }).join('');
 }
 
 /* ============================================================
-   GALLERY
+   PRODUCT DETAIL (Customer)
+============================================================ */
+function openProductDetail(pid, ev){
+  if(ev && ev.target.closest('button')) return;
+  const p = products.find(x => x.id === pid);
+  if(!p || p.hidden){ toast('هذا المنتج غير متوفر', 'error'); return; }
+
+  const imgs = getProductImages(p);
+  const cat = categories.find(c => c.id === p.cat);
+  const hasDiscount = p.oldPrice > p.price;
+  const out = p.stock <= 0;
+
+  let galleryHTML = '';
+  if(imgs.length){
+    galleryHTML = `
+      <div class="pd-gallery">
+        <img id="pdMainImg" src="${esc(imgs[0])}" class="pd-main-img" onclick="window.open(this.src,'_blank')" alt="${esc(p.name)}">
+        ${imgs.length > 1 ? `<div class="pd-thumbs">${imgs.map((src, i) => `<img src="${esc(src)}" data-src="${esc(src)}" onclick="document.getElementById('pdMainImg').src=this.dataset.src;document.querySelectorAll('.pd-thumbs img').forEach(x=>x.classList.remove('active'));this.classList.add('active')" class="${i===0?'active':''}" alt="صورة ${i+1}">`).join('')}</div>` : ''}
+      </div>`;
+  } else {
+    galleryHTML = `<div class="pd-gallery"><div class="pd-no-img">${p.icon || '📦'}</div></div>`;
+  }
+
+  const videoHTML = p.video ? `
+    <div class="pd-video-section">
+      <h4>فيديو المنتج</h4>
+      <div class="pd-video-wrap">${getVideoEmbedHTML(p.video)}</div>
+    </div>` : '';
+
+  const discountHTML = hasDiscount ? `
+    <details class="discount-details">
+      <summary><span>عرض السعر بعد الخصم</span></summary>
+      <div class="discount-box">
+        <span class="discount-lbl">السعر بعد الخصم:</span>
+        <span class="discount-val">${money(p.price)}</span>
+        <span class="discount-save">وفّرت ${money(p.oldPrice - p.price)}</span>
+      </div>
+    </details>` : '';
+
+  $('#pdBody').innerHTML = `
+    ${galleryHTML}
+    <div class="pd-info">
+      ${cat ? `<span class="cat">${esc(cat.name)}</span>` : ''}
+      ${p.freeShip ? '<span class="pd-free-tag">شحن مجاني</span>' : ''}
+      <h2>${esc(p.name)}</h2>
+      <p class="pd-desc">${esc(p.desc || 'لا يوجد وصف')}</p>
+      <div class="pd-price-row">
+        ${hasDiscount ? `<span class="pd-old">${money(p.oldPrice)}</span>` : ''}
+        <span class="pd-price">${money(p.price)}</span>
+      </div>
+      ${discountHTML}
+      ${p.stock > 0 ? `<div class="pd-stock ok">متوفر — ${p.stock} قطعة</div>` : `<div class="pd-stock out">نفدت الكمية</div>`}
+    </div>
+    ${videoHTML}
+    <button class="btn-full ${out ? '' : 'btn-success'}" ${out ? 'disabled' : ''} onclick="addToCart('${p.id}');closeModal('productDetailModal')">
+      ${out ? 'نفدت الكمية' : 'أضف للسلة'}
+    </button>`;
+
+  $('#pdTitle').textContent = p.name;
+  $('#productDetailModal').classList.add('show');
+}
+
+/* ============================================================
+   GALLERY (Admin view)
 ============================================================ */
 function openGallery(pid){
   const p = products.find(x => x.id === pid);
   if(!p) return;
   const imgs = getProductImages(p);
   if(!imgs.length){ toast('لا توجد صور لهذا المنتج', 'warning'); return; }
-  $('#galleryTitle').textContent = '📷 ' + p.name + ' (' + imgs.length + ' صورة)';
+  $('#galleryTitle').textContent = 'صور: ' + p.name + ' (' + imgs.length + ')';
   $('#galleryBody').innerHTML = `<div class="gallery-view">
-    ${imgs.map((src, i) => `<img src="${esc(src)}" onclick="window.open(this.src,'_blank')" title="اضغط للعرض الكامل">`).join('')}
+    ${imgs.map(src => `<img src="${esc(src)}" onclick="window.open(this.src,'_blank')" title="اضغط للعرض الكامل">`).join('')}
   </div>`;
   $('#galleryModal').classList.add('show');
 }
@@ -743,10 +935,10 @@ function addToCart(pid){
     cart.push({pid, qty: 1});
   }
   saveCart(); renderHeader(); renderCart();
-  toast(`✅ تمت إضافة "${p.name}" إلى السلة`, 'success');
+  toast(`تمت إضافة "${p.name}" إلى السلة`, 'success');
   setTimeout(() => {
     const cartEl = document.getElementById('cartSection');
-    if(cartEl) cartEl.scrollIntoView({behavior:'smooth', block:'start'});
+    if(cartEl && uiToggles.cartSection !== false) cartEl.scrollIntoView({behavior:'smooth', block:'start'});
   }, 350);
 }
 
@@ -805,7 +997,7 @@ function renderCart(){
         <button class="qty-btn btn-ghost" onclick="changeQty('${p.id}',-1)">−</button>
         <span class="qty-num">${i.qty}</span>
         <button class="qty-btn btn-ghost" onclick="changeQty('${p.id}',1)">+</button>
-        <button class="remove-btn" onclick="removeFromCart('${p.id}')">🗑️</button>
+        <button class="remove-btn" onclick="removeFromCart('${p.id}')">حذف</button>
       </div>
     </div>`;
   }).join('');
@@ -816,14 +1008,14 @@ function renderCart(){
 }
 
 /* ============================================================
-   WHATSAPP
+   WHATSAPP — رسالة نصية بدون رموز
 ============================================================ */
 function waNumber(){ return (settings.whatsapp || '').replace(/\D/g, ''); }
 
 function sendCartToWhatsApp(){
   if(!cart.length){ toast('السلة فارغة — أضف منتجات أولاً', 'error'); return; }
   const num = waNumber();
-  if(!num){ toast('⚠️ لم يتم إعداد رقم واتساب المتجر — تواصل مع الإدارة', 'warning'); return; }
+  if(!num){ toast('لم يتم إعداد رقم واتساب المتجر — تواصل مع الإدارة', 'warning'); return; }
 
   const name = ($('#coName')?.value || '').trim();
   const phone = ($('#coPhone')?.value || '').trim();
@@ -833,11 +1025,11 @@ function sendCartToWhatsApp(){
   const notes = ($('#coNotes')?.value || '').trim();
 
   if(!name || !phone || !gov || !city || !addr){
-    toast('⚠️ أكمل بيانات الشحن (الاسم، الهاتف، المحافظة، المدينة، العنوان)', 'warning');
+    toast('أكمل بيانات الشحن (الاسم، الهاتف، المحافظة، المدينة، العنوان)', 'warning');
     return;
   }
   if(phone.replace(/\D/g,'').length < 8){
-    toast('⚠️ رقم هاتف غير صالح', 'warning');
+    toast('رقم هاتف غير صالح', 'warning');
     return;
   }
 
@@ -846,7 +1038,6 @@ function sendCartToWhatsApp(){
     return p ? {name: p.name, price: p.price, qty: i.qty, id: p.id} : null;
   }).filter(Boolean);
 
-  const visibleProducts = products.filter(x => !x.hidden);
   const subtotal = items.reduce((s, it) => s + (it.price * it.qty), 0);
   const orderId = 'ORD-' + (1000 + orders.length + 1);
   const dateStr = new Date().toLocaleString('en-GB', {
@@ -855,44 +1046,45 @@ function sendCartToWhatsApp(){
   });
   const fullAddress = [gov, city, addr].join('، ');
 
-  const itemsList = items.map((it, idx) => {
-    const productNum = visibleProducts.findIndex(x => x.id === it.id) + 1;
-    return `${idx + 1}. 📦 ${it.name}\n` +
-           `   🔢 رقم المنتج: #${productNum}\n` +
-           `   🔢 العدد: X${it.qty}  |  💵 الإجمالي: ${money(it.price * it.qty)}`;
-  }).join('\n\n');
+  /* ---- فاتورة واتساب: نصية بالكامل بدون رموز ---- */
+  let itemsList = '';
+  items.forEach((it, idx) => {
+    itemsList += `${idx + 1}. ${it.name}\n`;
+    itemsList += `   الكمية: ${it.qty}\n`;
+    itemsList += `   السعر: ${money(it.price)}\n`;
+    itemsList += `   الإجمالي: ${money(it.price * it.qty)}\n`;
+    if(idx < items.length - 1) itemsList += '\n';
+  });
 
   const msg =
-    `🛒 *فاتورة طلب جديد*\n` +
-    `━━━━━━━━━━━━━━━━━━\n\n` +
-    `📋 *Order No:* ${orderId}\n` +
-    `📅 *Date:* ${dateStr}\n\n` +
-    `━━━━━━━━━━━━━━━━━━\n` +
-    `👤 *بيانات المستلم*\n` +
+    `فاتورة طلب جديد\n` +
+    `الرقم: ${orderId}\n` +
+    `التاريخ: ${dateStr}\n\n` +
+    `------------------------------\n` +
+    `بيانات المستلم\n` +
+    `------------------------------\n` +
     `الاسم: ${name}\n` +
     `الهاتف: ${phone}\n` +
     `العنوان: ${fullAddress}\n\n` +
-    `━━━━━━━━━━━━━━━━━━\n` +
-    `🛍️ *المنتجات*\n\n${itemsList}\n\n` +
-    `━━━━━━━━━━━━━━━━━━\n` +
-    `💰 *الإجمالي: ${money(subtotal)}*\n\n` +
-    `💳 الدفع: الدفع عند الاستلام` +
-    (notes ? `\n\n📝 ملاحظات: ${notes}` : '') +
-    `\n\n━━━━━━━━━━━━━━━━━━\n` +
-    `✅ يرجى تأكيد استلام الطلب`;
+    `------------------------------\n` +
+    `المنتجات\n` +
+    `------------------------------\n` +
+    `${itemsList}\n` +
+    `------------------------------\n` +
+    `الإجمالي: ${money(subtotal)}\n` +
+    `طريقة الدفع: الدفع عند الاستلام\n` +
+    (notes ? `ملاحظات: ${notes}\n` : '') +
+    `------------------------------\n` +
+    `يرجى تأكيد استلام الطلب`;
 
   window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
 
   const order = {
-    id: orderId,
-    userId: currentUser() ? session.id : null,
-    name, phone, address: fullAddress, gov, city,
-    notes,
+    id: orderId, userId: currentUser() ? session.id : null,
+    name, phone, address: fullAddress, gov, city, notes,
     items: items.map(it => ({id: it.id, name: it.name, price: it.price, qty: it.qty})),
     subtotal, shipping: 0, total: subtotal,
-    payment: 'cod',
-    status: 'pending',
-    date: new Date().toISOString()
+    payment: 'cod', status: 'pending', date: new Date().toISOString()
   };
   orders.unshift(order);
   saveOrders();
@@ -906,7 +1098,7 @@ function sendCartToWhatsApp(){
   $('#coGov').value = '';
 
   renderHeader(); renderCart(); renderShop();
-  toast(`✅ تم فتح واتساب — رقم الطلب: ${orderId}`, 'success');
+  toast(`تم فتح واتساب — رقم الطلب: ${orderId}`, 'success');
 }
 
 function saveWhatsApp(){
@@ -915,12 +1107,12 @@ function saveWhatsApp(){
   settings.whatsapp = num;
   saveSettings();
   addLog('warning', 'تحديث رقم واتساب المتجر: ' + (num || 'محذوف'));
-  toast(num ? '✅ تم حفظ رقم الواتساب' : 'تم حذف رقم الواتساب', 'success');
+  toast(num ? 'تم حفظ رقم الواتساب' : 'تم حذف رقم الواتساب', 'success');
   renderAdmin();
 }
 
 /* ============================================================
-   INVOICE / LABEL
+   INVOICE / LABEL — نصية بدون رموز
 ============================================================ */
 function invoiceHTML(o){
   return `<div class="invoice">
@@ -943,6 +1135,7 @@ function invoiceHTML(o){
     </table>
     <div class="totals">
       <div class="grand">الإجمالي: ${money(o.total)}</div>
+      <div style="margin-top:8px;font-size:.85em;color:#666">طريقة الدفع: الدفع عند الاستلام</div>
     </div>
   </div>`;
 }
@@ -971,10 +1164,10 @@ function openTracking(orderId = null){
     renderTracking(orderId);
   } else {
     $('#trackingBody').innerHTML = `
-      <div class="info-banner">📦 أدخل رقم الطلب لعرض حالة الشحن والتوصيل</div>
+      <div class="info-banner">أدخل رقم الطلب لعرض حالة الشحن والتوصيل</div>
       <label>رقم الطلب</label>
       <input id="trackOrderId" placeholder="مثال: ORD-1001" onkeydown="if(event.key==='Enter')doTrackSearch()">
-      <button class="btn-full" onclick="doTrackSearch()">🔍 تتبع الطلب</button>`;
+      <button class="btn-full" onclick="doTrackSearch()">تتبع الطلب</button>`;
     setTimeout(() => $('#trackOrderId')?.focus(), 100);
   }
 }
@@ -1036,7 +1229,7 @@ function renderTracking(orderId){
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
-      <button class="btn-full btn-ghost" onclick='showInvoice(${orderJSON});closeModal("trackingModal")'>🧾 الفاتورة</button>
+      <button class="btn-full btn-ghost" onclick='showInvoice(${orderJSON});closeModal("trackingModal")'>الفاتورة</button>
       <button class="btn-full" onclick="closeModal('trackingModal')">إغلاق</button>
     </div>`;
 }
@@ -1073,21 +1266,21 @@ function renderAuthForm(){
   if(admin){
     f.innerHTML = `<label>كلمة مرور المدير</label>
       <input type="password" id="admPass" placeholder="••••••••">
-      <button class="btn-full" onclick="doAdminLogin()">🔐 دخول</button>
+      <button class="btn-full" onclick="doAdminLogin()">دخول</button>
       <div style="text-align:center;margin-top:14px">
-        <a href="#" onclick="adminForgotStep=1;renderAdminForgot();return false" style="color:var(--primary);font-size:.85em;text-decoration:none">🔑 نسيت كلمة المرور؟</a>
+        <a href="#" onclick="adminForgotStep=1;renderAdminForgot();return false" style="color:var(--primary);font-size:.85em;text-decoration:none">نسيت كلمة المرور؟</a>
       </div>`;
   } else if(authTab === 'login'){
     f.innerHTML = `<label>رقم الهاتف</label><input id="lgPhone" inputmode="tel" placeholder="01xxxxxxxxx">
       <label>كلمة المرور</label><input type="password" id="lgPass" placeholder="••••••••">
       <button class="btn-full" onclick="doLogin()">دخول</button>
-      <div style="text-align:center;margin-top:14px"><a href="#" onclick="switchAuthTab('forgot');return false" style="color:var(--primary);font-size:.85em;text-decoration:none">🔑 نسيت كلمة المرور؟</a></div>`;
+      <div style="text-align:center;margin-top:14px"><a href="#" onclick="switchAuthTab('forgot');return false" style="color:var(--primary);font-size:.85em;text-decoration:none">نسيت كلمة المرور؟</a></div>`;
   } else if(authTab === 'register'){
     f.innerHTML = `<label>الاسم</label><input id="rgName" placeholder="اسمك الكامل">
       <label>رقم الهاتف</label><input id="rgPhone" inputmode="tel" placeholder="01xxxxxxxxx">
       <div class="row"><div><label>كلمة المرور</label><input type="password" id="rgPass"></div><div><label>تأكيد</label><input type="password" id="rgPass2"></div></div>
       <label>العنوان</label><input id="rgAddress">
-      <div class="info-banner" style="margin-top:8px;font-size:.8em">🔒 سؤال الأمان — للاستعادة</div>
+      <div class="info-banner" style="margin-top:8px;font-size:.8em">سؤال الأمان — للاستعادة</div>
       <label>سؤال الأمان *</label>
       <select id="rgQ"><option value="">-- اختر --</option>${SECURITY_QUESTIONS.map(q => `<option>${esc(q)}</option>`).join('')}</select>
       <label>الإجابة *</label><input id="rgA" placeholder="احفظها جيداً">
@@ -1097,26 +1290,26 @@ function renderAuthForm(){
 function renderForgotForm(){
   const f = $('#authForm');
   if(forgotStep === 1){
-    f.innerHTML = `<div class="info-banner">🛡️ أدخل رقم هاتفك</div>
+    f.innerHTML = `<div class="info-banner">أدخل رقم هاتفك</div>
       <label>رقم الهاتف</label><input id="fgPhone" inputmode="tel">
-      <button class="btn-full" onclick="startForgot()">التالي ←</button>
-      <div style="text-align:center;margin-top:12px"><a href="#" onclick="switchAuthTab('login');return false" style="color:var(--muted);font-size:.82em">← رجوع</a></div>`;
+      <button class="btn-full" onclick="startForgot()">التالي</button>
+      <div style="text-align:center;margin-top:12px"><a href="#" onclick="switchAuthTab('login');return false" style="color:var(--muted);font-size:.82em">رجوع</a></div>`;
   } else if(forgotStep === 2){
     if(!forgotUser.securityQuestion){
       f.innerHTML = `<div style="text-align:center;padding:16px 0"><div style="font-size:2.5em;margin-bottom:10px">⚠️</div>
         <div style="font-weight:bold;margin-bottom:8px">لا يوجد سؤال أمان</div>
         <div style="color:var(--muted);font-size:.85em;margin-bottom:16px">تواصل مع المدير</div>
-        <button class="btn-full btn-ghost" onclick="switchAuthTab('login')">← رجوع</button></div>`;
+        <button class="btn-full btn-ghost" onclick="switchAuthTab('login')">رجوع</button></div>`;
       return;
     }
     f.innerHTML = `<div class="info-banner"><b>سؤال:</b><br>${esc(forgotUser.securityQuestion)}</div>
       <label>الإجابة</label><input id="fgAnswer">
-      <button class="btn-full" onclick="verifySecurity()">تحقق ←</button>`;
+      <button class="btn-full" onclick="verifySecurity()">تحقق</button>`;
   } else if(forgotStep === 3){
-    f.innerHTML = `<div class="info-banner success">✅ تم التحقق</div>
+    f.innerHTML = `<div class="info-banner success">تم التحقق بنجاح</div>
       <label>كلمة المرور الجديدة</label><input type="password" id="fgNewPass">
       <label>تأكيد</label><input type="password" id="fgNewPass2">
-      <button class="btn-full btn-success" onclick="resetPassword()">💾 حفظ</button>`;
+      <button class="btn-full btn-success" onclick="resetPassword()">حفظ</button>`;
   }
 }
 function startForgot(){
@@ -1139,7 +1332,7 @@ function resetPassword(){
   forgotUser.password = p1;
   saveUsers();
   addLog('success', `استعادة كلمة مرور: ${forgotUser.name}`);
-  toast('✅ تم تغيير كلمة المرور', 'success');
+  toast('تم تغيير كلمة المرور', 'success');
   forgotStep = 1; forgotUser = null; switchAuthTab('login');
 }
 
@@ -1153,17 +1346,17 @@ function renderAdminForgot(){
       f.innerHTML = `<div style="text-align:center;padding:16px 0"><div style="font-size:2.8em;margin-bottom:12px">🔒</div>
         <div style="font-weight:bold;margin-bottom:10px">لا يمكن الاستعادة</div>
         <div style="color:var(--muted);font-size:.87em;line-height:1.8;margin-bottom:18px">لم يتم إعداد سؤال أمان.</div>
-        <button class="btn-full btn-ghost" onclick="renderAuthForm()">← رجوع</button></div>`;
+        <button class="btn-full btn-ghost" onclick="renderAuthForm()">رجوع</button></div>`;
       return;
     }
     f.innerHTML = `<div class="info-banner"><b>سؤال:</b><br>${esc(settings.adminSecurityQuestion)}</div>
       <label>الإجابة</label><input id="admForgotAns">
-      <button class="btn-full" onclick="verifyAdminSecurity()">تحقق ←</button>`;
+      <button class="btn-full" onclick="verifyAdminSecurity()">تحقق</button>`;
   } else if(adminForgotStep === 2){
-    f.innerHTML = `<div class="info-banner success">✅ تم التحقق</div>
+    f.innerHTML = `<div class="info-banner success">تم التحقق بنجاح</div>
       <label>كلمة المرور الجديدة</label><input type="password" id="admNewPass">
       <label>تأكيد</label><input type="password" id="admNewPass2">
-      <button class="btn-full btn-success" onclick="resetAdminPassword()">💾 حفظ</button>`;
+      <button class="btn-full btn-success" onclick="resetAdminPassword()">حفظ</button>`;
   }
 }
 function verifyAdminSecurity(){
@@ -1179,7 +1372,7 @@ function resetAdminPassword(){
   settings.adminPass = p1;
   saveSettings();
   addLog('warning', 'استعادة كلمة مرور المدير');
-  toast('✅ تم التغيير', 'success');
+  toast('تم التغيير', 'success');
   adminForgotStep = 1; authMode = 'admin'; renderAuthForm();
 }
 
@@ -1192,7 +1385,7 @@ function doAdminLogin(){
   $('#adminDash').classList.add('show');
   admTab = 'dashboard'; renderAdmin();
   addLog('success', 'تسجيل دخول المدير');
-  toast('مرحباً بك 👋', 'success');
+  toast('مرحباً بك', 'success');
 }
 function doLogin(){
   const phone = $('#lgPhone').value.trim();
@@ -1203,7 +1396,7 @@ function doLogin(){
   saveSession();
   closeModal('authModal');
   renderHeader();
-  toast('مرحباً ' + u.name + ' 👋', 'success');
+  toast('مرحباً ' + u.name, 'success');
 }
 function doRegister(){
   const name = $('#rgName').value.trim();
@@ -1223,7 +1416,7 @@ function doRegister(){
   session = {role: 'user', id: u.id}; saveSession();
   closeModal('authModal'); renderHeader();
   addLog('success', `عميل جديد: ${name}`);
-  toast('✅ تم إنشاء الحساب', 'success');
+  toast('تم إنشاء الحساب', 'success');
 }
 function logout(){
   session = null; saveSession();
@@ -1253,7 +1446,7 @@ function saveProfile(){
   if($('#pr_pass').value) u.password = $('#pr_pass').value;
   saveUsers(); renderHeader();
   closeModal('profileModal');
-  toast('✅ تم الحفظ', 'success');
+  toast('تم الحفظ', 'success');
 }
 function openMyOrders(){ $('#myOrdersModal').classList.add('show'); renderMyOrders(); }
 function renderMyOrders(){
@@ -1272,8 +1465,8 @@ function renderMyOrders(){
         <div style="color:var(--muted);font-size:.85em">${new Date(o.date).toLocaleDateString('ar-EG')} — ${o.items.length} منتج — <b>${money(o.total)}</b></div>
       </div>
       <div style="display:flex;gap:6px;flex-shrink:0">
-        <button class="btn-sm btn-ghost" onclick='showInvoice(${orderJSON})'>🧾</button>
-        <button class="btn-sm" onclick="closeModal('myOrdersModal');openTracking('${o.id}')">🔍</button>
+        <button class="btn-sm btn-ghost" onclick='showInvoice(${orderJSON})'>فاتورة</button>
+        <button class="btn-sm" onclick="closeModal('myOrdersModal');openTracking('${o.id}')">تتبع</button>
       </div>
     </div>`;
   }).join('');
@@ -1286,7 +1479,14 @@ function openAdmin(){
   if(isAdmin()){ $('#adminDash').classList.add('show'); renderAdmin(); }
   else { openAuth('admin'); }
 }
-function closeAdmin(){ $('#adminDash').classList.remove('show'); }
+/* 🔧 الخروج الصحيح من لوحة المدير = تسجيل خروج كامل */
+function closeAdmin(){
+  session = null;
+  saveSession();
+  $('#adminDash').classList.remove('show');
+  renderHeader();
+  toast('تم الخروج من لوحة التحكم', 'success');
+}
 function toggleSidebar(open){ $('#admSidebar').classList.toggle('open', open); $('#sidebarOverlay').classList.toggle('show', open); }
 function setAdmTab(t){ admTab = t; admSearchTerm = ''; $('#admSearch').value = ''; renderAdmin(); }
 function onAdmSearch(){ admSearchTerm = $('#admSearch').value; renderAdmin(); }
@@ -1297,7 +1497,7 @@ function renderAdmin(){
   badge.textContent = pending;
   badge.style.display = pending ? 'inline-block' : 'none';
   $$('#admNav button').forEach(b => b.classList.toggle('active', b.dataset.tab === admTab));
-  const titles = {dashboard:'نظرة عامة', products:'المنتجات', orders:'الطلبات', customers:'العملاء', categories:'الأقسام', logs:'السجل', settings:'الإعدادات'};
+  const titles = {dashboard:'نظرة عامة', products:'المنتجات', orders:'الطلبات', customers:'العملاء', categories:'الأقسام', cloudtools:'الأدوات السحرية', logs:'السجل', settings:'الإعدادات'};
   $('#admTitle').textContent = titles[admTab] || '';
   const c = $('#admContent');
   if(admTab === 'dashboard') { c.innerHTML = dashboardHTML(); drawRevenueChart(); }
@@ -1305,6 +1505,7 @@ function renderAdmin(){
   else if(admTab === 'orders') c.innerHTML = ordersAdminHTML();
   else if(admTab === 'customers') c.innerHTML = customersAdminHTML();
   else if(admTab === 'categories') c.innerHTML = categoriesAdminHTML();
+  else if(admTab === 'cloudtools') c.innerHTML = cloudToolsHTML();
   else if(admTab === 'logs') c.innerHTML = logsAdminHTML();
   else if(admTab === 'settings') c.innerHTML = settingsAdminHTML();
 }
@@ -1317,8 +1518,8 @@ function dashboardHTML(){
   const visible = products.length - hidden;
   const noWa = !settings.whatsapp;
 
-  return `${noWa ? `<div class="info-banner danger" style="margin-bottom:16px">⚠️ <b>لم يتم إعداد رقم واتساب!</b> اذهب إلى ⚙️ الإعدادات</div>` : ''}
-  ${!settings.adminSecurityQuestion ? `<div class="info-banner warning" style="margin-bottom:16px">⚠️ المدير بدون سؤال أمان</div>` : ''}
+  return `${noWa ? `<div class="info-banner danger" style="margin-bottom:16px"><b>لم يتم إعداد رقم واتساب!</b> اذهب إلى الإعدادات</div>` : ''}
+  ${!settings.adminSecurityQuestion ? `<div class="info-banner warning" style="margin-bottom:16px">المدير بدون سؤال أمان</div>` : ''}
   <div class="kpi-grid">
     <div class="kpi"><span class="k-ic">💰</span><span class="k-val">${money(revenue)}</span><span class="k-lbl">إجمالي الإيرادات</span></div>
     <div class="kpi success"><span class="k-ic">🧾</span><span class="k-val">${orders.length}</span><span class="k-lbl">الطلبات</span></div>
@@ -1329,8 +1530,8 @@ function dashboardHTML(){
     <div class="kpi info"><span class="k-ic">👥</span><span class="k-val">${users.length}</span><span class="k-lbl">العملاء</span></div>
   </div>
   <div class="chart-grid">
-    <div class="chart-box"><h4>📈 الإيرادات — آخر 7 أيام</h4><canvas id="revChart" style="width:100%;height:220px"></canvas></div>
-    <div class="chart-box"><h4>🕒 أحدث الطلبات</h4>
+    <div class="chart-box"><h4>الإيرادات — آخر 7 أيام</h4><canvas id="revChart" style="width:100%;height:220px"></canvas></div>
+    <div class="chart-box"><h4>أحدث الطلبات</h4>
       ${orders.slice(0,5).map(o => `<div class="log-item" style="border-color:var(--primary)">
         <div><b>${o.id}</b> — ${esc(o.name)}<div class="time">${new Date(o.date).toLocaleString('ar-EG')}</div></div>
         <div class="money">${money(o.total)}</div>
@@ -1384,7 +1585,7 @@ function productsAdminHTML(){
   const totalHidden = products.filter(p => p.hidden).length;
   return `
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap">
-    <button class="btn-success" onclick="openProductModal()">➕ إضافة منتج</button>
+    <button class="btn-success" onclick="openProductModal()">إضافة منتج</button>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
       <select onchange="prodFilter=this.value;renderAdmin()" style="margin:0;padding:8px;width:auto;font-size:.85em">
         <option value="all" ${prodFilter==='all'?'selected':''}>الكل (${products.length})</option>
@@ -1397,22 +1598,22 @@ function productsAdminHTML(){
   <div class="bulk-bar ${selProducts.size ? 'show' : ''}">
     <span>تم تحديد ${selProducts.size}</span>
     <div class="bulk-actions">
-      <button onclick="bulkHideProducts()">🙈 إخفاء</button>
-      <button onclick="bulkShowProducts()">👁️ إظهار</button>
-      <button onclick="bulkDeleteProducts()">🗑️ حذف</button>
+      <button onclick="bulkHideProducts()">إخفاء</button>
+      <button onclick="bulkShowProducts()">إظهار</button>
+      <button onclick="bulkDeleteProducts()">حذف</button>
       <button onclick="clearSelProducts()">إلغاء</button>
     </div>
   </div>
   <div class="adm-table-wrap"><table class="adm-table">
     <thead><tr>
       <th><input type="checkbox" onchange="toggleAllProducts(this.checked)"></th>
-      <th>المنتج</th><th>القسم</th><th>السعر</th><th>المخزون</th><th>الصور</th><th>الظهور</th><th>إجراءات</th>
+      <th>المنتج</th><th>القسم</th><th>السعر</th><th>المخزون</th><th>الصور</th><th>الفيديو</th><th>الظهور</th><th>إجراءات</th>
     </tr></thead>
     <tbody>
       ${list.map(p => {
         const cat = categories.find(c => c.id === p.cat);
         const stockBadge = p.stock <= 0 ? '<span class="status returns">نفد</span>' : (p.stock <= 3 ? `<span class="status">${p.stock}</span>` : `<span class="status done">${p.stock}</span>`);
-        const visBadge = p.hidden ? '<span class="status hidden-status">🙈 مخفي</span>' : '<span class="status done">👁️ مرئي</span>';
+        const visBadge = p.hidden ? '<span class="status hidden-status">مخفي</span>' : '<span class="status done">مرئي</span>';
         const imgs = getProductImages(p);
         const thumbImg = imgs[0];
         return `<tr class="${selProducts.has(p.id) ? 'selected' : ''} ${p.hidden ? 'row-hidden' : ''}">
@@ -1424,15 +1625,16 @@ function productsAdminHTML(){
           <td>${cat ? esc(cat.name) : '—'}</td>
           <td class="money">${money(p.price)}</td>
           <td>${stockBadge}</td>
-          <td><button class="btn-sm btn-ghost" onclick="openGallery('${p.id}')" title="عرض الصور">📷 ${imgs.length}</button></td>
+          <td><button class="btn-sm btn-ghost" onclick="openGallery('${p.id}')" title="عرض الصور">${imgs.length}</button></td>
+          <td>${p.video ? '<span class="status done">نعم</span>' : '<span class="status hidden-status">لا</span>'}</td>
           <td>${visBadge}</td>
           <td><div class="cell-actions">
-            <button class="btn-sm ${p.hidden?'btn-warning':'btn-ghost'}" onclick="toggleHideProduct('${p.id}')">${p.hidden?'👁️':'🙈'}</button>
-            <button class="btn-sm btn-ghost" onclick="openProductModal('${p.id}')">✏️</button>
-            <button class="btn-sm btn-outline" onclick="deleteProduct('${p.id}')">🗑️</button>
+            <button class="btn-sm ${p.hidden?'btn-warning':'btn-ghost'}" onclick="toggleHideProduct('${p.id}')">${p.hidden?'إظهار':'إخفاء'}</button>
+            <button class="btn-sm btn-ghost" onclick="openProductModal('${p.id}')">تعديل</button>
+            <button class="btn-sm btn-outline" onclick="deleteProduct('${p.id}')">حذف</button>
           </div></td>
         </tr>`;
-      }).join('') || '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)">لا توجد منتجات</td></tr>'}
+      }).join('') || '<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--muted)">لا توجد منتجات</td></tr>'}
     </tbody>
   </table></div>`;
 }
@@ -1483,7 +1685,7 @@ function toggleHideProduct(id){
   saveProducts(); saveCart();
   addLog('warning', (p.hidden ? 'إخفاء' : 'إظهار') + ' منتج: ' + p.name);
   renderAdmin(); renderShop(); renderCart();
-  toast(p.hidden ? '🙈 مخفي' : '👁️ مرئي', 'success');
+  toast(p.hidden ? 'تم الإخفاء' : 'تم الإظهار', 'success');
 }
 function deleteProduct(id){
   if(!confirm('حذف هذا المنتج؟')) return;
@@ -1502,6 +1704,7 @@ function openProductModal(id){
   $('#pf_id').value = p ? p.id : '';
   $('#pf_name').value = p ? p.name : '';
   $('#pf_desc').value = p ? (p.desc || '') : '';
+  $('#pf_video').value = p ? (p.video || '') : '';
   $('#pf_price').value = p ? p.price : '';
   $('#pf_old').value = p ? (p.oldPrice || '') : '';
   $('#pf_stock').value = p ? p.stock : 10;
@@ -1511,7 +1714,6 @@ function openProductModal(id){
   $('#pf_hidden').checked = p ? !!p.hidden : false;
   $('#pf_cat').innerHTML = categories.map(c => `<option value="${c.id}" ${p && p.cat === c.id ? 'selected' : ''}>${esc(c.icon)} ${esc(c.name)}</option>`).join('');
 
-  /* تحميل الصور من المنتج */
   pendingImgs = p ? [...getProductImages(p)] : [];
   renderImgPreviews();
 
@@ -1565,6 +1767,7 @@ function saveProductForm(){
   const data = {
     name,
     desc: $('#pf_desc').value.trim(),
+    video: $('#pf_video').value.trim(),
     price,
     oldPrice: parseFloat($('#pf_old').value) || 0,
     cat: $('#pf_cat').value,
@@ -1591,7 +1794,7 @@ function saveProductForm(){
   saveProducts(); saveCart();
   closeModal('productModal');
   renderAdmin(); renderShop(); renderCart();
-  toast('✅ تم الحفظ', 'success');
+  toast('تم الحفظ', 'success');
 }
 
 const ST_LABEL = {pending: ['قيد الانتظار',''], shipped: ['تم الشحن','ship'], done: ['مكتمل','done'], returns: ['مرتجع','returns']};
@@ -1614,9 +1817,9 @@ function ordersAdminHTML(){
           <td><span class="status ${s[1]}">${s[0]}</span></td>
           <td style="font-size:.8em;color:var(--muted)">${new Date(o.date).toLocaleDateString('ar-EG')}</td>
           <td><div class="cell-actions">
-            <button class="btn-sm btn-ghost" onclick='showInvoice(${orderJSON})'>🧾</button>
-            <button class="btn-sm btn-info" onclick='showLabel(${orderJSON})'>🏷️</button>
-            <button class="btn-sm btn-success" onclick="openTracking('${o.id}')">🔍</button>
+            <button class="btn-sm btn-ghost" onclick='showInvoice(${orderJSON})'>فاتورة</button>
+            <button class="btn-sm btn-info" onclick='showLabel(${orderJSON})'>بوليصة</button>
+            <button class="btn-sm btn-success" onclick="openTracking('${o.id}')">تتبع</button>
             <select class="btn-sm" style="margin:0;padding:5px;width:auto" onchange="setOrderStatus('${o.id}',this.value)">
               <option value="pending" ${o.status==='pending'?'selected':''}>قيد الانتظار</option>
               <option value="shipped" ${o.status==='shipped'?'selected':''}>تم الشحن</option>
@@ -1647,14 +1850,14 @@ function customersAdminHTML(){
     <tbody>
       ${list.map(u => {
         const count = orders.filter(o => o.userId === u.id).length;
-        const secBadge = u.securityQuestion ? '<span class="status done">✅</span>' : '<span class="status returns">بدون</span>';
+        const secBadge = u.securityQuestion ? '<span class="status done">نعم</span>' : '<span class="status returns">بدون</span>';
         return `<tr>
           <td><div class="cell-flex"><div class="avatar">${esc((u.name||'؟').charAt(0))}</div><b>${esc(u.name)}</b></div></td>
           <td>${esc(u.phone)}</td>
           <td style="color:var(--muted);font-size:.85em">${esc(u.address || '—')}</td>
           <td><span class="status ship">${count}</span></td>
           <td>${secBadge}</td>
-          <td><button class="btn-sm btn-warning" onclick="adminResetPassword('${u.id}')">🔑</button></td>
+          <td><button class="btn-sm btn-warning" onclick="adminResetPassword('${u.id}')">تغيير كلمة السر</button></td>
         </tr>`;
       }).join('') || '<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">لا يوجد عملاء</td></tr>'}
     </tbody>
@@ -1669,12 +1872,12 @@ function adminResetPassword(id){
   u.password = np;
   saveUsers();
   addLog('warning', `إعادة تعيين كلمة مرور: ${u.name}`);
-  toast('✅ تم', 'success');
+  toast('تم التحديث', 'success');
   renderAdmin();
 }
 
 function categoriesAdminHTML(){
-  return `<div style="margin-bottom:14px"><button class="btn-success" onclick="openCategoryModal()">➕ إضافة قسم</button></div>
+  return `<div style="margin-bottom:14px"><button class="btn-success" onclick="openCategoryModal()">إضافة قسم</button></div>
   <div class="adm-table-wrap"><table class="adm-table">
     <thead><tr><th>القسم</th><th>الأيقونة</th><th>عدد المنتجات</th><th>إجراءات</th></tr></thead>
     <tbody>
@@ -1685,8 +1888,8 @@ function categoriesAdminHTML(){
           <td style="font-size:1.3em">${esc(c.icon || '🏷️')}</td>
           <td>${count}</td>
           <td><div class="cell-actions">
-            <button class="btn-sm btn-ghost" onclick="openCategoryModal('${c.id}')">✏️</button>
-            <button class="btn-sm btn-outline" onclick="deleteCategory('${c.id}')">🗑️</button>
+            <button class="btn-sm btn-ghost" onclick="openCategoryModal('${c.id}')">تعديل</button>
+            <button class="btn-sm btn-outline" onclick="deleteCategory('${c.id}')">حذف</button>
           </div></td>
         </tr>`;
       }).join('') || '<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--muted)">لا توجد أقسام</td></tr>'}
@@ -1717,7 +1920,7 @@ function saveCategoryForm(){
   saveCategories();
   closeModal('categoryModal');
   renderAdmin(); renderShop();
-  toast('✅ تم', 'success');
+  toast('تم الحفظ', 'success');
 }
 function deleteCategory(id){
   const used = products.filter(p => p.cat === id).length;
@@ -1730,6 +1933,72 @@ function deleteCategory(id){
   toast('تم الحذف', 'success');
 }
 
+/* ============ Cloud Tools (الأدوات السحرية) ============ */
+function cloudToolsHTML(){
+  const items = [
+    {key:'loginBtn',      label:'زر الدخول / حسابي',      icon:'👤'},
+    {key:'langBtn',       label:'زر اللغة',                icon:'🌐'},
+    {key:'themeBtn',      label:'زر الوضع الليلي',         icon:'🌙'},
+    {key:'adminBtn',      label:'زر الإعدادات (الإدارة)',  icon:'⚙️'},
+    {key:'guestBanner',   label:'بانر الزوار',             icon:'👋'},
+    {key:'trackBtn',      label:'زر تتبع الطلب',           icon:'🔍'},
+    {key:'searchBox',     label:'خانة البحث',              icon:'🔎'},
+    {key:'sortSelect',    label:'خانة الترتيب',            icon:'📊'},
+    {key:'categoryPills', label:'أزرار الأقسام',           icon:'🏷️'},
+    {key:'cartSection',   label:'قسم السلة والدفع',        icon:'🛒'},
+    {key:'floatingCart',  label:'السلة العائمة',           icon:'🛒'}
+  ];
+  return `
+    <div class="info-banner">
+      <b>الأدوات السحرية</b> — تحكم في إظهار/إخفاء أي زر أو قسم أو خانة في واجهة العميل.
+    </div>
+    <div class="tools-grid">
+      ${items.map(it => `
+        <label class="tool-item">
+          <input type="checkbox" ${uiToggles[it.key] !== false ? 'checked' : ''} onchange="toggleUI('${it.key}', this.checked)">
+          <span class="tool-icon">${it.icon}</span>
+          <span class="tool-label">${it.label}</span>
+        </label>
+      `).join('')}
+    </div>
+    <div style="margin-bottom:24px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn-ghost" onclick="resetUIToggles()">إظهار الكل</button>
+      <button class="btn-warning" onclick="hideAllUI()">إخفاء الكل</button>
+    </div>
+
+    <hr style="border:0;border-top:2px solid var(--border);margin:28px 0">
+
+    <h3 style="color:var(--danger);margin-bottom:10px">إعادة ضبط المصنع</h3>
+    <div class="info-banner danger">
+      <b>إعادة ضبط المصنع</b> ستقوم بإعادة كل شيء للحالة الجديدة <b>ما عدا</b>:<br>
+      — المنتجات وصورها<br>
+      — الطلبات والفواتير<br>
+      — بيانات العملاء<br>
+      — الأقسام<br><br>
+      سيتم مسح: الإعدادات، السلة، السجل، تفضيلات الواجهة، تسجيل الدخول.
+    </div>
+    <button class="btn-full btn-danger" onclick="factoryReset()">إعادة ضبط المصنع</button>
+  `;
+}
+
+function factoryReset(){
+  if(!confirm('إعادة ضبط المصنع\n\nسيتم إعادة كل شيء للحالة الجديدة ما عدا:\n— المنتجات وصورها\n— الطلبات والفواتير\n— بيانات العملاء\n— الأقسام\n\nهل أنت متأكد؟')) return;
+  const check = prompt('للتأكيد النهائي اكتب كلمة: RESET');
+  if(check !== 'RESET'){ toast('تم الإلغاء', 'warning'); return; }
+
+  DB.set('settings', null);
+  DB.set('cart', []);
+  DB.set('logs', []);
+  DB.set('session', null);
+  DB.set('uiToggles', {});
+  DB.set('theme', 'light');
+  DB.set('lang', 'rtl');
+  /* نحتفظ بـ: products, orders, users, categories */
+
+  toast('جارٍ إعادة التحميل...', 'success');
+  setTimeout(() => location.reload(), 500);
+}
+
 function logsAdminHTML(){
   if(!logs.length) return '<div class="empty-state"><span class="big">📝</span>لا توجد سجلات</div>';
   return logs.map(l => `<div class="log-item ${l.type}">
@@ -1740,26 +2009,26 @@ function logsAdminHTML(){
 
 function settingsAdminHTML(){
   return `<div class="chart-box" style="max-width:560px">
-    <h4>⚙️ إعدادات المتجر</h4>
+    <h4>إعدادات المتجر</h4>
     <label>اسم المتجر</label><input id="st_store" value="${esc(settings.store)}">
     <label>العملة</label><input id="st_currency" value="${esc(settings.currency)}">
     <label>كلمة مرور المدير</label><input id="st_pass" value="${esc(settings.adminPass)}">
-    <button class="btn-full btn-success" onclick="saveSettingsForm()">💾 حفظ</button>
+    <button class="btn-full btn-success" onclick="saveSettingsForm()">حفظ</button>
 
     <hr style="border:0;border-top:1px solid var(--border);margin:22px 0">
 
-    <h4>💬 رقم واتساب المتجر</h4>
+    <h4>رقم واتساب المتجر</h4>
     <div class="info-banner" style="font-size:.8em">
-      📞 بصيغة دولية بدون + أو صفر:<br>
-      🇪🇬 مصر: <b>201012345678</b>
+      بصيغة دولية بدون + أو صفر:<br>
+      مصر: <b>201012345678</b>
     </div>
     <label>رقم واتساب</label>
     <input id="st_whatsapp" value="${esc(settings.whatsapp || '')}" placeholder="201012345678" oninput="this.value=this.value.replace(/\D/g,'')">
-    <button class="btn-full btn-wa" onclick="saveWhatsApp()">💬 حفظ رقم الواتساب</button>
+    <button class="btn-full btn-wa" onclick="saveWhatsApp()">حفظ رقم الواتساب</button>
 
     <hr style="border:0;border-top:1px solid var(--border);margin:22px 0">
 
-    <h4>🛡️ أمان حساب المدير</h4>
+    <h4>أمان حساب المدير</h4>
     <label>سؤال الأمان</label>
     <select id="st_admQ">
       <option value="">-- بدون --</option>
@@ -1767,10 +2036,10 @@ function settingsAdminHTML(){
     </select>
     <label>إجابة سؤال الأمان</label>
     <input id="st_admA" value="${esc(settings.adminSecurityAnswer||'')}">
-    <button class="btn-full btn-info" onclick="saveAdminSecurity()">🛡️ حفظ</button>
+    <button class="btn-full btn-info" onclick="saveAdminSecurity()">حفظ</button>
 
     <hr style="border:0;border-top:1px solid var(--border);margin:22px 0">
-    <button class="btn-full btn-outline" onclick="wipeData()">🗑️ مسح كل البيانات</button>
+    <button class="btn-full btn-outline" onclick="wipeData()">مسح كل البيانات</button>
   </div>`;
 }
 function saveSettingsForm(){
@@ -1780,7 +2049,7 @@ function saveSettingsForm(){
   saveSettings();
   addLog('warning', 'تحديث إعدادات المتجر');
   renderAdmin();
-  toast('✅ تم الحفظ', 'success');
+  toast('تم الحفظ', 'success');
 }
 function saveAdminSecurity(){
   const q = $('#st_admQ').value;
@@ -1790,13 +2059,13 @@ function saveAdminSecurity(){
   settings.adminSecurityAnswer = q ? a : '';
   saveSettings();
   addLog('warning', 'تحديث أمان المدير');
-  toast('✅ تم', 'success');
+  toast('تم الحفظ', 'success');
   renderAdmin();
 }
 function wipeData(){
-  if(!confirm('سيتم حذف كل البيانات. متأكد؟')) return;
-  ['products','categories','orders','users','cart','logs','session'].forEach(k => localStorage.removeItem('sh_' + k));
-  localStorage.removeItem('sh_settings');
+  if(!confirm('سيتم حذف كل البيانات نهائياً. متأكد؟')) return;
+  if(!confirm('تأكيد أخير — لا يمكن التراجع!')) return;
+  ['products','categories','orders','users','cart','logs','session','settings','uiToggles','theme','lang'].forEach(k => localStorage.removeItem('sh_' + k));
   location.reload();
 }
 
@@ -1809,6 +2078,11 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape') $$('.modal-overlay.show').forEach(m => m.classList.remove('show'));
+  /* اختصار أمان للوصول للوحة المدير حتى لو زر الإدارة مخفي */
+  if(e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')){
+    e.preventDefault();
+    openAdmin();
+  }
 });
 
 (function init(){
@@ -1831,6 +2105,7 @@ document.addEventListener('keydown', e => {
   renderShop();
   renderCart();
   applyLang();
+  applyUIToggles();
 
   const bar = $('#offlineBar');
   const upd = () => { bar.style.display = navigator.onLine ? 'none' : 'block'; };
